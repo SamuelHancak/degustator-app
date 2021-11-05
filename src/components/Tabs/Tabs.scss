@@ -1,0 +1,45 @@
+.tabs {
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  width: calc(100% - 48px);
+  background-color: #ffffff;
+  z-index: 10;
+
+  @media (max-width: 600px) {
+    top: 50px;
+    width: 100%;
+  }
+}
+
+.Mui-selected {
+  color: #58181f !important;
+}
+
+.MuiTabs-indicator {
+  background-color: #58181f !important;
+}
+
+.tab {
+  padding: 12px;
+  background-color: #ffffff;
+  -webkit-box-shadow: 0px 5px 12px 0px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0px 5px 12px 0px #00000080 !important;
+  border-radius: 10px !important;
+  color: #58181f;
+  border: 1px solid #58181f;
+  cursor: pointer;
+  transition: all;
+  transition-duration: 300ms;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.activeTab {
+  color: #ffffff;
+  background-color: #58181f;
+}

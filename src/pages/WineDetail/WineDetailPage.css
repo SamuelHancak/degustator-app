@@ -1,0 +1,155 @@
+h1,
+p {
+  margin: 0;
+}
+
+.card {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.cardHeader {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #58181f;
+  min-height: 20px;
+  padding: 15px;
+  color: #ffffff;
+}
+
+@media (max-width: 600px) {
+  .cardHeader {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+}
+
+.cardTitle {
+  margin: 0;
+}
+
+.cardTitleRating {
+  font-style: italic;
+}
+
+.cardTitleRatingWrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.cardContent {
+  padding: 10px 20px;
+}
+
+.attributeSection {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  padding: 10px 0;
+  border-bottom: 2px solid #80808063;
+}
+
+.attributeSection:last-child {
+  border-bottom: none;
+}
+
+.attributeValuesSection {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 0.4;
+      -ms-flex: 0.4;
+          flex: 0.4;
+}
+
+.attributeNotesSection {
+  margin-left: 25px;
+  -webkit-box-flex: 0.6;
+      -ms-flex: 0.6;
+          flex: 0.6;
+}
+
+.attributeSectionWrapper {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.attributesGroupName {
+  display: inline-block;
+  width: 100%;
+  -webkit-box-flex: 0.4;
+      -ms-flex: 0.4;
+          flex: 0.4;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding-bottom: 5px;
+  font-style: italic;
+}
+
+.attributesGroupNameWrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.attributesGroupNote {
+  -webkit-box-flex: 0.6;
+      -ms-flex: 0.6;
+          flex: 0.6;
+  margin-left: 25px;
+  font-weight: 400;
+  color: gray;
+}
+
+.attributeWrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 5px 0;
+}
+
+.attributeName {
+  font-size: 1.1rem;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.attributeNotes {
+  text-overflow: ellipsis;
+  font-size: 1.1rem;
+}
+
+.attributeValue {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+/*# sourceMappingURL=WineDetailPage.css.map */

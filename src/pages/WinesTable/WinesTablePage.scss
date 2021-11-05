@@ -1,0 +1,66 @@
+// button {
+//   color: #58181f !important;
+//   font-weight: 600 !important;
+// }
+
+.MuiDataGrid-root {
+  border-radius: 10px !important;
+  border: none !important;
+  overflow: hidden;
+  -webkit-box-shadow: 0px 5px 12px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 5px 12px 0px rgba(0, 0, 0, 0.5);
+}
+
+.tableGrid {
+  .MuiDataGrid-main {
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+      "Noto Color Emoji";
+  }
+
+  .MuiDataGrid-columnHeaderWrapper {
+    background-color: rgb(88, 24, 31);
+    color: #ffffff;
+  }
+
+  .MuiDataGrid-columnSeparator {
+    display: none !important;
+  }
+
+  .MuiDataGrid-columnHeader {
+    &:focus {
+      outline: none !important;
+    }
+  }
+
+  .MuiDataGrid-cell {
+    &:focus {
+      outline: none !important;
+    }
+  }
+
+  .MuiDataGrid-row {
+    &:hover {
+      background-color: rgba(88, 24, 31, 0.3) !important;
+      cursor: pointer;
+    }
+  }
+
+  .Mui-selected {
+    background-color: rgba(88, 24, 31, 1) !important;
+    color: #ffffff;
+  }
+
+  .MuiDataGrid-iconButtonContainer {
+    .MuiButtonBase-root {
+      color: #ffffff;
+    }
+  }
+
+  .MuiDataGrid-menuIcon {
+    .MuiButtonBase-root {
+      color: #ffffff;
+    }
+  }
+}

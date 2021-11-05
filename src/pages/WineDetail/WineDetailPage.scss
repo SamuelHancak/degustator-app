@@ -1,0 +1,109 @@
+h1,
+p {
+  margin: 0;
+}
+
+.card {
+  flex: 1;
+}
+
+.cardHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(88, 24, 31);
+  min-height: 20px;
+  padding: 15px;
+  color: #ffffff;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.cardTitle {
+  margin: 0;
+}
+
+.cardTitleRating {
+  font-style: italic;
+}
+
+.cardTitleRatingWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cardContent {
+  padding: 10px 20px;
+}
+
+.attributeSection {
+  display: flex;
+  width: 100%;
+  padding: 10px 0;
+  border-bottom: 2px solid #80808063;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.attributeValuesSection {
+  display: flex;
+  flex: 0.4;
+}
+
+.attributeNotesSection {
+  margin-left: 25px;
+  flex: 0.6;
+}
+
+.attributeSectionWrapper {
+  flex: 1;
+}
+
+.attributesGroupName {
+  display: inline-block;
+  width: 100%;
+  flex: 0.4;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding-bottom: 5px;
+  font-style: italic;
+}
+
+.attributesGroupNameWrapper {
+  display: flex;
+}
+
+.attributesGroupNote {
+  flex: 0.6;
+  margin-left: 25px;
+  font-weight: 400;
+  color: gray;
+}
+
+.attributeWrapper {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.attributeName {
+  font-size: 1.1rem;
+  flex: 1;
+}
+
+.attributeNotes {
+  text-overflow: ellipsis;
+  font-size: 1.1rem;
+}
+
+.attributeValue {
+  font-weight: 500;
+  font-size: 1.1rem;
+}

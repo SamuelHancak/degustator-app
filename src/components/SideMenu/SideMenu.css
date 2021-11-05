@@ -1,0 +1,94 @@
+.sideMenu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 150px;
+  height: 100%;
+  background-color: #58181f;
+  color: #ffffff;
+  -webkit-box-shadow: 5px 5px 14px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 14px 0px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  padding: 15px 35px;
+  -webkit-transform: translateX(-78%);
+          transform: translateX(-78%);
+  -webkit-transition: all;
+  transition: all;
+  -webkit-transition-duration: 200ms;
+          transition-duration: 200ms;
+}
+
+.sideMenu:hover {
+  -webkit-transform: translateX(0);
+          transform: translateX(0);
+}
+
+@media (max-width: 600px) {
+  .sideMenu {
+    width: 100%;
+    height: -webkit-max-content;
+    height: -moz-max-content;
+    height: max-content;
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+    -webkit-transform: translateY(-68%);
+            transform: translateY(-68%);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding-bottom: 0px;
+    padding-left: 0;
+  }
+}
+
+.icon {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 11px;
+}
+
+@media (max-width: 600px) {
+  .icon {
+    position: unset;
+    -webkit-box-ordinal-group: 4;
+        -ms-flex-order: 3;
+            order: 3;
+    -webkit-transform: rotate(90deg);
+            transform: rotate(90deg);
+    padding: 15px 0;
+  }
+}
+
+.footer {
+  position: absolute;
+  bottom: 40px;
+  right: 50px;
+  font-size: 12px;
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .footer {
+    position: unset;
+    padding-top: 15px;
+  }
+}
+
+.footerIcon {
+  display: block;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+/*# sourceMappingURL=SideMenu.css.map */

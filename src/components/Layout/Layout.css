@@ -1,0 +1,22 @@
+.layout {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  padding: 30px;
+  padding-top: 60px;
+  padding-left: 80px;
+}
+
+@media (max-width: 600px) {
+  .layout {
+    padding: 30px 0;
+    padding-top: 115px;
+  }
+}
+/*# sourceMappingURL=Layout.css.map */

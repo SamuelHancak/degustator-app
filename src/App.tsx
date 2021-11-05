@@ -1,25 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import { Layout } from "./components/Layout/Layout";
+import { Redirect, Route } from "react-router-dom";
+// pages
+import { ConfigurationPage } from "./pages/Configuration/ConfigurationPage";
+import { WineCreatePage } from "./pages/WineCreate/WineCreatePage";
+import { WineDetailPage } from "./pages/WineDetail/WineDetailPage";
+import { WineRatePage } from "./pages/WineRate/WineRatePage";
+import { WinesTablePage } from "./pages/WinesTable/WinesTablePage";
+// icons
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faWineGlassAlt,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+
+library.add(faWineGlassAlt, faChevronRight);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <Route exact path="/">
+        <Redirect to="/wines" />
+      </Route>
+
+      <Route exact path="/wines">
+        <WinesTablePage />
+      </Route>
+
+      <Route exact path="/wines/detail/:wineId">
+        <WineDetailPage />
+      </Route>
+
+      <Route exact path="/wines/create">
+        <WineCreatePage />
+      </Route>
+
+      <Route exact path="/wines/rate/:wineId">
+        <WineRatePage />
+      </Route>
+
+      <Route exact path="/configuration">
+        <ConfigurationPage />
+      </Route>
+    </Layout>
   );
 }
 

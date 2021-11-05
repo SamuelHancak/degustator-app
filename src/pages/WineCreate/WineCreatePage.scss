@@ -1,0 +1,34 @@
+.card {
+  flex: 1;
+}
+
+.inputWrapper {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+
+.inputInfo {
+  width: 100%;
+  flex: 0.49;
+}
+
+.inputValue {
+  width: 100%;
+  flex: 0.4;
+}
+
+.inputNote {
+  width: 100%;
+  flex: 0.6;
+  margin-left: 25px !important;
+}
+
+.submitBtn {
+  margin-bottom: 10px !important;
+}
+
+.resetBtn {
+  margin-left: 10px !important;
+  margin-bottom: 10px !important;
+}

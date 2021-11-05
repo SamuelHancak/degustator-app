@@ -7,10 +7,11 @@ import * as Yup from "yup";
 // styles
 import "./WineRatePage.css";
 import { Tabs } from "../../components/Tabs/Tabs";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 export const WineRatePage = () => {
   const history = useHistory();
+  const params = useParams<{ wineId: string }>();
 
   const validationSchema = Yup.object({
     cirost: Yup.string().required("Pole musí byť vyplnené!"),
@@ -18,10 +19,24 @@ export const WineRatePage = () => {
     intenzita: Yup.string().required("Pole musí byť vyplnené!"),
     cistota: Yup.string().required("Pole musí byť vyplnené!"),
     harmonia: Yup.string().required("Pole musí byť vyplnené!"),
+    intenzitaChut: Yup.string().required("Pole musí byť vyplnené!"),
     cistotaChut: Yup.string().required("Pole musí byť vyplnené!"),
     harmoniaChut: Yup.string().required("Pole musí byť vyplnené!"),
     perzistencia: Yup.string().required("Pole musí byť vyplnené!"),
   });
+
+  // test values just for checking the design - will be shown only in rating page of the wine with the ID 1
+  const testValues = {
+    cirost: "5",
+    farba: "3",
+    intenzita: "4",
+    cistota: "5",
+    harmonia: "2",
+    intenzitaChut: "3",
+    cistotaChut: "4",
+    harmoniaChut: "1",
+    perzistencia: "4",
+  };
 
   const initialValues = {
     cirost: "",
@@ -29,6 +44,7 @@ export const WineRatePage = () => {
     intenzita: "",
     cistota: "",
     harmonia: "",
+    intenzitaChut: "",
     cistotaChut: "",
     harmoniaChut: "",
     perzistencia: "",
@@ -49,13 +65,13 @@ export const WineRatePage = () => {
 
       <Card className="card">
         <div className="cardHeader">
-          <h1 className="cardTitle">Hodnotenie vzorky</h1>
+          <h1 className="cardTitle">{`Hodnotenie vzorky ${params.wineId}`}</h1>
         </div>
         <div className="cardContent">
           <Formik
             validateOnChange
             validationSchema={validationSchema}
-            initialValues={initialValues}
+            initialValues={params.wineId === "1" ? testValues : initialValues}
             onSubmit={(values, actions) => {
               console.log({ values, actions });
               alert(JSON.stringify(values, null, 2));
@@ -87,24 +103,29 @@ export const WineRatePage = () => {
                       error={Boolean(errors.cirost?.length)}
                     >
                       <MenuItem key={"vynikajuce"} value={5}>
-                        Vynikajúce
+                        Vynikajúce (5)
                       </MenuItem>
                       <MenuItem key={"velmi-dobre"} value={4}>
-                        Veľmi dobré
+                        Veľmi dobré (4)
                       </MenuItem>
                       <MenuItem key={"dobre"} value={3}>
-                        Dobré
+                        Dobré (3)
                       </MenuItem>
                       <MenuItem key={"uspokojive"} value={2}>
-                        Uspokojivé
+                        Uspokojivé (2)
                       </MenuItem>
                       <MenuItem key={"nedostatocne"} value={1}>
-                        Nedostatočné
+                        Nedostatočné (1)
                       </MenuItem>
                     </TextField>
 
                     <TextField
                       multiline
+                      defaultValue={
+                        params.wineId === "1"
+                          ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et mollis nunc."
+                          : ""
+                      }
                       name="cirostNotes"
                       className="inputNote"
                       id="cirostNotes"
@@ -127,19 +148,19 @@ export const WineRatePage = () => {
                       error={Boolean(errors.farba?.length)}
                     >
                       <MenuItem key={"vynikajuce"} value={5}>
-                        Vynikajúce
+                        Vynikajúce (10)
                       </MenuItem>
                       <MenuItem key={"velmi-dobre"} value={4}>
-                        Veľmi dobré
+                        Veľmi dobré (8)
                       </MenuItem>
                       <MenuItem key={"dobre"} value={3}>
-                        Dobré
+                        Dobré (6)
                       </MenuItem>
                       <MenuItem key={"uspokojive"} value={2}>
-                        Uspokojivé
+                        Uspokojivé (4)
                       </MenuItem>
                       <MenuItem key={"nedostatocne"} value={1}>
-                        Nedostatočné
+                        Nedostatočné (2)
                       </MenuItem>
                     </TextField>
 
@@ -177,19 +198,19 @@ export const WineRatePage = () => {
                       error={Boolean(errors.intenzita?.length)}
                     >
                       <MenuItem key={"vynikajuce"} value={5}>
-                        Vynikajúce
+                        Vynikajúce (8)
                       </MenuItem>
                       <MenuItem key={"velmi-dobre"} value={4}>
-                        Veľmi dobré
+                        Veľmi dobré (7)
                       </MenuItem>
                       <MenuItem key={"dobre"} value={3}>
-                        Dobré
+                        Dobré (6)
                       </MenuItem>
                       <MenuItem key={"uspokojive"} value={2}>
-                        Uspokojivé
+                        Uspokojivé (4)
                       </MenuItem>
                       <MenuItem key={"nedostatocne"} value={1}>
-                        Nedostatočné
+                        Nedostatočné (2)
                       </MenuItem>
                     </TextField>
 
@@ -217,24 +238,29 @@ export const WineRatePage = () => {
                       error={Boolean(errors.cistota?.length)}
                     >
                       <MenuItem key={"vynikajuce"} value={5}>
-                        Vynikajúce
+                        Vynikajúce (6)
                       </MenuItem>
                       <MenuItem key={"velmi-dobre"} value={4}>
-                        Veľmi dobré
+                        Veľmi dobré (5)
                       </MenuItem>
                       <MenuItem key={"dobre"} value={3}>
-                        Dobré
+                        Dobré (4)
                       </MenuItem>
                       <MenuItem key={"uspokojive"} value={2}>
-                        Uspokojivé
+                        Uspokojivé (3)
                       </MenuItem>
                       <MenuItem key={"nedostatocne"} value={1}>
-                        Nedostatočné
+                        Nedostatočné (2)
                       </MenuItem>
                     </TextField>
 
                     <TextField
                       multiline
+                      defaultValue={
+                        params.wineId === "1"
+                          ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et mollis nunc."
+                          : ""
+                      }
                       name="cistotaNotes"
                       className="inputNote"
                       id="cistotaNotes"
@@ -257,19 +283,19 @@ export const WineRatePage = () => {
                       error={Boolean(errors.harmonia?.length)}
                     >
                       <MenuItem key={"vynikajuce"} value={5}>
-                        Vynikajúce
+                        Vynikajúce (16)
                       </MenuItem>
                       <MenuItem key={"velmi-dobre"} value={4}>
-                        Veľmi dobré
+                        Veľmi dobré (14)
                       </MenuItem>
                       <MenuItem key={"dobre"} value={3}>
-                        Dobré
+                        Dobré (12)
                       </MenuItem>
                       <MenuItem key={"uspokojive"} value={2}>
-                        Uspokojivé
+                        Uspokojivé (10)
                       </MenuItem>
                       <MenuItem key={"nedostatocne"} value={1}>
-                        Nedostatočné
+                        Nedostatočné (8)
                       </MenuItem>
                     </TextField>
 
@@ -298,6 +324,53 @@ export const WineRatePage = () => {
                       select
                       required
                       className="inputValue"
+                      id="intenzitaChut"
+                      label="Intenzita"
+                      name="intenzitaChut"
+                      helperText={
+                        errors.intenzitaChut ? errors.intenzitaChut : " "
+                      }
+                      value={values.intenzitaChut}
+                      onChange={handleChange}
+                      error={Boolean(errors.intenzitaChut?.length)}
+                    >
+                      <MenuItem key={"vynikajuce"} value={5}>
+                        Vynikajúce (8)
+                      </MenuItem>
+                      <MenuItem key={"velmi-dobre"} value={4}>
+                        Veľmi dobré (7)
+                      </MenuItem>
+                      <MenuItem key={"dobre"} value={3}>
+                        Dobré (6)
+                      </MenuItem>
+                      <MenuItem key={"uspokojive"} value={2}>
+                        Uspokojivé (4)
+                      </MenuItem>
+                      <MenuItem key={"nedostatocne"} value={1}>
+                        Nedostatočné (2)
+                      </MenuItem>
+                    </TextField>
+
+                    <TextField
+                      multiline
+                      defaultValue={
+                        params.wineId === "1"
+                          ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et mollis nunc."
+                          : ""
+                      }
+                      name="intenzitaChutNotes"
+                      className="inputNote"
+                      id="intenzitaChutNotes"
+                      label="Intenzita poznámky"
+                      helperText=" "
+                    />
+                  </div>
+
+                  <div className="inputWrapper">
+                    <TextField
+                      select
+                      required
+                      className="inputValue"
                       id="cistotaChut"
                       label="Čistota"
                       name="cistotaChut"
@@ -307,23 +380,28 @@ export const WineRatePage = () => {
                       error={Boolean(errors.cistotaChut?.length)}
                     >
                       <MenuItem key={"vynikajuce"} value={5}>
-                        Vynikajúce
+                        Vynikajúce (6)
                       </MenuItem>
                       <MenuItem key={"velmi-dobre"} value={4}>
-                        Veľmi dobré
+                        Veľmi dobré (5)
                       </MenuItem>
                       <MenuItem key={"dobre"} value={3}>
-                        Dobré
+                        Dobré (4)
                       </MenuItem>
                       <MenuItem key={"uspokojive"} value={2}>
-                        Uspokojivé
+                        Uspokojivé (3)
                       </MenuItem>
                       <MenuItem key={"nedostatocne"} value={1}>
-                        Nedostatočné
+                        Nedostatočné (2)
                       </MenuItem>
                     </TextField>
 
                     <TextField
+                      defaultValue={
+                        params.wineId === "1"
+                          ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et mollis nunc."
+                          : ""
+                      }
                       multiline
                       name="cistotaChutNotes"
                       className="inputNote"
@@ -347,19 +425,19 @@ export const WineRatePage = () => {
                       error={Boolean(errors.harmoniaChut?.length)}
                     >
                       <MenuItem key={"vynikajuce"} value={5}>
-                        Vynikajúce
+                        Vynikajúce (22)
                       </MenuItem>
                       <MenuItem key={"velmi-dobre"} value={4}>
-                        Veľmi dobré
+                        Veľmi dobré (19)
                       </MenuItem>
                       <MenuItem key={"dobre"} value={3}>
-                        Dobré
+                        Dobré (16)
                       </MenuItem>
                       <MenuItem key={"uspokojive"} value={2}>
-                        Uspokojivé
+                        Uspokojivé (13)
                       </MenuItem>
                       <MenuItem key={"nedostatocne"} value={1}>
-                        Nedostatočné
+                        Nedostatočné (10)
                       </MenuItem>
                     </TextField>
 
@@ -389,19 +467,19 @@ export const WineRatePage = () => {
                       error={Boolean(errors.perzistencia?.length)}
                     >
                       <MenuItem key={"vynikajuce"} value={5}>
-                        Vynikajúce
+                        Vynikajúce (8)
                       </MenuItem>
                       <MenuItem key={"velmi-dobre"} value={4}>
-                        Veľmi dobré
+                        Veľmi dobré (7)
                       </MenuItem>
                       <MenuItem key={"dobre"} value={3}>
-                        Dobré
+                        Dobré (6)
                       </MenuItem>
                       <MenuItem key={"uspokojive"} value={2}>
-                        Uspokojivé
+                        Uspokojivé (5)
                       </MenuItem>
                       <MenuItem key={"nedostatocne"} value={1}>
-                        Nedostatočné
+                        Nedostatočné (4)
                       </MenuItem>
                     </TextField>
 

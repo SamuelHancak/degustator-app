@@ -12,37 +12,141 @@ export const ConfigurationPage = () => {
   const history = useHistory();
 
   const validationSchema = Yup.object({
-    cirost: Yup.string().required("Pole musí byť vyplnené!"),
-    farba: Yup.string().required("Pole musí byť vyplnené!"),
-    intenzita: Yup.string().required("Pole musí byť vyplnené!"),
-    cistota: Yup.string().required("Pole musí byť vyplnené!"),
-    harmonia: Yup.string().required("Pole musí byť vyplnené!"),
-    cistotaChut: Yup.string().required("Pole musí byť vyplnené!"),
-    harmoniaChut: Yup.string().required("Pole musí byť vyplnené!"),
-    perzistencia: Yup.string().required("Pole musí byť vyplnené!"),
+    //Vzhlad values
+    vzhladCirostVynikajuce: Yup.string().required("Pole musí byť vyplnené!"),
+    vzhladCirostVelmiDobre: Yup.string().required("Pole musí byť vyplnené!"),
+    vzhladCirostDobre: Yup.string().required("Pole musí byť vyplnené!"),
+    vzhladCirostUspokojive: Yup.string().required("Pole musí byť vyplnené!"),
+    vzhladCirostNedostatocne: Yup.string().required("Pole musí byť vyplnené!"),
+
+    vzhladFarbaVynikajuce: Yup.string().required("Pole musí byť vyplnené!"),
+    vzhladFarbaVelmiDobre: Yup.string().required("Pole musí byť vyplnené!"),
+    vzhladFarbaDobre: Yup.string().required("Pole musí byť vyplnené!"),
+    vzhladFarbaUspokojive: Yup.string().required("Pole musí byť vyplnené!"),
+    vzhladFarbaNedostatocne: Yup.string().required("Pole musí byť vyplnené!"),
+
+    //Vona values
+    vonaIntenzitaVynikajuce: Yup.string().required("Pole musí byť vyplnené!"),
+    vonaIntenzitaVelmiDobre: Yup.string().required("Pole musí byť vyplnené!"),
+    vonaIntenzitaDobre: Yup.string().required("Pole musí byť vyplnené!"),
+    vonaIntenzitaUspokojive: Yup.string().required("Pole musí byť vyplnené!"),
+    vonaIntenzitaNedostatocne: Yup.string().required("Pole musí byť vyplnené!"),
+
+    vonaCistotaVynikajuce: Yup.string().required("Pole musí byť vyplnené!"),
+    vonaCistotaVelmiDobre: Yup.string().required("Pole musí byť vyplnené!"),
+    vonaCistotaDobre: Yup.string().required("Pole musí byť vyplnené!"),
+    vonaCistotaUspokojive: Yup.string().required("Pole musí byť vyplnené!"),
+    vonaCistotaNedostatocne: Yup.string().required("Pole musí byť vyplnené!"),
+
+    vonaHarmoniaVynikajuce: Yup.string().required("Pole musí byť vyplnené!"),
+    vonaHarmoniaVelmiDobre: Yup.string().required("Pole musí byť vyplnené!"),
+    vonaHarmoniaDobre: Yup.string().required("Pole musí byť vyplnené!"),
+    vonaHarmoniaUspokojive: Yup.string().required("Pole musí byť vyplnené!"),
+    vonaHarmoniaNedostatocne: Yup.string().required("Pole musí byť vyplnené!"),
+
+    //Chut values
+    chutIntenzitaVynikajuce: Yup.string().required("Pole musí byť vyplnené!"),
+    chutIntenzitaVelmiDobre: Yup.string().required("Pole musí byť vyplnené!"),
+    chutIntenzitaDobre: Yup.string().required("Pole musí byť vyplnené!"),
+    chutIntenzitaUspokojive: Yup.string().required("Pole musí byť vyplnené!"),
+    chutIntenzitaNedostatocne: Yup.string().required("Pole musí byť vyplnené!"),
+
+    chutCistotaVynikajuce: Yup.string().required("Pole musí byť vyplnené!"),
+    chutCistotaVelmiDobre: Yup.string().required("Pole musí byť vyplnené!"),
+    chutCistotaDobre: Yup.string().required("Pole musí byť vyplnené!"),
+    chutCistotaUspokojive: Yup.string().required("Pole musí byť vyplnené!"),
+    chutCistotaNedostatocne: Yup.string().required("Pole musí byť vyplnené!"),
+
+    chutHarmoniaVynikajuce: Yup.string().required("Pole musí byť vyplnené!"),
+    chutHarmoniaVelmiDobre: Yup.string().required("Pole musí byť vyplnené!"),
+    chutHarmoniaDobre: Yup.string().required("Pole musí byť vyplnené!"),
+    chutHarmoniaUspokojive: Yup.string().required("Pole musí byť vyplnené!"),
+    chutHarmoniaNedostatocne: Yup.string().required("Pole musí byť vyplnené!"),
+
+    chutPerzistenciaVynikajuce: Yup.string().required(
+      "Pole musí byť vyplnené!"
+    ),
+    chutPerzistenciaVelmiDobre: Yup.string().required(
+      "Pole musí byť vyplnené!"
+    ),
+    chutPerzistenciaDobre: Yup.string().required("Pole musí byť vyplnené!"),
+    chutPerzistenciaUspokojive: Yup.string().required(
+      "Pole musí byť vyplnené!"
+    ),
+    chutPerzistenciaNedostatocne: Yup.string().required(
+      "Pole musí byť vyplnené!"
+    ),
   });
 
   const initialValues = {
-    cirost: "",
-    farba: "",
-    intenzita: "",
-    cistota: "",
-    harmonia: "",
-    cistotaChut: "",
-    harmoniaChut: "",
-    perzistencia: "",
+    //Vzhlad values
+    vzhladCirostVynikajuce: "5",
+    vzhladCirostVelmiDobre: "4",
+    vzhladCirostDobre: "3",
+    vzhladCirostUspokojive: "2",
+    vzhladCirostNedostatocne: "1",
+
+    vzhladFarbaVynikajuce: "10",
+    vzhladFarbaVelmiDobre: "8",
+    vzhladFarbaDobre: "6",
+    vzhladFarbaUspokojive: "4",
+    vzhladFarbaNedostatocne: "2",
+
+    //Vona values
+    vonaIntenzitaVynikajuce: "8",
+    vonaIntenzitaVelmiDobre: "7",
+    vonaIntenzitaDobre: "6",
+    vonaIntenzitaUspokojive: "4",
+    vonaIntenzitaNedostatocne: "2",
+
+    vonaCistotaVynikajuce: "6",
+    vonaCistotaVelmiDobre: "5",
+    vonaCistotaDobre: "4",
+    vonaCistotaUspokojive: "3",
+    vonaCistotaNedostatocne: "2",
+
+    vonaHarmoniaVynikajuce: "16",
+    vonaHarmoniaVelmiDobre: "14",
+    vonaHarmoniaDobre: "12",
+    vonaHarmoniaUspokojive: "10",
+    vonaHarmoniaNedostatocne: "8",
+
+    //Chut values
+    chutIntenzitaVynikajuce: "8",
+    chutIntenzitaVelmiDobre: "7",
+    chutIntenzitaDobre: "6",
+    chutIntenzitaUspokojive: "4",
+    chutIntenzitaNedostatocne: "2",
+
+    chutCistotaVynikajuce: "6",
+    chutCistotaVelmiDobre: "5",
+    chutCistotaDobre: "4",
+    chutCistotaUspokojive: "3",
+    chutCistotaNedostatocne: "2",
+
+    chutHarmoniaVynikajuce: "22",
+    chutHarmoniaVelmiDobre: "19",
+    chutHarmoniaDobre: "16",
+    chutHarmoniaUspokojive: "13",
+    chutHarmoniaNedostatocne: "10",
+
+    chutPerzistenciaVynikajuce: "8",
+    chutPerzistenciaVelmiDobre: "7",
+    chutPerzistenciaDobre: "6",
+    chutPerzistenciaUspokojive: "5",
+    chutPerzistenciaNedostatocne: "4",
   };
 
   return (
     <>
       <Tabs
-        activeTab={2}
+        activeTab={1}
         tabs={[
           { label: "Zoznam vín", onClick: () => history.push("/") },
-          {
-            label: "Pridať vzorku",
-            onClick: () => history.push("/wines/create"),
-          },
+          // {
+          //   label: "Pridať vzorku",
+          //   onClick: () => history.push("/wines/create"),
+          // },
           {
             label: "Konfigurácia hodnotenia",
             onClick: () => history.push("/configuration"),
@@ -77,73 +181,90 @@ export const ConfigurationPage = () => {
                     <TextField
                       required
                       className="inputValue"
-                      id="cirost"
+                      id="vzhladCirostVynikajuce"
                       label="Vynikajúce"
                       inputProps={{ min: 0 }}
-                      name="cirost"
-                      helperText={errors.cirost ? errors.cirost : " "}
-                      value={values.cirost}
+                      name="vzhladCirostVynikajuce"
+                      helperText={
+                        errors.vzhladCirostVynikajuce
+                          ? errors.vzhladCirostVynikajuce
+                          : " "
+                      }
+                      value={values.vzhladCirostVynikajuce}
                       onChange={handleChange}
-                      error={Boolean(errors.cirost?.length)}
+                      error={Boolean(errors.vzhladCirostVynikajuce?.length)}
                       type="number"
                     />
 
                     <TextField
                       required
                       className="inputValue"
-                      id="farba"
+                      id="vzhladCirostVelmiDobre"
                       label="Veľmi dobré"
                       inputProps={{ min: 0 }}
-                      name="farba"
-                      helperText={errors.farba ? errors.farba : " "}
-                      value={values.farba}
+                      name="vzhladCirostVelmiDobre"
+                      helperText={
+                        errors.vzhladCirostVelmiDobre
+                          ? errors.vzhladCirostVelmiDobre
+                          : " "
+                      }
+                      value={values.vzhladCirostVelmiDobre}
                       onChange={handleChange}
-                      error={Boolean(errors.farba?.length)}
+                      error={Boolean(errors.vzhladCirostVelmiDobre?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="intenzita"
+                      id="vzhladCirostDobre"
                       label="Dobré"
                       inputProps={{ min: 0 }}
-                      name="intenzita"
-                      helperText={errors.intenzita ? errors.intenzita : " "}
-                      value={values.intenzita}
+                      name="vzhladCirostDobre"
+                      helperText={
+                        errors.vzhladCirostDobre
+                          ? errors.vzhladCirostDobre
+                          : " "
+                      }
+                      value={values.vzhladCirostDobre}
                       onChange={handleChange}
-                      error={Boolean(errors.intenzita?.length)}
+                      error={Boolean(errors.vzhladCirostDobre?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="cistota"
+                      id="vzhladCirostUspokojive"
                       label="Uspokojivé"
                       inputProps={{ min: 0 }}
-                      name="cistota"
-                      helperText={errors.cistota ? errors.cistota : " "}
-                      value={values.cistota}
+                      name="vzhladCirostUspokojive"
+                      helperText={
+                        errors.vzhladCirostUspokojive
+                          ? errors.vzhladCirostUspokojive
+                          : " "
+                      }
+                      value={values.vzhladCirostUspokojive}
                       onChange={handleChange}
-                      error={Boolean(errors.cistota?.length)}
+                      error={Boolean(errors.vzhladCirostUspokojive?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="harmonia"
+                      id="vzhladCirostNedostatocne"
                       label="Nedostatočné"
                       inputProps={{ min: 0 }}
-                      name="harmonia"
-                      helperText={errors.harmonia ? errors.harmonia : " "}
-                      value={values.harmonia}
+                      name="vzhladCirostNedostatocne"
+                      helperText={
+                        errors.vzhladCirostNedostatocne
+                          ? errors.vzhladCirostNedostatocne
+                          : " "
+                      }
+                      value={values.vzhladCirostNedostatocne}
                       onChange={handleChange}
-                      error={Boolean(errors.harmonia?.length)}
+                      error={Boolean(errors.vzhladCirostNedostatocne?.length)}
                     />
                   </div>
 
@@ -153,73 +274,88 @@ export const ConfigurationPage = () => {
                     <TextField
                       required
                       className="inputValue"
-                      id="cirost"
+                      id="vzhladFarbaVynikajuce"
                       label="Vynikajúce"
                       inputProps={{ min: 0 }}
-                      name="cirost"
-                      helperText={errors.cirost ? errors.cirost : " "}
-                      value={values.cirost}
+                      name="vzhladFarbaVynikajuce"
+                      helperText={
+                        errors.vzhladFarbaVynikajuce
+                          ? errors.vzhladFarbaVynikajuce
+                          : " "
+                      }
+                      value={values.vzhladFarbaVynikajuce}
                       onChange={handleChange}
-                      error={Boolean(errors.cirost?.length)}
+                      error={Boolean(errors.vzhladFarbaVynikajuce?.length)}
                       type="number"
                     />
 
                     <TextField
                       required
                       className="inputValue"
-                      id="farba"
+                      id="vzhladFarbaVelmiDobre"
                       label="Veľmi dobré"
                       inputProps={{ min: 0 }}
-                      name="farba"
-                      helperText={errors.farba ? errors.farba : " "}
-                      value={values.farba}
+                      name="vzhladFarbaVelmiDobre"
+                      helperText={
+                        errors.vzhladFarbaVelmiDobre
+                          ? errors.vzhladFarbaVelmiDobre
+                          : " "
+                      }
+                      value={values.vzhladFarbaVelmiDobre}
                       onChange={handleChange}
-                      error={Boolean(errors.farba?.length)}
+                      error={Boolean(errors.vzhladFarbaVelmiDobre?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="intenzita"
+                      id="vzhladFarbaDobre"
                       label="Dobré"
                       inputProps={{ min: 0 }}
-                      name="intenzita"
-                      helperText={errors.intenzita ? errors.intenzita : " "}
-                      value={values.intenzita}
+                      name="vzhladFarbaDobre"
+                      helperText={
+                        errors.vzhladFarbaDobre ? errors.vzhladFarbaDobre : " "
+                      }
+                      value={values.vzhladFarbaDobre}
                       onChange={handleChange}
-                      error={Boolean(errors.intenzita?.length)}
+                      error={Boolean(errors.vzhladFarbaDobre?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="cistota"
+                      id="vzhladFarbaUspokojive"
                       label="Uspokojivé"
                       inputProps={{ min: 0 }}
-                      name="cistota"
-                      helperText={errors.cistota ? errors.cistota : " "}
-                      value={values.cistota}
+                      name="vzhladFarbaUspokojive"
+                      helperText={
+                        errors.vzhladFarbaUspokojive
+                          ? errors.vzhladFarbaUspokojive
+                          : " "
+                      }
+                      value={values.vzhladFarbaUspokojive}
                       onChange={handleChange}
-                      error={Boolean(errors.cistota?.length)}
+                      error={Boolean(errors.vzhladFarbaUspokojive?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="harmonia"
+                      id="vzhladFarbaNedostatocne"
                       label="Nedostatočné"
                       inputProps={{ min: 0 }}
-                      name="harmonia"
-                      helperText={errors.harmonia ? errors.harmonia : " "}
-                      value={values.harmonia}
+                      name="vzhladFarbaNedostatocne"
+                      helperText={
+                        errors.vzhladFarbaNedostatocne
+                          ? errors.vzhladFarbaNedostatocne
+                          : " "
+                      }
+                      value={values.vzhladFarbaNedostatocne}
                       onChange={handleChange}
-                      error={Boolean(errors.harmonia?.length)}
+                      error={Boolean(errors.vzhladFarbaNedostatocne?.length)}
                     />
                   </div>
 
@@ -231,73 +367,90 @@ export const ConfigurationPage = () => {
                     <TextField
                       required
                       className="inputValue"
-                      id="cirost"
+                      id="vonaIntenzitaVynikajuce"
                       label="Vynikajúce"
                       inputProps={{ min: 0 }}
-                      name="cirost"
-                      helperText={errors.cirost ? errors.cirost : " "}
-                      value={values.cirost}
+                      name="vonaIntenzitaVynikajuce"
+                      helperText={
+                        errors.vonaIntenzitaVynikajuce
+                          ? errors.vonaIntenzitaVynikajuce
+                          : " "
+                      }
+                      value={values.vonaIntenzitaVynikajuce}
                       onChange={handleChange}
-                      error={Boolean(errors.cirost?.length)}
+                      error={Boolean(errors.vonaIntenzitaVynikajuce?.length)}
                       type="number"
                     />
 
                     <TextField
                       required
                       className="inputValue"
-                      id="farba"
+                      id="vonaIntenzitaVelmiDobre"
                       label="Veľmi dobré"
                       inputProps={{ min: 0 }}
-                      name="farba"
-                      helperText={errors.farba ? errors.farba : " "}
-                      value={values.farba}
+                      name="vonaIntenzitaVelmiDobre"
+                      helperText={
+                        errors.vonaIntenzitaVelmiDobre
+                          ? errors.vonaIntenzitaVelmiDobre
+                          : " "
+                      }
+                      value={values.vonaIntenzitaVelmiDobre}
                       onChange={handleChange}
-                      error={Boolean(errors.farba?.length)}
+                      error={Boolean(errors.vonaIntenzitaVelmiDobre?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="intenzita"
+                      id="vonaIntenzitaDobre"
                       label="Dobré"
                       inputProps={{ min: 0 }}
-                      name="intenzita"
-                      helperText={errors.intenzita ? errors.intenzita : " "}
-                      value={values.intenzita}
+                      name="vonaIntenzitaDobre"
+                      helperText={
+                        errors.vonaIntenzitaDobre
+                          ? errors.vonaIntenzitaDobre
+                          : " "
+                      }
+                      value={values.vonaIntenzitaDobre}
                       onChange={handleChange}
-                      error={Boolean(errors.intenzita?.length)}
+                      error={Boolean(errors.vonaIntenzitaDobre?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="cistota"
+                      id="vonaIntenzitaUspokojive"
                       label="Uspokojivé"
                       inputProps={{ min: 0 }}
-                      name="cistota"
-                      helperText={errors.cistota ? errors.cistota : " "}
-                      value={values.cistota}
+                      name="vonaIntenzitaUspokojive"
+                      helperText={
+                        errors.vonaIntenzitaUspokojive
+                          ? errors.vonaIntenzitaUspokojive
+                          : " "
+                      }
+                      value={values.vonaIntenzitaUspokojive}
                       onChange={handleChange}
-                      error={Boolean(errors.cistota?.length)}
+                      error={Boolean(errors.vonaIntenzitaUspokojive?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="harmonia"
+                      id="vonaIntenzitaNedostatocne"
                       label="Nedostatočné"
                       inputProps={{ min: 0 }}
-                      name="harmonia"
-                      helperText={errors.harmonia ? errors.harmonia : " "}
-                      value={values.harmonia}
+                      name="vonaIntenzitaNedostatocne"
+                      helperText={
+                        errors.vonaIntenzitaNedostatocne
+                          ? errors.vonaIntenzitaNedostatocne
+                          : " "
+                      }
+                      value={values.vonaIntenzitaNedostatocne}
                       onChange={handleChange}
-                      error={Boolean(errors.harmonia?.length)}
+                      error={Boolean(errors.vonaIntenzitaNedostatocne?.length)}
                     />
                   </div>
 
@@ -307,73 +460,88 @@ export const ConfigurationPage = () => {
                     <TextField
                       required
                       className="inputValue"
-                      id="cirost"
+                      id="vonaCistotaVynikajuce"
                       label="Vynikajúce"
                       inputProps={{ min: 0 }}
-                      name="cirost"
-                      helperText={errors.cirost ? errors.cirost : " "}
-                      value={values.cirost}
+                      name="vonaCistotaVynikajuce"
+                      helperText={
+                        errors.vonaCistotaVynikajuce
+                          ? errors.vonaCistotaVynikajuce
+                          : " "
+                      }
+                      value={values.vonaCistotaVynikajuce}
                       onChange={handleChange}
-                      error={Boolean(errors.cirost?.length)}
+                      error={Boolean(errors.vonaCistotaVynikajuce?.length)}
                       type="number"
                     />
 
                     <TextField
                       required
                       className="inputValue"
-                      id="farba"
+                      id="vonaCistotaVelmiDobre"
                       label="Veľmi dobré"
                       inputProps={{ min: 0 }}
-                      name="farba"
-                      helperText={errors.farba ? errors.farba : " "}
-                      value={values.farba}
+                      name="vonaCistotaVelmiDobre"
+                      helperText={
+                        errors.vonaCistotaVelmiDobre
+                          ? errors.vonaCistotaVelmiDobre
+                          : " "
+                      }
+                      value={values.vonaCistotaVelmiDobre}
                       onChange={handleChange}
-                      error={Boolean(errors.farba?.length)}
+                      error={Boolean(errors.vonaCistotaVelmiDobre?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="intenzita"
+                      id="vonaCistotaDobre"
                       label="Dobré"
                       inputProps={{ min: 0 }}
-                      name="intenzita"
-                      helperText={errors.intenzita ? errors.intenzita : " "}
-                      value={values.intenzita}
+                      name="vonaCistotaDobre"
+                      helperText={
+                        errors.vonaCistotaDobre ? errors.vonaCistotaDobre : " "
+                      }
+                      value={values.vonaCistotaDobre}
                       onChange={handleChange}
-                      error={Boolean(errors.intenzita?.length)}
+                      error={Boolean(errors.vonaCistotaDobre?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="cistota"
+                      id="vonaCistotaUspokojive"
                       label="Uspokojivé"
                       inputProps={{ min: 0 }}
-                      name="cistota"
-                      helperText={errors.cistota ? errors.cistota : " "}
-                      value={values.cistota}
+                      name="vonaCistotaUspokojive"
+                      helperText={
+                        errors.vonaCistotaUspokojive
+                          ? errors.vonaCistotaUspokojive
+                          : " "
+                      }
+                      value={values.vonaCistotaUspokojive}
                       onChange={handleChange}
-                      error={Boolean(errors.cistota?.length)}
+                      error={Boolean(errors.vonaCistotaUspokojive?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="harmonia"
+                      id="vonaCistotaNedostatocne"
                       label="Nedostatočné"
                       inputProps={{ min: 0 }}
-                      name="harmonia"
-                      helperText={errors.harmonia ? errors.harmonia : " "}
-                      value={values.harmonia}
+                      name="vonaCistotaNedostatocne"
+                      helperText={
+                        errors.vonaCistotaNedostatocne
+                          ? errors.vonaCistotaNedostatocne
+                          : " "
+                      }
+                      value={values.vonaCistotaNedostatocne}
                       onChange={handleChange}
-                      error={Boolean(errors.harmonia?.length)}
+                      error={Boolean(errors.vonaCistotaNedostatocne?.length)}
                     />
                   </div>
 
@@ -383,151 +551,276 @@ export const ConfigurationPage = () => {
                     <TextField
                       required
                       className="inputValue"
-                      id="cirost"
+                      id="vonaHarmoniaVynikajuce"
                       label="Vynikajúce"
                       inputProps={{ min: 0 }}
-                      name="cirost"
-                      helperText={errors.cirost ? errors.cirost : " "}
-                      value={values.cirost}
+                      name="vonaHarmoniaVynikajuce"
+                      helperText={
+                        errors.vonaHarmoniaVynikajuce
+                          ? errors.vonaHarmoniaVynikajuce
+                          : " "
+                      }
+                      value={values.vonaHarmoniaVynikajuce}
                       onChange={handleChange}
-                      error={Boolean(errors.cirost?.length)}
+                      error={Boolean(errors.vonaHarmoniaVynikajuce?.length)}
                       type="number"
                     />
 
                     <TextField
                       required
                       className="inputValue"
-                      id="farba"
+                      id="vonaHarmoniaVelmiDobre"
                       label="Veľmi dobré"
                       inputProps={{ min: 0 }}
-                      name="farba"
-                      helperText={errors.farba ? errors.farba : " "}
-                      value={values.farba}
+                      name="vonaHarmoniaVelmiDobre"
+                      helperText={
+                        errors.vonaHarmoniaVelmiDobre
+                          ? errors.vonaHarmoniaVelmiDobre
+                          : " "
+                      }
+                      value={values.vonaHarmoniaVelmiDobre}
                       onChange={handleChange}
-                      error={Boolean(errors.farba?.length)}
+                      error={Boolean(errors.vonaHarmoniaVelmiDobre?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="intenzita"
+                      id="vonaHarmoniaDobre"
                       label="Dobré"
                       inputProps={{ min: 0 }}
-                      name="intenzita"
-                      helperText={errors.intenzita ? errors.intenzita : " "}
-                      value={values.intenzita}
+                      name="vonaHarmoniaDobre"
+                      helperText={
+                        errors.vonaHarmoniaDobre
+                          ? errors.vonaHarmoniaDobre
+                          : " "
+                      }
+                      value={values.vonaHarmoniaDobre}
                       onChange={handleChange}
-                      error={Boolean(errors.intenzita?.length)}
+                      error={Boolean(errors.vonaHarmoniaDobre?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="cistota"
+                      id="vonaHarmoniaUspokojive"
                       label="Uspokojivé"
                       inputProps={{ min: 0 }}
-                      name="cistota"
-                      helperText={errors.cistota ? errors.cistota : " "}
-                      value={values.cistota}
+                      name="vonaHarmoniaUspokojive"
+                      helperText={
+                        errors.vonaHarmoniaUspokojive
+                          ? errors.vonaHarmoniaUspokojive
+                          : " "
+                      }
+                      value={values.vonaHarmoniaUspokojive}
                       onChange={handleChange}
-                      error={Boolean(errors.cistota?.length)}
+                      error={Boolean(errors.vonaHarmoniaUspokojive?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="harmonia"
+                      id="vonaHarmoniaNedostatocne"
                       label="Nedostatočné"
                       inputProps={{ min: 0 }}
-                      name="harmonia"
-                      helperText={errors.harmonia ? errors.harmonia : " "}
-                      value={values.harmonia}
+                      name="vonaHarmoniaNedostatocne"
+                      helperText={
+                        errors.vonaHarmoniaNedostatocne
+                          ? errors.vonaHarmoniaNedostatocne
+                          : " "
+                      }
+                      value={values.vonaHarmoniaNedostatocne}
                       onChange={handleChange}
-                      error={Boolean(errors.harmonia?.length)}
+                      error={Boolean(errors.vonaHarmoniaNedostatocne?.length)}
                     />
                   </div>
 
                   <span className="attributeGroupHeader">Chuť</span>
 
+                  <h3 className="attributeNameHeader">Intenzita</h3>
+
+                  <div style={{ display: "flex" }}>
+                    <TextField
+                      required
+                      className="inputValue"
+                      id="chutIntenzitaVynikajuce"
+                      label="Vynikajúce"
+                      inputProps={{ min: 0 }}
+                      name="chutIntenzitaVynikajuce"
+                      helperText={
+                        errors.chutIntenzitaVynikajuce
+                          ? errors.chutIntenzitaVynikajuce
+                          : " "
+                      }
+                      value={values.chutIntenzitaVynikajuce}
+                      onChange={handleChange}
+                      error={Boolean(errors.chutIntenzitaVynikajuce?.length)}
+                      type="number"
+                    />
+
+                    <TextField
+                      required
+                      className="inputValue"
+                      id="chutIntenzitaVelmiDobre"
+                      label="Veľmi dobré"
+                      inputProps={{ min: 0 }}
+                      name="chutIntenzitaVelmiDobre"
+                      helperText={
+                        errors.chutIntenzitaVelmiDobre
+                          ? errors.chutIntenzitaVelmiDobre
+                          : " "
+                      }
+                      value={values.chutIntenzitaVelmiDobre}
+                      onChange={handleChange}
+                      error={Boolean(errors.chutIntenzitaVelmiDobre?.length)}
+                      type="number"
+                    />
+
+                    <TextField
+                      required
+                      className="inputValue"
+                      id="chutIntenzitaDobre"
+                      label="Dobré"
+                      inputProps={{ min: 0 }}
+                      name="chutIntenzitaDobre"
+                      helperText={
+                        errors.chutIntenzitaDobre
+                          ? errors.chutIntenzitaDobre
+                          : " "
+                      }
+                      value={values.chutIntenzitaDobre}
+                      onChange={handleChange}
+                      error={Boolean(errors.chutIntenzitaDobre?.length)}
+                      type="number"
+                    />
+
+                    <TextField
+                      required
+                      className="inputValue"
+                      id="chutIntenzitaUspokojive"
+                      label="Uspokojivé"
+                      inputProps={{ min: 0 }}
+                      name="chutIntenzitaUspokojive"
+                      helperText={
+                        errors.chutIntenzitaUspokojive
+                          ? errors.chutIntenzitaUspokojive
+                          : " "
+                      }
+                      value={values.chutIntenzitaUspokojive}
+                      onChange={handleChange}
+                      error={Boolean(errors.chutIntenzitaUspokojive?.length)}
+                      type="number"
+                    />
+
+                    <TextField
+                      required
+                      className="inputValue"
+                      id="chutIntenzitaNedostatocne"
+                      label="Nedostatočné"
+                      inputProps={{ min: 0 }}
+                      name="chutIntenzitaNedostatocne"
+                      helperText={
+                        errors.chutIntenzitaNedostatocne
+                          ? errors.chutIntenzitaNedostatocne
+                          : " "
+                      }
+                      value={values.chutIntenzitaNedostatocne}
+                      onChange={handleChange}
+                      error={Boolean(errors.chutIntenzitaNedostatocne?.length)}
+                    />
+                  </div>
+
                   <h3 className="attributeNameHeader">Čistota</h3>
 
                   <div style={{ display: "flex" }}>
                     <TextField
                       required
                       className="inputValue"
-                      id="cirost"
+                      id="chutCistotaVynikajuce"
                       label="Vynikajúce"
                       inputProps={{ min: 0 }}
-                      name="cirost"
-                      helperText={errors.cirost ? errors.cirost : " "}
-                      value={values.cirost}
+                      name="chutCistotaVynikajuce"
+                      helperText={
+                        errors.chutCistotaVynikajuce
+                          ? errors.chutCistotaVynikajuce
+                          : " "
+                      }
+                      value={values.chutCistotaVynikajuce}
                       onChange={handleChange}
-                      error={Boolean(errors.cirost?.length)}
+                      error={Boolean(errors.chutCistotaVynikajuce?.length)}
                       type="number"
                     />
 
                     <TextField
                       required
                       className="inputValue"
-                      id="farba"
+                      id="chutCistotaVelmiDobre"
                       label="Veľmi dobré"
                       inputProps={{ min: 0 }}
-                      name="farba"
-                      helperText={errors.farba ? errors.farba : " "}
-                      value={values.farba}
+                      name="chutCistotaVelmiDobre"
+                      helperText={
+                        errors.chutCistotaVelmiDobre
+                          ? errors.chutCistotaVelmiDobre
+                          : " "
+                      }
+                      value={values.chutCistotaVelmiDobre}
                       onChange={handleChange}
-                      error={Boolean(errors.farba?.length)}
+                      error={Boolean(errors.chutCistotaVelmiDobre?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="intenzita"
+                      id="chutCistotaDobre"
                       label="Dobré"
                       inputProps={{ min: 0 }}
-                      name="intenzita"
-                      helperText={errors.intenzita ? errors.intenzita : " "}
-                      value={values.intenzita}
+                      name="chutCistotaDobre"
+                      helperText={
+                        errors.chutCistotaDobre ? errors.chutCistotaDobre : " "
+                      }
+                      value={values.chutCistotaDobre}
                       onChange={handleChange}
-                      error={Boolean(errors.intenzita?.length)}
+                      error={Boolean(errors.chutCistotaDobre?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="cistota"
+                      id="chutCistotaUspokojive"
                       label="Uspokojivé"
                       inputProps={{ min: 0 }}
-                      name="cistota"
-                      helperText={errors.cistota ? errors.cistota : " "}
-                      value={values.cistota}
+                      name="chutCistotaUspokojive"
+                      helperText={
+                        errors.chutCistotaUspokojive
+                          ? errors.chutCistotaUspokojive
+                          : " "
+                      }
+                      value={values.chutCistotaUspokojive}
                       onChange={handleChange}
-                      error={Boolean(errors.cistota?.length)}
+                      error={Boolean(errors.chutCistotaUspokojive?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="harmonia"
+                      id="chutCistotaNedostatocne"
                       label="Nedostatočné"
                       inputProps={{ min: 0 }}
-                      name="harmonia"
-                      helperText={errors.harmonia ? errors.harmonia : " "}
-                      value={values.harmonia}
+                      name="chutCistotaNedostatocne"
+                      helperText={
+                        errors.chutCistotaNedostatocne
+                          ? errors.chutCistotaNedostatocne
+                          : " "
+                      }
+                      value={values.chutCistotaNedostatocne}
                       onChange={handleChange}
-                      error={Boolean(errors.harmonia?.length)}
+                      error={Boolean(errors.chutCistotaNedostatocne?.length)}
                     />
                   </div>
 
@@ -537,73 +830,90 @@ export const ConfigurationPage = () => {
                     <TextField
                       required
                       className="inputValue"
-                      id="cirost"
+                      id="chutHarmoniaVynikajuce"
                       label="Vynikajúce"
                       inputProps={{ min: 0 }}
-                      name="cirost"
-                      helperText={errors.cirost ? errors.cirost : " "}
-                      value={values.cirost}
+                      name="chutHarmoniaVynikajuce"
+                      helperText={
+                        errors.chutHarmoniaVynikajuce
+                          ? errors.chutHarmoniaVynikajuce
+                          : " "
+                      }
+                      value={values.chutHarmoniaVynikajuce}
                       onChange={handleChange}
-                      error={Boolean(errors.cirost?.length)}
+                      error={Boolean(errors.chutHarmoniaVynikajuce?.length)}
                       type="number"
                     />
 
                     <TextField
                       required
                       className="inputValue"
-                      id="farba"
+                      id="chutHarmoniaVelmiDobre"
                       label="Veľmi dobré"
                       inputProps={{ min: 0 }}
-                      name="farba"
-                      helperText={errors.farba ? errors.farba : " "}
-                      value={values.farba}
+                      name="chutHarmoniaVelmiDobre"
+                      helperText={
+                        errors.chutHarmoniaVelmiDobre
+                          ? errors.chutHarmoniaVelmiDobre
+                          : " "
+                      }
+                      value={values.chutHarmoniaVelmiDobre}
                       onChange={handleChange}
-                      error={Boolean(errors.farba?.length)}
+                      error={Boolean(errors.chutHarmoniaVelmiDobre?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="intenzita"
+                      id="chutHarmoniaDobre"
                       label="Dobré"
                       inputProps={{ min: 0 }}
-                      name="intenzita"
-                      helperText={errors.intenzita ? errors.intenzita : " "}
-                      value={values.intenzita}
+                      name="chutHarmoniaDobre"
+                      helperText={
+                        errors.chutHarmoniaDobre
+                          ? errors.chutHarmoniaDobre
+                          : " "
+                      }
+                      value={values.chutHarmoniaDobre}
                       onChange={handleChange}
-                      error={Boolean(errors.intenzita?.length)}
+                      error={Boolean(errors.chutHarmoniaDobre?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="cistota"
+                      id="chutHarmoniaUspokojive"
                       label="Uspokojivé"
                       inputProps={{ min: 0 }}
-                      name="cistota"
-                      helperText={errors.cistota ? errors.cistota : " "}
-                      value={values.cistota}
+                      name="chutHarmoniaUspokojive"
+                      helperText={
+                        errors.chutHarmoniaUspokojive
+                          ? errors.chutHarmoniaUspokojive
+                          : " "
+                      }
+                      value={values.chutHarmoniaUspokojive}
                       onChange={handleChange}
-                      error={Boolean(errors.cistota?.length)}
+                      error={Boolean(errors.chutHarmoniaUspokojive?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="harmonia"
+                      id="chutHarmoniaNedostatocne"
                       label="Nedostatočné"
                       inputProps={{ min: 0 }}
-                      name="harmonia"
-                      helperText={errors.harmonia ? errors.harmonia : " "}
-                      value={values.harmonia}
+                      name="chutHarmoniaNedostatocne"
+                      helperText={
+                        errors.chutHarmoniaNedostatocne
+                          ? errors.chutHarmoniaNedostatocne
+                          : " "
+                      }
+                      value={values.chutHarmoniaNedostatocne}
                       onChange={handleChange}
-                      error={Boolean(errors.harmonia?.length)}
+                      error={Boolean(errors.chutHarmoniaNedostatocne?.length)}
                     />
                   </div>
 
@@ -613,73 +923,92 @@ export const ConfigurationPage = () => {
                     <TextField
                       required
                       className="inputValue"
-                      id="cirost"
+                      id="chutPerzistenciaVynikajuce"
                       label="Vynikajúce"
                       inputProps={{ min: 0 }}
-                      name="cirost"
-                      helperText={errors.cirost ? errors.cirost : " "}
-                      value={values.cirost}
+                      name="chutPerzistenciaVynikajuce"
+                      helperText={
+                        errors.chutPerzistenciaVynikajuce
+                          ? errors.chutPerzistenciaVynikajuce
+                          : " "
+                      }
+                      value={values.chutPerzistenciaVynikajuce}
                       onChange={handleChange}
-                      error={Boolean(errors.cirost?.length)}
+                      error={Boolean(errors.chutPerzistenciaVynikajuce?.length)}
                       type="number"
                     />
 
                     <TextField
                       required
                       className="inputValue"
-                      id="farba"
+                      id="chutPerzistenciaVelmiDobre"
                       label="Veľmi dobré"
                       inputProps={{ min: 0 }}
-                      name="farba"
-                      helperText={errors.farba ? errors.farba : " "}
-                      value={values.farba}
+                      name="chutPerzistenciaVelmiDobre"
+                      helperText={
+                        errors.chutPerzistenciaVelmiDobre
+                          ? errors.chutPerzistenciaVelmiDobre
+                          : " "
+                      }
+                      value={values.chutPerzistenciaVelmiDobre}
                       onChange={handleChange}
-                      error={Boolean(errors.farba?.length)}
+                      error={Boolean(errors.chutPerzistenciaVelmiDobre?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="intenzita"
+                      id="chutPerzistenciaDobre"
                       label="Dobré"
                       inputProps={{ min: 0 }}
-                      name="intenzita"
-                      helperText={errors.intenzita ? errors.intenzita : " "}
-                      value={values.intenzita}
+                      name="chutPerzistenciaDobre"
+                      helperText={
+                        errors.chutPerzistenciaDobre
+                          ? errors.chutPerzistenciaDobre
+                          : " "
+                      }
+                      value={values.chutPerzistenciaDobre}
                       onChange={handleChange}
-                      error={Boolean(errors.intenzita?.length)}
+                      error={Boolean(errors.chutPerzistenciaDobre?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="cistota"
+                      id="chutPerzistenciaUspokojive"
                       label="Uspokojivé"
                       inputProps={{ min: 0 }}
-                      name="cistota"
-                      helperText={errors.cistota ? errors.cistota : " "}
-                      value={values.cistota}
+                      name="chutPerzistenciaUspokojive"
+                      helperText={
+                        errors.chutPerzistenciaUspokojive
+                          ? errors.chutPerzistenciaUspokojive
+                          : " "
+                      }
+                      value={values.chutPerzistenciaUspokojive}
                       onChange={handleChange}
-                      error={Boolean(errors.cistota?.length)}
+                      error={Boolean(errors.chutPerzistenciaUspokojive?.length)}
                       type="number"
                     />
 
                     <TextField
-                      select
                       required
                       className="inputValue"
-                      id="harmonia"
+                      id="chutPerzistenciaNedostatocne"
                       label="Nedostatočné"
                       inputProps={{ min: 0 }}
-                      name="harmonia"
-                      helperText={errors.harmonia ? errors.harmonia : " "}
-                      value={values.harmonia}
+                      name="chutPerzistenciaNedostatocne"
+                      helperText={
+                        errors.chutPerzistenciaNedostatocne
+                          ? errors.chutPerzistenciaNedostatocne
+                          : " "
+                      }
+                      value={values.chutPerzistenciaNedostatocne}
                       onChange={handleChange}
-                      error={Boolean(errors.harmonia?.length)}
+                      error={Boolean(
+                        errors.chutPerzistenciaNedostatocne?.length
+                      )}
                     />
                   </div>
                 </>

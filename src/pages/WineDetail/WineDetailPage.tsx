@@ -59,8 +59,6 @@ export const WineDetailPage = () => {
   const history = useHistory();
   const params = useParams<{ wineId: string }>();
 
-  console.log(window.innerWidth);
-
   return (
     <>
       <Tabs
@@ -84,7 +82,7 @@ export const WineDetailPage = () => {
 
       <Card className="card">
         <div className="cardHeader">
-          <h1 className="cardTitle">Name of the wine</h1>
+          <h1 className="cardTitle">{`Name of the wine ${params.wineId}`}</h1>
 
           <div className="cardTitleRatingWrapper">
             <p className="cardTitleRating">celkové hodnotenie</p>

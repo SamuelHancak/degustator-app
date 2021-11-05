@@ -912,10 +912,10 @@ export const WinesTablePage = () => {
         activeTab={0}
         tabs={[
           { label: "Zoznam vín", onClick: () => history.push("/") },
-          {
-            label: "Pridať vzorku",
-            onClick: () => history.push("/wines/create"),
-          },
+          // {
+          //   label: "Pridať vzorku",
+          //   onClick: () => history.push("/wines/create"),
+          // },
           {
             label: "Konfigurácia hodnotenia",
             onClick: () => history.push("/configuration"),

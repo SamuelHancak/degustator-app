@@ -1,14 +1,15 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import { useHistory } from "react-router-dom";
 //styles
 import "./WinesTablePage.css";
 import { Tabs } from "../../components/Tabs/Tabs";
 import { Button } from "@mui/material";
+import { LoggedInUserContext } from "../../App";
 
-const BOTTOM_PADDING = 60; // value computed by sum of paddingTop and paddingBottom of `Layout`
+export const BOTTOM_PADDING = 60; // value computed by sum of paddingTop and paddingBottom of `Layout`
 const HEADER_HEIGHT = 56;
-const ROW_HEIGHT = 52;
+export const ROW_HEIGHT = 52;
 const TABS_HEIGHT = window.innerWidth < 600 ? 70 : 15;
 
 // Test data
@@ -861,6 +862,7 @@ const columns: GridColDef[] = [
 ];
 
 export const WinesTablePage = () => {
+  const loggedUser = useContext(LoggedInUserContext);
   const history = useHistory();
   const screenHeight = window.innerHeight - BOTTOM_PADDING;
   const rowCount = rows.reduce((val) => {
@@ -906,22 +908,18 @@ export const WinesTablePage = () => {
     }
   );
 
+  const tabs = [{ label: "Zoznam vín", onClick: () => history.push("/") }];
+
+  if (loggedUser.loggedInUser?.email !== "hodnotitel@mail.com") {
+    tabs.push({
+      label: "Pridať vzorku",
+      onClick: () => history.push("/wines/create"),
+    });
+  }
+
   return (
     <>
-      <Tabs
-        activeTab={0}
-        tabs={[
-          { label: "Zoznam vín", onClick: () => history.push("/") },
-          // {
-          //   label: "Pridať vzorku",
-          //   onClick: () => history.push("/wines/create"),
-          // },
-          {
-            label: "Konfigurácia hodnotenia",
-            onClick: () => history.push("/configuration"),
-          },
-        ]}
-      />
+      <Tabs activeTab={0} tabs={tabs} />
 
       <div style={{ height: tableHeight, width: "100%" }}>
         <DataGrid

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, TextField } from "@mui/material";
 import { Card } from "../../components/Card/Card";
 import MenuItem from "@mui/material/MenuItem";
@@ -8,8 +8,10 @@ import * as Yup from "yup";
 import "./WineRatePage.css";
 import { Tabs } from "../../components/Tabs/Tabs";
 import { useHistory, useParams } from "react-router-dom";
+import { LoggedInUserContext } from "../../App";
 
 export const WineRatePage = () => {
+  const loggedUser = useContext(LoggedInUserContext);
   const history = useHistory();
   const params = useParams<{ wineId: string }>();
 
@@ -50,18 +52,18 @@ export const WineRatePage = () => {
     perzistencia: "",
   };
 
+  const tabs = [{ label: "Zoznam vín", onClick: () => history.push("/") }];
+
+  if (loggedUser.loggedInUser?.email !== "hodnotitel@mail.com") {
+    tabs.push({
+      label: "Pridať vzorku",
+      onClick: () => history.push("/wines/create"),
+    });
+  }
+
   return (
     <>
-      <Tabs
-        activeTab={false}
-        tabs={[
-          { label: "Zoznam vín", onClick: () => history.push("/") },
-          {
-            label: "Pridať vzorku",
-            onClick: () => history.push("/wines/create"),
-          },
-        ]}
-      />
+      <Tabs activeTab={false} tabs={tabs} />
 
       <Card className="card">
         <div className="cardHeader">

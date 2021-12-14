@@ -140,16 +140,23 @@ export const ConfigurationPage = () => {
   return (
     <>
       <Tabs
-        activeTab={1}
+        activeTab={0}
         tabs={[
-          { label: "Zoznam vín", onClick: () => history.push("/") },
-          // {
-          //   label: "Pridať vzorku",
-          //   onClick: () => history.push("/wines/create"),
-          // },
           {
             label: "Konfigurácia hodnotenia",
             onClick: () => history.push("/configuration"),
+          },
+          {
+            label: "Konfigurácia vystavovateľa",
+            onClick: () => history.push("/configuration/vystavovatel"),
+          },
+          {
+            label: "Konfigurácia hodnotiteľa",
+            onClick: () => history.push("/configuration/hodnotitel"),
+          },
+          {
+            label: "Konfigurácia komise",
+            onClick: () => history.push("/configuration/komisia"),
           },
         ]}
       />

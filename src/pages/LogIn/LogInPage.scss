@@ -1,0 +1,50 @@
+.loginlLayout {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(88, 24, 31);
+  height: 100vh;
+  width: 100%;
+  z-index: 1000000;
+}
+
+.loginCard {
+  padding: 20px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+}
+
+.loginIconLeft {
+  color: #ffffff;
+  transform: rotate(45deg);
+  z-index: 0;
+}
+
+.loginIconRight {
+  color: #ffffff;
+  transform: rotate(-45deg);
+  z-index: 0;
+}
+
+.loginIconBottomRight {
+  color: #ffffff;
+  transform: rotate(135deg);
+  z-index: 0;
+}
+
+.loginIconBottomLeft {
+  color: #ffffff;
+  transform: rotate(-135deg);
+  z-index: 0;
+}
+
+.loginName {
+  text-align: center;
+  margin-bottom: 10px;
+  color: aqua;
+}

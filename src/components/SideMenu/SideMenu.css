@@ -10,17 +10,67 @@
   box-shadow: 5px 5px 14px 0px rgba(0, 0, 0, 0.5);
   z-index: 100;
   padding: 15px 35px;
-  -webkit-transform: translateX(-78%);
-          transform: translateX(-78%);
+  -webkit-transform: translateX(-83%);
+          transform: translateX(-83%);
   -webkit-transition: all;
   transition: all;
   -webkit-transition-duration: 200ms;
           transition-duration: 200ms;
+  padding-right: 70px;
 }
 
 .sideMenu:hover {
   -webkit-transform: translateX(0);
           transform: translateX(0);
+}
+
+.sideMenu .sideMenuItemWrapper {
+  margin-top: 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.sideMenu .sideMenuItemsWrapper {
+  height: calc(100% - 115px);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.sideMenu .sideMenuItem {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  background-color: #ffffff;
+  color: #58181f;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.sideMenu .sideMenuItemReverted {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
 }
 
 @media (max-width: 600px) {
@@ -31,8 +81,8 @@
     height: max-content;
     -webkit-transform: translateX(0);
             transform: translateX(0);
-    -webkit-transform: translateY(-68%);
-            transform: translateY(-68%);
+    -webkit-transform: translateY(-85%);
+            transform: translateY(-85%);
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -73,14 +123,16 @@
 .footer {
   position: absolute;
   bottom: 40px;
-  right: 50px;
+  right: 50%;
+  -webkit-transform: translate(50%, 0);
+          transform: translate(50%, 0);
   font-size: 12px;
   font-style: italic;
+  min-width: 140px;
 }
 
 @media (max-width: 600px) {
   .footer {
-    position: unset;
     padding-top: 15px;
   }
 }

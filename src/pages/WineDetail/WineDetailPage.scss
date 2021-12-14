@@ -107,3 +107,20 @@ p {
   font-weight: 500;
   font-size: 1.1rem;
 }
+
+.twoColumns {
+  display: flex;
+  gap: 20px;
+
+  .firstColumn {
+  }
+
+  .secondColumn {
+  }
+}
+
+.firstColTable {
+  .MuiDataGrid-root {
+    border-radius: 0px !important;
+  }
+}

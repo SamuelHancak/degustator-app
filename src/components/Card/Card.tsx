@@ -5,11 +5,12 @@ import "./Card.css";
 interface ICardProps {
   children: any;
   className?: string;
+  style?: any;
 }
 
-export const Card = ({ children, className }: ICardProps) => {
+export const Card = ({ children, className, style }: ICardProps) => {
   return (
-    <CardDefault className={className}>
+    <CardDefault style={style} className={className}>
       <CardContent>{children}</CardContent>
     </CardDefault>
   );

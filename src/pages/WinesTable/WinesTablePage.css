@@ -33,7 +33,7 @@
 }
 
 .tableGrid .Mui-selected {
-  background-color: #58181f !important;
+  background-color: rgba(88, 24, 31, 0.3) !important;
   color: #ffffff;
 }
 

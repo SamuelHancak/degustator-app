@@ -1,0 +1,70 @@
+.loginlLayout {
+  position: fixed;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #58181f;
+  height: 100vh;
+  width: 100%;
+  z-index: 1000000;
+}
+
+.loginCard {
+  padding: 20px 50px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: relative;
+  z-index: 10;
+}
+
+.loginIconLeft {
+  color: #ffffff;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  z-index: 0;
+}
+
+.loginIconRight {
+  color: #ffffff;
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+  z-index: 0;
+}
+
+.loginIconBottomRight {
+  color: #ffffff;
+  -webkit-transform: rotate(135deg);
+          transform: rotate(135deg);
+  z-index: 0;
+}
+
+.loginIconBottomLeft {
+  color: #ffffff;
+  -webkit-transform: rotate(-135deg);
+          transform: rotate(-135deg);
+  z-index: 0;
+}
+
+.loginName {
+  text-align: center;
+  margin-bottom: 10px;
+  color: aqua;
+}
+/*# sourceMappingURL=LogInPage.css.map */

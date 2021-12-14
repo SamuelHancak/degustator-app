@@ -152,4 +152,15 @@ p {
   font-weight: 500;
   font-size: 1.1rem;
 }
+
+.twoColumns {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 20px;
+}
+
+.firstColTable .MuiDataGrid-root {
+  border-radius: 0px !important;
+}
 /*# sourceMappingURL=WineDetailPage.css.map */

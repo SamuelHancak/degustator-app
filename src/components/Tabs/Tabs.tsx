@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Tab, Tabs as TabsImport } from "@mui/material";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // styles
 import "./Tabs.css";
 

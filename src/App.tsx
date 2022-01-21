@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import "./App.css";
 import { Layout } from "./components/Layout/Layout";
 import { Redirect, Route } from "react-router-dom";
@@ -13,6 +13,8 @@ import { WineCreatePage } from "./pages/WineCreate/WineCreatePage";
 import { WineDetailPage } from "./pages/WineDetail/WineDetailPage";
 import { WineRatePage } from "./pages/WineRate/WineRatePage";
 import { WinesTablePage } from "./pages/WinesTable/WinesTablePage";
+// firebase
+import { auth } from "./firebase";
 
 // icons
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -31,20 +33,52 @@ export type LoggedInUserType = {
 export const LoggedInUserContext = createContext<{
   loggedInUser: LoggedInUserType | null | undefined;
   setLoggedInUser: (data: LoggedInUserType | null) => void;
+  signUp: (data: LoggedInUserType) => void;
+  logIn: (data: LoggedInUserType) => void;
+  logOut: () => void;
 }>({
   loggedInUser: null,
   setLoggedInUser: () => {
     // do nothing
   },
+  signUp: () => {
+    // do nothing
+  },
+  logIn: () => {
+    // do nothing
+  },
+  logOut: () => {
+    // do nothing
+  },
 });
 
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState<
-    LoggedInUserType | null | undefined
-  >({ email: "admin@mail.com", password: "ss" }); //TODO: update default value to null
+  const [loggedInUser, setLoggedInUser] = useState<any>(null);
+
+  const signUp = ({ email, password }: LoggedInUserType) => {
+    return auth.createUserWithEmailAndPassword(email, password);
+  };
+
+  const logIn = ({ email, password }: LoggedInUserType) => {
+    return auth.signInWithEmailAndPassword(email, password);
+  };
+
+  const logOut = () => {
+    return auth.signOut();
+  };
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setLoggedInUser(user);
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
-    <LoggedInUserContext.Provider value={{ loggedInUser, setLoggedInUser }}>
+    <LoggedInUserContext.Provider
+      value={{ loggedInUser, setLoggedInUser, signUp, logIn, logOut }}
+    >
       <Route exact path="/log-in">
         <LogInPage />
       </Route>

@@ -7,6 +7,7 @@ import { LoggedInUserContext } from "../../App";
 
 export const SideMenu = () => {
   const loggedUser = useContext(LoggedInUserContext);
+  const history = useHistory();
 
   return (
     <div className="sideMenu">
@@ -34,7 +35,14 @@ export const SideMenu = () => {
         </div>
 
         <div>
-          <SideMenuItem revertedColors title="Odhlásiť sa" url="/log-in" />
+          <SideMenuItem
+            revertedColors
+            title="Odhlásiť sa"
+            onClick={() => {
+              loggedUser.logOut();
+              history.push("/log-in");
+            }}
+          />
         </div>
       </div>
 
@@ -53,20 +61,24 @@ export const SideMenu = () => {
 interface ISideMenuItemProps {
   revertedColors?: boolean;
   title: string;
-  url: string;
+  url?: string;
+  onClick?: () => void;
 }
 
 const SideMenuItem = ({
   revertedColors = false,
   title,
   url,
+  onClick,
 }: ISideMenuItemProps) => {
   const history = useHistory();
 
   return (
     <div
       className={revertedColors ? "sideMenuItemReverted" : "sideMenuItem"}
-      onClick={() => history.push(`${url}`)}
+      onClick={() => {
+        url ? history.push(`${url}`) : onClick?.();
+      }}
     >
       {title}
     </div>

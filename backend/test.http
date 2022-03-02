@@ -1,0 +1,10 @@
+POST http://localhost:4000/wines/create
+Content-Type: application/json
+
+{
+    "komisia": "Komisia_Post",
+    "vzorka": 10,
+    "rocnik": 10,
+    "kategoria": "Kategoria_Post",
+    "vystavovatel": "Vystavovatel_Post"
+}

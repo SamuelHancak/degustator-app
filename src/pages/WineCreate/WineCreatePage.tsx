@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import "./WineCreatePage.css";
 import { Tabs } from "../../components/Tabs/Tabs";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 export const WineCreatePage = () => {
   const history = useHistory();
@@ -29,6 +30,10 @@ export const WineCreatePage = () => {
     rocnik: "",
     kategoria: "",
     vystavovatel: "",
+  };
+
+  const handleSubmit = (values: any) => {
+    axios.post("http://localhost:4000/wines/create", values);
   };
 
   return (
@@ -54,8 +59,7 @@ export const WineCreatePage = () => {
             validationSchema={validationSchema}
             initialValues={initialValues}
             onSubmit={(values, actions) => {
-              console.log({ values, actions });
-              alert(JSON.stringify(values, null, 2));
+              handleSubmit(values);
               actions.setSubmitting(false);
             }}
           >

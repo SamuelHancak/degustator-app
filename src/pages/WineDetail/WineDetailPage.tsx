@@ -1,61 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Card } from "../../components/Card/Card";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 // styles
 import "./WineDetailPage.css";
 import { Tabs } from "../../components/Tabs/Tabs";
 import { LoggedInUserContext } from "../../App";
 import { TextField, MenuItem } from "@mui/material";
-
-// testing data
-const attributesVzhlad: IAttributeProps[] = [
-  {
-    name: "Čírosť",
-    value: 5,
-    notes:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-  },
-  {
-    name: "Farba",
-    value: 1,
-    notes:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-  },
-];
-
-const attributesVona: IAttributeProps[] = [
-  {
-    name: "Intenzita",
-    value: 5,
-  },
-  {
-    name: "Čistota",
-    value: 1,
-    notes:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.",
-  },
-  {
-    name: "Harmónia",
-    value: 1,
-  },
-];
-
-const attributesChut: IAttributeProps[] = [
-  {
-    name: "Čistota",
-    value: 1,
-  },
-  {
-    name: "Harmónia",
-    value: 1,
-    notes:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-  },
-  {
-    name: "Perzistencia",
-    value: 5,
-  },
-];
+import axios from "axios";
 
 // let rows: GridRowsProp = [
 //   {
@@ -129,25 +80,16 @@ const attributesChut: IAttributeProps[] = [
 //   },
 // ];
 
+let attributesVzhlad: IAttributeProps[] = [];
+let attributesVona: IAttributeProps[] = [];
+let attributesChut: IAttributeProps[] = [];
+
 export const WineDetailPage = () => {
   const loggedUser = useContext(LoggedInUserContext);
   const history = useHistory();
-  // const params = useParams<{ wineId: string }>();
-  // const screenHeight = window.innerHeight - BOTTOM_PADDING;
-  // const [hodnotenieVal, setHodnotenieVal] = useState<any>("celkove");
-
-  // const rowsFiltered = useMemo(() => {
-  //   switch (loggedUser.loggedInUser?.email) {
-  //     case "hodnotitel@mail.com":
-  //       return rows.filter((i) => i.name === "User Hodnotiteľ 1");
-  //     case "prezident@mail.com":
-  //       return rows.filter((i) => i.name !== "User Admin");
-  //     case "predseda@mail.com":
-  //       return rows.filter((i) => i.komisia === "Komisia 3");
-  //     default:
-  //       return rows;
-  //   }
-  // }, [loggedUser.loggedInUser?.email]);
+  const params = useParams<{ wineId: string }>();
+  const [defaultValues, setDefaultValues] = useState<any>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [activeRow, setActiveRow] = useState<string>("hodnotitel-1");
 
@@ -163,15 +105,6 @@ export const WineDetailPage = () => {
     }
   }, [loggedUser.loggedInUser?.email]);
 
-  // const rowCount = rowsFiltered.reduce((val) => {
-  //   return val + 1;
-  // }, 0);
-
-  // const tableHeight =
-  //   (rowCount + 1.5) * ROW_HEIGHT > screenHeight
-  //     ? screenHeight - 30
-  //     : (rowCount + 1.5) * ROW_HEIGHT;
-
   const tabs = [{ label: "Zoznam vín", onClick: () => history.push("/") }];
 
   if (loggedUser.loggedInUser?.email !== "hodnotitel@mail.com") {
@@ -182,119 +115,191 @@ export const WineDetailPage = () => {
       },
       {
         label: "Upraviť hodnotenie",
-        onClick: () => history.push(`/wines/rate/${activeRow}`), //TODO
+        onClick: () => history.push(`/wines/rate/${params.wineId}`),
       },
       {
         label: "Odstránť vzorku",
-        onClick: () => history.push("/"), //TODO
+        onClick: () => {
+          handleDeleteRating();
+          handleDeleteDetail();
+          history.push("/");
+        },
       }
     );
+  }
+
+  const handleDeleteRating = () => {
+    axios
+      .post(`http://localhost:4000/wines/wines/rating/delete/${params.wineId}`)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleDeleteDetail = () => {
+    axios
+      .post(`http://localhost:4000/wines/wines/delete/${params.wineId}`)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:4000/wines/wines/rating/${params.wineId}`)
+      .then((response) => {
+        if (!!response.data) {
+          setDefaultValues(response.data);
+          console.log(response.data);
+          // setIsRated(true);
+        }
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  // testing data
+  if (!isLoading) {
+    attributesVzhlad = [
+      {
+        name: "Čírosť",
+        value: defaultValues?.cirost ?? "N/A",
+        notes: defaultValues?.cirostNotes ?? "N/A",
+      },
+      {
+        name: "Farba",
+        value: defaultValues?.farba ?? "N/A",
+        notes: defaultValues?.farbaNotes ?? "N/A",
+      },
+    ];
+
+    attributesVona = [
+      {
+        name: "Intenzita",
+        value: defaultValues?.intenzita ?? "N/A",
+        notes: defaultValues?.intenzitaNotes ?? "N/A",
+      },
+      {
+        name: "Čistota",
+        value: defaultValues?.cistota ?? "N/A",
+        notes: defaultValues?.cistotaNotes ?? "N/A",
+      },
+      {
+        name: "Harmónia",
+        value: defaultValues?.harmonia ?? "N/A",
+        notes: defaultValues?.harmoniaNotes ?? "N/A",
+      },
+    ];
+
+    attributesChut = [
+      {
+        name: "Intenzita",
+        value: defaultValues?.intenzitaChut ?? "N/A",
+        notes: defaultValues?.intenzitaChutNotes ?? "N/A",
+      },
+      {
+        name: "Čistota",
+        value: defaultValues?.cistotaChut ?? "N/A",
+        notes: defaultValues?.cistotaChutNotes ?? "N/A",
+      },
+      {
+        name: "Harmónia",
+        value: defaultValues?.harmoniaChut ?? "N/A",
+        notes: defaultValues?.harmoniaChutNotes ?? "N/A",
+      },
+      {
+        name: "Perzistencia",
+        value: defaultValues?.perzistencia ?? "N/A",
+        notes: defaultValues?.perzistenciaNotes ?? "N/A",
+      },
+    ];
   }
 
   return (
     <>
       <Tabs activeTab={false} tabs={tabs} />
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          columnGap: "20px",
-        }}
-      >
-        {/* <Card className="card firstColumn" style={{ maxHeight: tableHeight }}>
-          <div className="cardHeader">
-            <h1 className="cardTitle">Zoznam hodnotitelov</h1>
-          </div>
+      {!isLoading && (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            columnGap: "20px",
+            flex: "1 1 auto",
+          }}
+        >
+          <Card className="card" style={{ marginBottom: "15px" }}>
+            <div className="cardHeader">
+              <h1 className="cardTitle">Vyberte hodnotiteľa</h1>
+            </div>
 
-          <div style={{ height: tableHeight - 25, width: "100%" }}>
-            <DataGrid
-              // disableVirtualization //TODO: check with larger data
-              className="tableGrid firstColTable"
-              style={{ boxShadow: "none" }}
-              hideFooter
-              headerHeight={0}
-              rows={rowsFiltered}
-              columns={columns}
-              onCellClick={undefined}
-              onRowClick={({ id }) => {
-                setActiveRow(id);
-                history.push(`/wines/detail/${id}`);
-              }}
-              selectionModel={activeRow}
-            />
-          </div>
-        </Card> */}
-
-        <Card className="card" style={{ marginBottom: "15px" }}>
-          <div className="cardHeader">
-            <h1 className="cardTitle">Vyberte hodnotiteľa</h1>
-          </div>
-
-          <div className="cardContent">
-            <div
-              className="inputWrapper"
-              style={{ width: "100%", display: "unset" }}
-            >
-              <TextField
-                select
-                required
-                className="inputInfo"
-                id="hodnotitel"
-                label="Hodnotiteľ"
-                name="hodnotitel"
-                defaultValue="10"
-                onChange={(e) => setActiveRow(e.target.value)}
+            <div className="cardContent">
+              <div
+                className="inputWrapper"
+                style={{ width: "100%", display: "unset" }}
               >
-                {loggedUser.loggedInUser?.email === "admin@mail.com" && (
-                  <MenuItem key={"admin"} value={"10"}>
-                    Admin
+                <TextField
+                  select
+                  required
+                  className="inputInfo"
+                  id="hodnotitel"
+                  label="Hodnotiteľ"
+                  name="hodnotitel"
+                  defaultValue="7"
+                  onChange={(e) => setActiveRow(e.target.value)}
+                >
+                  {loggedUser.loggedInUser?.email === "admin@mail.com" && (
+                    <MenuItem key={"admin"} value={"10"}>
+                      Admin
+                    </MenuItem>
+                  )}
+                  {loggedUser.loggedInUser?.email !== "predseda@mail.com" && (
+                    <MenuItem key={"prezident"} value={"12"}>
+                      Prezident výstavy
+                    </MenuItem>
+                  )}
+                  {loggedUser.loggedInUser?.email !== "hodnotitel@mail.com" && (
+                    <MenuItem key={"predseda"} value={"8"}>
+                      Predseda komisie
+                    </MenuItem>
+                  )}
+                  <MenuItem key={"hodnotitel-1"} value={"11"}>
+                    Hodnotiteľ 1
                   </MenuItem>
-                )}
-                {loggedUser.loggedInUser?.email !== "predseda@mail.com" && (
-                  <MenuItem key={"prezident"} value={"12"}>
-                    Prezident výstavy
+                  <MenuItem key={"hodnotitel-2"} value={"13"}>
+                    Hodnotiteľ 2
                   </MenuItem>
-                )}
-                {loggedUser.loggedInUser?.email !== "hodnotitel@mail.com" && (
-                  <MenuItem key={"predseda"} value={"8"}>
-                    Predseda komisie
+                  <MenuItem key={"hodnotitel-3"} value={"14"}>
+                    Hodnotiteľ 3
                   </MenuItem>
-                )}
-                <MenuItem key={"hodnotitel-1"} value={"11"}>
-                  Hodnotiteľ 1
-                </MenuItem>
-                <MenuItem key={"hodnotitel-2"} value={"13"}>
-                  Hodnotiteľ 2
-                </MenuItem>
-                <MenuItem key={"hodnotitel-3"} value={"14"}>
-                  Hodnotiteľ 3
-                </MenuItem>
-                <MenuItem key={"hodnotitel-4"} value={"7"}>
-                  Hodnotiteľ 4
-                </MenuItem>
-              </TextField>
+                  <MenuItem key={"hodnotitel-4"} value={"7"}>
+                    Hodnotiteľ 4
+                  </MenuItem>
+                </TextField>
+              </div>
             </div>
-          </div>
-        </Card>
+          </Card>
 
-        <Card className="card">
-          <div className="cardHeader">
-            <h1 className="cardTitle">Name of the wine</h1>
+          <Card className="card">
+            <div className="cardHeader">
+              <h1 className="cardTitle">{params.wineId}</h1>
 
-            <div className="cardTitleRatingWrapper">
-              <p className="cardTitleRating">celkové hodnotenie</p>
+              <div className="cardTitleRatingWrapper">
+                <p className="cardTitleRating">celkové hodnotenie</p>
 
-              <h1 className="cardTitleRating">{activeRow}</h1>
+                <h1 className="cardTitleRating">{activeRow}</h1>
+              </div>
             </div>
-          </div>
-          <div className="cardContent">
-            <AttributesSection name="Vzhľad" attributes={attributesVzhlad} />
-            <AttributesSection name="Vôňa" attributes={attributesVona} />
-            <AttributesSection name="Chuť" attributes={attributesChut} />
-          </div>
-        </Card>
-      </div>
+            <div className="cardContent">
+              <AttributesSection name="Vzhľad" attributes={attributesVzhlad} />
+              <AttributesSection name="Vôňa" attributes={attributesVona} />
+              <AttributesSection name="Chuť" attributes={attributesChut} />
+            </div>
+          </Card>
+        </div>
+      )}
     </>
   );
 };

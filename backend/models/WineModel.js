@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
-const wineCreateTemplate = new mongoose.Schema({
+const wineTemplate = new mongoose.Schema({
   komisia: {
     type: String,
     required: true,
   },
   vzorka: {
-    type: Number,
+    type: String,
     required: true,
   },
   rocnik: {
@@ -21,10 +21,10 @@ const wineCreateTemplate = new mongoose.Schema({
     type: String,
     required: true,
   },
-  date: {
+  created_at: {
     type: Date,
     default: Date.now,
   },
 });
 
-module.exports = mongoose.model("test_create_vzorka", wineCreateTemplate);
+module.exports = mongoose.model("vzorka", wineTemplate);

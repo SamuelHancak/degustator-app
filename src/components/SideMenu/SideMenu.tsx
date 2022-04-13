@@ -27,9 +27,11 @@ export const SideMenu = () => {
             <SideMenuItem title="Pridať vzorku" url="/wines/create" />
           )}
 
-          {loggedUser.loggedInUser?.email === "admin@mail.com" && (
+          {/* {loggedUser.loggedInUser?.email === "admin3@mail.com" && (
             <SideMenuItem title="Konfigurácia" url="/configuration" />
-          )}
+          )} */}
+
+          <SideMenuItem title="Konfigurácia" url="/configuration" />
 
           <SideMenuItem revertedColors title="Nastavenia" url="/settings" />
         </div>

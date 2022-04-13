@@ -18,8 +18,8 @@ export const Tabs = ({ activeTab, isScrollable = false, tabs }: ITabsProps) => {
 
   return (
     <TabsImport centered className="tabs" value={value} onChange={handleChange}>
-      {tabs?.map((i) => (
-        <LinkTab label={i.label} onClick={i.onClick} />
+      {tabs?.map((i, index) => (
+        <LinkTab key={index} label={i.label} onClick={i.onClick} />
       ))}
     </TabsImport>
   );

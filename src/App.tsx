@@ -13,6 +13,8 @@ import { WineCreatePage } from "./pages/WineCreate/WineCreatePage";
 import { WineDetailPage } from "./pages/WineDetail/WineDetailPage";
 import { WineRatePage } from "./pages/WineRate/WineRatePage";
 import { WinesTablePage } from "./pages/WinesTable/WinesTablePage";
+import { TestPage } from "./pages/TestDatabasePage";
+
 // firebase
 import { auth } from "./firebase";
 
@@ -122,6 +124,10 @@ function App() {
 
         <Route exact path="/configuration/vystavovatel">
           <ConfigurationVystavovatelPage />
+        </Route>
+
+        <Route exact path="/test">
+          <TestPage />
         </Route>
       </Layout>
     </LoggedInUserContext.Provider>

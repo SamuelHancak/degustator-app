@@ -14,9 +14,7 @@ export const WineCreatePage = () => {
 
   const validationSchema = Yup.object({
     komisia: Yup.string().required("Pole musí byť vyplnené!"),
-    vzorka: Yup.number()
-      .required("Pole musí byť vyplnené!")
-      .typeError("Hodnota poľa nesmie obsahovať iné znaky ako čísla!"),
+    vzorka: Yup.string().required("Pole musí byť vyplnené!"),
     rocnik: Yup.number()
       .required("Pole musí byť vyplnené!")
       .typeError("Hodnota poľa nesmie obsahovať iné znaky ako čísla!"),
@@ -33,7 +31,8 @@ export const WineCreatePage = () => {
   };
 
   const handleSubmit = (values: any) => {
-    axios.post("http://localhost:4000/wines/create", values);
+    axios.post("http://localhost:4000/wines/wines/create", values);
+    history.push("/wines");
   };
 
   return (
@@ -68,6 +67,32 @@ export const WineCreatePage = () => {
                 <>
                   <div className="attributesGroupNameWrapper">
                     <span className="attributesGroupName">Info</span>
+                  </div>
+
+                  <div className="inputWrapper">
+                    <TextField
+                      required
+                      className="inputInfo"
+                      id="vzorka"
+                      name="vzorka"
+                      label="Vzorka"
+                      helperText={errors.vzorka ? errors.vzorka : " "}
+                      value={values.vzorka}
+                      onChange={handleChange}
+                      error={Boolean(errors.vzorka?.length)}
+                    />
+
+                    <TextField
+                      required
+                      className="inputInfo"
+                      id="rocnik"
+                      name="rocnik"
+                      label="Ročník"
+                      helperText={errors.rocnik ? errors.rocnik : " "}
+                      value={values.rocnik}
+                      onChange={handleChange}
+                      error={Boolean(errors.rocnik?.length)}
+                    />
                   </div>
 
                   <div className="inputWrapper">
@@ -130,32 +155,6 @@ export const WineCreatePage = () => {
                         Vystavovateľ 5
                       </MenuItem>
                     </TextField>
-                  </div>
-
-                  <div className="inputWrapper">
-                    <TextField
-                      required
-                      className="inputInfo"
-                      id="vzorka"
-                      name="vzorka"
-                      label="Vzorka č."
-                      helperText={errors.vzorka ? errors.vzorka : " "}
-                      value={values.vzorka}
-                      onChange={handleChange}
-                      error={Boolean(errors.vzorka?.length)}
-                    />
-
-                    <TextField
-                      required
-                      className="inputInfo"
-                      id="rocnik"
-                      name="rocnik"
-                      label="Ročník"
-                      helperText={errors.rocnik ? errors.rocnik : " "}
-                      value={values.rocnik}
-                      onChange={handleChange}
-                      error={Boolean(errors.rocnik?.length)}
-                    />
                   </div>
 
                   <div className="inputWrapper">

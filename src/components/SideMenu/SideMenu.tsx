@@ -1,13 +1,26 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
 // styles
 import "./SideMenu.css";
-import { LoggedInUserContext } from "../../App";
+import axios from "axios";
 
 export const SideMenu = () => {
-  const loggedUser = useContext(LoggedInUserContext);
+  const [loggedUser, setLoggedUser] = useState<any>();
   const history = useHistory();
+
+  useEffect(() => {
+    axios
+      .get(
+        `http://localhost:4000/wines/wines/userId/${localStorage.getItem(
+          "loggedUserId"
+        )}`
+      )
+      .then((response) => {
+        setLoggedUser(response.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div className="sideMenu">
@@ -15,25 +28,34 @@ export const SideMenu = () => {
         <FontAwesomeIcon icon="chevron-right" size="2x" />
       </span>
 
-      <div style={{ fontWeight: 500, fontSize: "1.2rem" }}>
-        {loggedUser.loggedInUser?.email}
+      <div
+        style={{
+          fontWeight: 500,
+          fontSize: "1.2rem",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          maxWidth: "150px",
+        }}
+      >
+        {loggedUser?.email}
       </div>
 
       <div className="sideMenuItemsWrapper">
         <div className="sideMenuItemWrapper">
           <SideMenuItem title="Zoznam vín" url="/wines" />
 
-          {loggedUser.loggedInUser?.email !== "hodnotitel@mail.com" && (
+          {loggedUser?.prava !== "3" && (
             <SideMenuItem title="Pridať vzorku" url="/wines/create" />
           )}
 
-          {/* {loggedUser.loggedInUser?.email === "admin3@mail.com" && (
+          {loggedUser?.prava === "0" && (
             <SideMenuItem title="Konfigurácia" url="/configuration" />
-          )} */}
+          )}
 
-          <SideMenuItem title="Konfigurácia" url="/configuration" />
-
-          <SideMenuItem revertedColors title="Nastavenia" url="/settings" />
+          {loggedUser?.prava === "0" && (
+            <SideMenuItem revertedColors title="Nastavenia" url="/settings" />
+          )}
         </div>
 
         <div>
@@ -41,8 +63,8 @@ export const SideMenu = () => {
             revertedColors
             title="Odhlásiť sa"
             onClick={() => {
-              loggedUser.logOut();
               history.push("/log-in");
+              localStorage.setItem("loggedUserId", "");
             }}
           />
         </div>

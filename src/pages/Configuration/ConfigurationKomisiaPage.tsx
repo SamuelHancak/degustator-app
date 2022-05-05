@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, MenuItem, TextField } from "@mui/material";
 import { Card } from "../../components/Card/Card";
 import { Formik, Form } from "formik";
@@ -7,18 +7,106 @@ import * as Yup from "yup";
 import "./ConfigurationPage.css";
 import { Tabs } from "../../components/Tabs/Tabs";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 export const ConfigurationKomisiaPage = () => {
   const history = useHistory();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoadingValues, setIsLoadingValues] = useState<boolean>(true);
+  const [hodnotenia, setHodnotenia] = useState<any[]>([]);
+  const [komisie, setKomisie] = useState<any[]>([]);
+  const [initialValues, setInitialValues] = useState<any>({});
+  const [createForm, setCreateForm] = useState<boolean>(false);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:4000/wines/wines/komisia/all`)
+      .then((response) => {
+        setKomisie(response.data);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:4000/wines/wines/hodnotenie/all`)
+      .then((response) => {
+        setHodnotenia(response.data);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
+  }, []);
 
   const validationSchema = Yup.object({
     nazov: Yup.string().required("Pole musí byť vyplnené!"),
     hodnotenie: Yup.string().required("Pole musí byť vyplnené!"),
   });
 
-  const initialValues = {
-    nazov: "",
-    hodnotenie: "celkove",
+  const handleKomisiaSelect = (id: string) => {
+    console.log(id);
+    if (id === "create") {
+      setIsLoadingValues(true);
+      setInitialValues({});
+      setCreateForm(true);
+      setTimeout(() => setIsLoadingValues(false), 1);
+    } else {
+      setIsLoadingValues(true);
+      axios
+        .get(`http://localhost:4000/wines/wines/komisia/${id}`)
+        .then((response) => {
+          handleHodnotenieSelect(response.data.hodnotenie);
+        })
+        .catch((err) => console.log(err))
+        .finally(() => {
+          setIsLoadingValues(false);
+          setCreateForm(false);
+        });
+    }
+  };
+
+  const handleHodnotenieSelect = (id: string) => {
+    axios
+      .get(`http://localhost:4000/wines/wines/hodnotenie/${id}`)
+      .then((response) => {
+        setInitialValues({ ...response.data, hodnotenie: response.data._id });
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoadingValues(false));
+  };
+
+  const handleKomisialUpdate = (values: any) => {
+    console.log(values);
+    if (createForm) {
+      handleKomisiaCreate(values);
+    } else {
+      axios
+        .post(
+          `http://localhost:4000/wines/wines/komisia/${initialValues._id}`,
+          values
+        )
+        .then((response) => {
+          setInitialValues(response.data);
+        })
+        .catch((err) => console.log(err))
+        .finally(() => {
+          setIsLoadingValues(false);
+          handleKomisiaSelect(initialValues._id);
+        });
+    }
+  };
+
+  const handleKomisiaCreate = (values: any) => {
+    axios
+      .post(`http://localhost:4000/wines/wines/komisia`, values)
+      .then((response) => {
+        setInitialValues(response.data);
+        handleKomisiaSelect(response.data._id);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setIsLoadingValues(false);
+      });
   };
 
   return (
@@ -45,81 +133,111 @@ export const ConfigurationKomisiaPage = () => {
         ]}
       />
 
-      <Card className="card">
-        <div className="cardHeader">
-          <h1 className="cardTitle">Konfigurácia komisie</h1>
-        </div>
-        <div className="cardContent">
-          <Formik
-            validateOnChange
-            validationSchema={validationSchema}
-            initialValues={initialValues}
-            onSubmit={(values, actions) => {
-              console.log({ values, actions });
-              alert(JSON.stringify(values, null, 2));
-              actions.setSubmitting(false);
-            }}
-          >
-            {({ errors, values, handleChange, handleReset }) => (
-              <Form>
-                <>
-                  <div className="inputWrapper">
-                    <TextField
-                      required
-                      className="inputInfo"
-                      id="nazov"
-                      name="nazov"
-                      label="Nazov"
-                      helperText={errors.nazov ? errors.nazov : " "}
-                      value={values.nazov}
-                      onChange={handleChange}
-                      error={Boolean(errors.nazov?.length)}
-                    />
+      {!isLoading && (
+        <Card className="card">
+          <div className="cardHeader">
+            <h1 className="cardTitle">Konfigurácia komisie</h1>
+          </div>
+          <div className="cardContent">
+            <div className="inputWrapper">
+              <TextField
+                select
+                required
+                className="inputInfo"
+                id="nazov"
+                name="nazov"
+                label="Nazov"
+                helperText={" "}
+                onChange={(val) => handleKomisiaSelect(val.target.value)}
+              >
+                <MenuItem key={"create"} value={"create"}>
+                  {<i>Vytvoriť komisiu</i>}
+                </MenuItem>
 
-                    <TextField
-                      select
-                      required
-                      className="inputInfo"
-                      id="hodnotenie"
-                      name="hodnotenie"
-                      label="Hodnotenie"
-                      helperText={errors.hodnotenie ? errors.hodnotenie : " "}
-                      value={values.hodnotenie}
-                      onChange={handleChange}
-                      error={Boolean(errors.hodnotenie?.length)}
+                {komisie.map((item) => (
+                  <MenuItem key={item.meno} value={item._id}>
+                    {item.meno}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+
+            {!isLoadingValues && (
+              <Formik
+                enableReinitialize
+                validateOnChange
+                validationSchema={validationSchema}
+                initialValues={initialValues}
+                onSubmit={(values, actions) => {
+                  handleKomisialUpdate(values);
+                  actions.setSubmitting(false);
+                }}
+              >
+                {({ errors, values, handleChange, handleReset }) => (
+                  <Form>
+                    <>
+                      <div className="inputWrapper">
+                        {createForm && (
+                          <TextField
+                            required
+                            className="inputInfo"
+                            id="meno"
+                            name="meno"
+                            label="Meno"
+                            helperText={errors.meno ? errors.meno : " "}
+                            value={values.meno}
+                            onChange={handleChange}
+                            error={Boolean(errors.meno?.length)}
+                          />
+                        )}
+
+                        <TextField
+                          select
+                          required
+                          className="inputInfo"
+                          id="hodnotenie"
+                          name="hodnotenie"
+                          label="Hodnotenie"
+                          helperText={
+                            errors.hodnotenie ? errors.hodnotenie : " "
+                          }
+                          value={values.hodnotenie}
+                          onChange={handleChange}
+                          error={Boolean(errors.hodnotenie?.length)}
+                        >
+                          {hodnotenia.map((item) => (
+                            <MenuItem key={item.nazov} value={item._id}>
+                              {item.nazov}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      </div>
+                    </>
+
+                    <Button
+                      className="submitBtn"
+                      color="success"
+                      type="submit"
+                      variant="contained"
                     >
-                      <MenuItem selected key={"celkove"} value={"celkove"}>
-                        Celkové
-                      </MenuItem>
-                      <MenuItem key={"priemerne"} value={"priemerne"}>
-                        Priemerné
-                      </MenuItem>
-                    </TextField>
-                  </div>
-                </>
+                      Uložiť
+                    </Button>
 
-                <Button
-                  className="submitBtn"
-                  color="success"
-                  type="submit"
-                  variant="contained"
-                >
-                  Uložiť
-                </Button>
-
-                <Button
-                  className="resetBtn"
-                  color="inherit"
-                  variant="contained"
-                  onClick={handleReset}
-                >
-                  Resetovať
-                </Button>
-              </Form>
+                    <Button
+                      className="resetBtn"
+                      color="inherit"
+                      variant="contained"
+                      onClick={handleReset}
+                    >
+                      Resetovať
+                    </Button>
+                  </Form>
+                )}
+              </Formik>
             )}
-          </Formik>
-        </div>
-      </Card>
+          </div>
+        </Card>
+      )}
     </>
   );
 };

@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "../../components/Card/Card";
 // styles
 import "./ProfilePage.css";
 import { TextField, Button } from "@mui/material";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 
 export const ProfilePage = () => {
+  const loggedUserId = localStorage.getItem("loggedUserId");
+  // const [loggedUser, setLoggedUser] = useState<any>(null);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:4000/wines/wines/userId/${loggedUserId}`)
+      .then((response) => {})
+      .catch((err) => console.log(err));
+  }, []);
+
   const validationSchema = Yup.object({
     meno: Yup.string().required("Pole musí byť vyplnené!"),
     priezvisko: Yup.string().required("Pole musí byť vyplnené!"),
@@ -23,6 +34,20 @@ export const ProfilePage = () => {
     confirmPassword: "",
   };
 
+  const handleNameUpdate = (values: any) => {
+    axios
+      .post(
+        `http://localhost:4000/wines/wines/user/${localStorage.getItem(
+          "loggedUserId"
+        )}`,
+        values
+      )
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <>
       <Card className="card">
@@ -37,6 +62,7 @@ export const ProfilePage = () => {
             onSubmit={(values, actions) => {
               console.log({ values, actions });
               alert(JSON.stringify(values, null, 2));
+              handleNameUpdate(values);
               actions.setSubmitting(false);
             }}
           >
@@ -79,7 +105,6 @@ export const ProfilePage = () => {
 
                   <div className="inputWrapper">
                     <TextField
-                      required
                       autoComplete="new-password"
                       type="password"
                       className="inputInfo"
@@ -95,7 +120,6 @@ export const ProfilePage = () => {
 
                   <div className="inputWrapper">
                     <TextField
-                      required
                       autoComplete="new-password"
                       type="password"
                       className="inputInfo"
@@ -111,7 +135,6 @@ export const ProfilePage = () => {
 
                   <div className="inputWrapper">
                     <TextField
-                      required
                       autoComplete="new-password"
                       type="password"
                       className="inputInfo"

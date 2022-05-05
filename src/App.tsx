@@ -1,7 +1,13 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import "./App.css";
 import { Layout } from "./components/Layout/Layout";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, useHistory } from "react-router-dom";
 // pages
 import { ConfigurationPage } from "./pages/Configuration/ConfigurationPage";
 import { ConfigurationHodnotitelPage } from "./pages/Configuration/ConfigurationHodnotitelPage";
@@ -13,7 +19,6 @@ import { WineCreatePage } from "./pages/WineCreate/WineCreatePage";
 import { WineDetailPage } from "./pages/WineDetail/WineDetailPage";
 import { WineRatePage } from "./pages/WineRate/WineRatePage";
 import { WinesTablePage } from "./pages/WinesTable/WinesTablePage";
-import { TestPage } from "./pages/TestDatabasePage";
 
 // firebase
 import { auth } from "./firebase";
@@ -79,12 +84,17 @@ function App() {
 
   return (
     <LoggedInUserContext.Provider
-      value={{ loggedInUser, setLoggedInUser, signUp, logIn, logOut }}
+      value={{
+        loggedInUser,
+        setLoggedInUser,
+        signUp,
+        logIn,
+        logOut,
+      }}
     >
       <Route exact path="/log-in">
         <LogInPage />
       </Route>
-
       <Layout>
         <Route exact path="/">
           <Redirect to="/wines" />
@@ -102,11 +112,15 @@ function App() {
           <WineDetailPage />
         </Route>
 
+        <Route exact path="/wines/detail/:wineId/:userId">
+          <WineDetailPage />
+        </Route>
+
         <Route exact path="/wines/create">
           <WineCreatePage />
         </Route>
 
-        <Route exact path="/wines/rate/:wineId">
+        <Route exact path="/wines/rate/:wineId/:userId">
           <WineRatePage />
         </Route>
 
@@ -125,11 +139,8 @@ function App() {
         <Route exact path="/configuration/vystavovatel">
           <ConfigurationVystavovatelPage />
         </Route>
-
-        <Route exact path="/test">
-          <TestPage />
-        </Route>
       </Layout>
+      )
     </LoggedInUserContext.Provider>
   );
 }

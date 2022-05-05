@@ -5,6 +5,13 @@ const wineDetailTemplate = new mongoose.Schema({
     type: String,
     required: true,
   },
+  hodnotitel_id: {
+    type: String,
+    required: true,
+  },
+  potvrdene: {
+    type: Boolean,
+  },
   cirost: {
     type: String,
     required: true,

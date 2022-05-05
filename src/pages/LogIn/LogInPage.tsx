@@ -8,20 +8,21 @@ import { useHistory } from "react-router-dom";
 import { LoggedInUserContext } from "../../App";
 // styles
 import "./LogInPage.css";
-
-export const validEmails = [
-  "hodnotitel@mail.com",
-  "predseda@mail.com",
-  "prezident@mail.com",
-  "admin@mail.com",
-];
+import axios from "axios";
 
 export const LogInPage = () => {
   const history = useHistory();
-  const { loggedInUser, logIn, signUp } = useContext(LoggedInUserContext);
+  const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
   const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [wrongPassword, setWrongPassword] = useState<boolean>(false);
+  const [userNotFound, setUserNotFound] = useState<boolean>(false);
+  const [newUserCreated, setNewUserCreated] = useState<boolean>(false);
 
-  useEffect(() => console.log(loggedInUser), [loggedInUser]);
+  useEffect(() => {
+    if (!!localStorage.getItem("loggedUserId")?.length) {
+      history.push("/");
+    }
+  }, [loggedInUser]);
 
   const validationSchemaLogin = Yup.object({
     email: Yup.string()
@@ -51,7 +52,35 @@ export const LogInPage = () => {
     confirmPassword: "",
   };
 
-  // const onSubmit = ({values})
+  const handleRegistration = (values: any) => {
+    console.log(values);
+    axios
+      .post("http://localhost:4000/wines/wines/user", values)
+      .then(() => setIsLogin(true))
+      .catch((err) => console.log(err))
+      .finally(() => setNewUserCreated(true));
+  };
+
+  const handleLogin = (values: any) => {
+    axios
+      .get(`http://localhost:4000/wines/wines/user/${values.email}`)
+      .then((response) => {
+        if (!response.data) {
+          setUserNotFound(true);
+        } else if (handlePasswordCheck(values.password, response.data.heslo)) {
+          setLoggedInUser(response.data);
+          localStorage.setItem("loggedUserId", response.data._id);
+          history.push("/wines");
+        } else {
+          setWrongPassword(true);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handlePasswordCheck = (inputPassword: string, dbPassword: string) => {
+    return inputPassword === dbPassword;
+  };
 
   return (
     <div
@@ -59,6 +88,8 @@ export const LogInPage = () => {
       style={{
         position: "fixed",
         display: "flex",
+        gap: "10px",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "rgb(88, 24, 31)",
@@ -112,6 +143,12 @@ export const LogInPage = () => {
         </div>
       </div>
 
+      {newUserCreated && (
+        <Card className="loginCard">
+          <h3 style={{ color: "green" }}>Nový používateľ bol vytvorený</h3>
+        </Card>
+      )}
+
       <Card className="loginCard">
         <h3 style={{ textAlign: "center", color: "rgb(88, 24, 31)" }}>
           {isLogin ? "Prihlásenie" : "Registrácia"}
@@ -123,10 +160,7 @@ export const LogInPage = () => {
             validationSchema={validationSchemaLogin}
             initialValues={initialValuesLogin}
             onSubmit={(values, actions) => {
-              // console.log({ values, actions });
-              // alert(JSON.stringify(values, null, 2));
-              logIn({ email: values.email, password: values.password });
-              history.push("/");
+              handleLogin(values);
               actions.setSubmitting(false);
             }}
           >
@@ -172,9 +206,7 @@ export const LogInPage = () => {
                     <Button
                       // disabled={!validEmails.includes(values.email)}
                       style={{
-                        backgroundColor: !validEmails.includes(values.email)
-                          ? "grey"
-                          : "rgb(88, 24, 31)",
+                        backgroundColor: "rgb(88, 24, 31)",
                       }}
                       className="submitBtn"
                       color="primary"
@@ -198,7 +230,10 @@ export const LogInPage = () => {
             validationSchema={validationSchemaRegistration}
             initialValues={initialValuesRegistration}
             onSubmit={(values, actions) => {
-              signUp({ email: values.email, password: values.confirmPassword });
+              handleRegistration({
+                email: values.email,
+                heslo: values.confirmPassword,
+              });
               actions.setSubmitting(false);
             }}
           >
@@ -261,9 +296,7 @@ export const LogInPage = () => {
                     <Button
                       // disabled={!validEmails.includes(values.email)}
                       style={{
-                        backgroundColor: !validEmails.includes(values.email)
-                          ? "grey"
-                          : "rgb(88, 24, 31)",
+                        backgroundColor: "rgb(88, 24, 31)",
                       }}
                       className="submitBtn"
                       color="primary"
@@ -277,6 +310,28 @@ export const LogInPage = () => {
               </Form>
             )}
           </Formik>
+        )}
+
+        {wrongPassword && (
+          <div
+            style={{
+              textAlign: "center",
+              color: "red",
+            }}
+          >
+            Zlé heslo!
+          </div>
+        )}
+
+        {userNotFound && (
+          <div
+            style={{
+              textAlign: "center",
+              color: "red",
+            }}
+          >
+            Používateľ sa nenašiel!
+          </div>
         )}
 
         <span

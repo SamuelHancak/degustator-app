@@ -8,6 +8,10 @@
   background-color: #ffffff;
   z-index: 10;
 
+  & > div {
+    overflow: auto !important;
+  }
+
   @media (max-width: 600px) {
     top: 50px;
     width: 100%;

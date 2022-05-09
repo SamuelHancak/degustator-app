@@ -34,13 +34,6 @@ const LinkTab = (props: ILinkTabProps) => {
   return (
     <Tab
       component="a"
-      // icon={
-      //   <FontAwesomeIcon
-      //     className="footerIcon"
-      //     icon="wine-glass-alt"
-      //     size="2x"
-      //   />
-      // }
       onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.preventDefault();
         props.onClick?.();

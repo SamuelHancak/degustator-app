@@ -20,6 +20,14 @@ const userGetTemplate = new mongoose.Schema({
     type: String,
     required: true,
   },
+  pravaId: {
+    type: String,
+    required: true,
+  },
+  komisia: {
+    type: String,
+    default: null,
+  },
 });
 
 // userGetTemplate.pre("save", function (next) {

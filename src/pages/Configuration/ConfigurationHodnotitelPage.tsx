@@ -21,7 +21,7 @@ export const ConfigurationHodnotitelPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/wines/configuration/hodnotitel/all")
+      .get("http://localhost:4000/wines/wines/users/exact/3")
       .then((response) => {
         setHodnotitelia(response.data);
       })
@@ -31,7 +31,7 @@ export const ConfigurationHodnotitelPage = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/wines/wines/komisia/all`)
+      .get("http://localhost:4000/wines/wines/komisia/all")
       .then((response) => {
         setKomisie(response.data);
       })
@@ -41,7 +41,7 @@ export const ConfigurationHodnotitelPage = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/wines/wines/prava/all`)
+      .get("http://localhost:4000/wines/wines/prava/all")
       .then((response) => {
         setPrava(response.data);
       })
@@ -58,7 +58,7 @@ export const ConfigurationHodnotitelPage = () => {
     } else {
       setIsLoadingValues(true);
       axios
-        .get(`http://localhost:4000/wines/configuration/hodnotitel/${id}`)
+        .get(`http://localhost:4000/wines/wines/userId/${id}`)
         .then((response) => {
           setInitialValues(response.data);
         })
@@ -75,16 +75,16 @@ export const ConfigurationHodnotitelPage = () => {
       handleHodnotitelCreate(values);
     } else {
       axios
-        .post(
-          `http://localhost:4000/wines/configuration/hodnotitel/${initialValues._id}`,
-          values
-        )
+        .post(`http://localhost:4000/wines/wines/user/${initialValues._id}`, {
+          ...values,
+          prava: prava.find((e) => e._id === values.pravaId)?.kod,
+        })
         .then((response) => {
           setInitialValues(response.data);
         })
         .catch((err) => console.log(err))
         .finally(() => {
-          setIsLoadingValues(false);
+          setIsLoadingValues(true);
           handleHodnotitelSelect(initialValues._id);
         });
     }
@@ -92,7 +92,11 @@ export const ConfigurationHodnotitelPage = () => {
 
   const handleHodnotitelCreate = (values: any) => {
     axios
-      .post(`http://localhost:4000/wines/configuration/hodnotitel`, values)
+      .post(`http://localhost:4000/wines/wines/user`, {
+        ...values,
+        heslo: "heslo", //TODO
+        prava: prava.find((e) => e._id === values.pravaId)?.kod,
+      })
       .then((response) => {
         setInitialValues(response.data);
         handleHodnotitelSelect(response.data._id);
@@ -104,12 +108,12 @@ export const ConfigurationHodnotitelPage = () => {
   };
 
   const validationSchema = Yup.object({
-    meno: Yup.string().required("Pole musí byť vyplnené!"),
-    priezvisko: Yup.string().required("Pole musí byť vyplnené!"),
-    prava: Yup.string().required("Pole musí byť vyplnené!"),
+    meno: Yup.string(),
+    priezvisko: Yup.string(),
+    pravaId: Yup.string().required("Pole musí byť vyplnené!"),
     komisia: Yup.string().required("Pole musí byť vyplnené!"),
     email: Yup.string().required("Pole musí byť vyplnené!"),
-    telefon: Yup.string().required("Pole musí byť vyplnené!"),
+    telefon: Yup.string(),
   });
 
   return (
@@ -159,7 +163,9 @@ export const ConfigurationHodnotitelPage = () => {
 
                 {hodnotitelia.map((val) => (
                   <MenuItem key={val._id} value={val._id}>
-                    {`${val.meno} ${val.priezvisko}`}
+                    {val.meno && val.priezvisko
+                      ? `${val.meno} ${val.priezvisko}`
+                      : val.email}
                   </MenuItem>
                 ))}
               </TextField>
@@ -203,13 +209,13 @@ export const ConfigurationHodnotitelPage = () => {
                           select
                           required
                           className="inputInfo"
-                          id="prava"
+                          id="pravaId"
                           label="Práva"
-                          name="prava"
-                          helperText={errors.prava ? errors.prava : " "}
-                          value={values.prava}
+                          name="pravaId"
+                          helperText={errors.pravaId ? errors.pravaId : " "}
+                          value={values.pravaId}
                           onChange={handleChange}
-                          error={Boolean(errors.prava?.length)}
+                          error={Boolean(errors.pravaId?.length)}
                         >
                           {prava.map((val) => (
                             <MenuItem key={val.nazov} value={val._id}>
@@ -221,7 +227,6 @@ export const ConfigurationHodnotitelPage = () => {
 
                       <div className="inputWrapper">
                         <TextField
-                          required
                           className="inputInfo"
                           id="meno"
                           name="meno"
@@ -233,7 +238,6 @@ export const ConfigurationHodnotitelPage = () => {
                         />
 
                         <TextField
-                          required
                           className="inputInfo"
                           id="priezvisko"
                           name="priezvisko"
@@ -261,7 +265,6 @@ export const ConfigurationHodnotitelPage = () => {
                         />
 
                         <TextField
-                          required
                           className="inputInfo"
                           id="telefon"
                           name="telefon"

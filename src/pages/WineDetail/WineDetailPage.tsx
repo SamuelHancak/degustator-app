@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Card } from "../../components/Card/Card";
 import { useHistory, useParams } from "react-router-dom";
 // styles
@@ -6,11 +6,12 @@ import "./WineDetailPage.css";
 import { Tabs } from "../../components/Tabs/Tabs";
 import { TextField, MenuItem } from "@mui/material";
 import axios from "axios";
+import Switch from "@mui/material/Switch";
 
 export const WineDetailPage = () => {
   const history = useHistory();
   const params = useParams<{ wineId: string }>();
-  const [defaultValues, setDefaultValues] = useState<any>();
+  const [defaultValues, setDefaultValues] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoadingValues, setIsLoadingValues] = useState<boolean>(true);
   const [isLoadingUsers, setIsLoadingUsers] = useState<boolean>(true);
@@ -18,6 +19,16 @@ export const WineDetailPage = () => {
   const loggedUser = useRef<any>();
   const [users, setUsers] = useState<any[]>([]);
   const [activeRow, setActiveRow] = useState<string>();
+  const [ratingValues, setRatingValues] = useState<any>([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:4000/wines/configuration/all")
+      .then((response) => {
+        setRatingValues(response.data[0]);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
     axios
@@ -36,31 +47,22 @@ export const WineDetailPage = () => {
             `http://localhost:4000/wines/wines/users/${loggedUser.current?.prava}`
           )
           .then((response) => {
-            setUsers(response.data);
-            setActiveRow(response.data[0]._id);
+            if (loggedUser.current.prava === "2") {
+              const usersKomisia = response.data.filter(
+                (user: any) => user.komisia === loggedUser.current.komisia
+              );
+
+              setUsers(usersKomisia);
+              setActiveRow(usersKomisia[0]._id);
+            } else {
+              setUsers(response.data);
+              setActiveRow(response.data[0]._id);
+            }
           })
           .catch((err) => console.log(err))
           .finally(() => setIsLoadingUsers(false))
       );
-  }, []);
-
-  const handleDeleteRating = () => {
-    axios
-      .post(`http://localhost:4000/wines/wines/rating/delete/${params.wineId}`)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const handleDeleteDetail = () => {
-    axios
-      .post(`http://localhost:4000/wines/wines/delete/${params.wineId}`)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => console.log(err));
-  };
+  }, [loggedUser.current]);
 
   useEffect(() => {
     setIsLoadingValues(true);
@@ -79,20 +81,6 @@ export const WineDetailPage = () => {
       });
   }, [activeRow]);
 
-  const getScore = (data: any) => {
-    return (
-      Number(data?.cirost) +
-      Number(data?.farba) +
-      Number(data?.intenzita) +
-      Number(data?.cistota) +
-      Number(data?.harmonia) +
-      Number(data?.intenzitaChut) +
-      Number(data?.cistotaChut) +
-      Number(data?.harmoniaChut) +
-      Number(data?.perzistencia)
-    );
-  };
-
   useEffect(() => {
     axios
       .get(`http://localhost:4000/wines/wines/one/${params.wineId}`)
@@ -104,16 +92,79 @@ export const WineDetailPage = () => {
       .catch((err) => console.log(err));
   }, []);
 
+  const handlePotvrdenieKomisie = (value: boolean) => {
+    axios
+      .post(`http://localhost:4000/wines/wines/one/${params.wineId}`, {
+        potvrdenie: value,
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handlePotvrdenieHodnotenia = (value: boolean) => {
+    axios.post(
+      `http://localhost:4000/wines/wines/rating/update/${defaultValues._id}/${activeRow}`,
+      { potvrdene: value }
+    );
+  };
+
+  const handleDeleteDetail = () => {
+    axios
+      .post(`http://localhost:4000/wines/wines/delete/${params.wineId}`)
+      .catch((err) => console.log(err));
+  };
+
+  const handleDeleteRating = () => {
+    axios
+      .post(`http://localhost:4000/wines/wines/rating/delete/${params.wineId}`)
+      .catch((err) => console.log(err));
+  };
+
+  const getScore = (data: any) => {
+    const sum =
+      Number(ratingValues[data?.cirost]) +
+      Number(ratingValues[data?.farba]) +
+      Number(ratingValues[data?.intenzita]) +
+      Number(ratingValues[data?.cistota]) +
+      Number(ratingValues[data?.harmonia]) +
+      Number(ratingValues[data?.intenzitaChut]) +
+      Number(ratingValues[data?.cistotaChut]) +
+      Number(ratingValues[data?.harmoniaChut]) +
+      Number(ratingValues[data?.perzistencia]);
+
+    return Math.floor(sum / 9);
+  };
+
+  const getScoreCustom = (data: any) => {
+    const values = [
+      Number(ratingValues[data?.cirost]),
+      Number(ratingValues[data?.farba]),
+      Number(ratingValues[data?.intenzita]),
+      Number(ratingValues[data?.cistota]),
+      Number(ratingValues[data?.harmonia]),
+      Number(ratingValues[data?.intenzitaChut]),
+      Number(ratingValues[data?.cistotaChut]),
+      Number(ratingValues[data?.harmoniaChut]),
+      Number(ratingValues[data?.perzistencia]),
+    ];
+
+    values.sort((a, b) => a - b).pop();
+    values.shift();
+
+    return Math.floor(
+      values.reduce((prev, curr) => prev + curr, 0) / values.length
+    );
+  };
+
   const attributesVzhlad = useMemo(
     () => [
       {
         name: "Čírosť",
-        value: defaultValues?.cirost ?? "N/A",
+        value: ratingValues[defaultValues?.cirost] ?? "N/A",
         notes: defaultValues?.cirostNotes ?? "N/A",
       },
       {
         name: "Farba",
-        value: defaultValues?.farba ?? "N/A",
+        value: ratingValues[defaultValues?.farba] ?? "N/A",
         notes: defaultValues?.farbaNotes ?? "N/A",
       },
     ],
@@ -124,17 +175,17 @@ export const WineDetailPage = () => {
     () => [
       {
         name: "Intenzita",
-        value: defaultValues?.intenzita ?? "N/A",
+        value: ratingValues[defaultValues?.intenzita] ?? "N/A",
         notes: defaultValues?.intenzitaNotes ?? "N/A",
       },
       {
         name: "Čistota",
-        value: defaultValues?.cistota ?? "N/A",
+        value: ratingValues[defaultValues?.cistota] ?? "N/A",
         notes: defaultValues?.cistotaNotes ?? "N/A",
       },
       {
         name: "Harmónia",
-        value: defaultValues?.harmonia ?? "N/A",
+        value: ratingValues[defaultValues?.harmonia] ?? "N/A",
         notes: defaultValues?.harmoniaNotes ?? "N/A",
       },
     ],
@@ -145,22 +196,22 @@ export const WineDetailPage = () => {
     () => [
       {
         name: "Intenzita",
-        value: defaultValues?.intenzitaChut ?? "N/A",
+        value: ratingValues[defaultValues?.intenzitaChut] ?? "N/A",
         notes: defaultValues?.intenzitaChutNotes ?? "N/A",
       },
       {
         name: "Čistota",
-        value: defaultValues?.cistotaChut ?? "N/A",
+        value: ratingValues[defaultValues?.cistotaChut] ?? "N/A",
         notes: defaultValues?.cistotaChutNotes ?? "N/A",
       },
       {
         name: "Harmónia",
-        value: defaultValues?.harmoniaChut ?? "N/A",
+        value: ratingValues[defaultValues?.harmoniaChut] ?? "N/A",
         notes: defaultValues?.harmoniaChutNotes ?? "N/A",
       },
       {
         name: "Perzistencia",
-        value: defaultValues?.perzistencia ?? "N/A",
+        value: ratingValues[defaultValues?.perzistencia] ?? "N/A",
         notes: defaultValues?.perzistenciaNotes ?? "N/A",
       },
     ],
@@ -181,7 +232,6 @@ export const WineDetailPage = () => {
         label: "Pridať vzorku",
         onClick: () => history.push("/wines/create"),
       },
-
       {
         label: "Odstrániť vzorku",
         onClick: () => {
@@ -202,12 +252,12 @@ export const WineDetailPage = () => {
           style={{
             display: "flex",
             flexDirection: "column",
-            columnGap: "20px",
+            gap: "20px",
             flex: "1 1 auto",
           }}
         >
           {loggedUser.current?.prava !== "3" && (
-            <Card className="card" style={{ marginBottom: "15px" }}>
+            <Card className="card">
               <div className="cardHeader">
                 <h1 className="cardTitle">Vyberte hodnotiteľa</h1>
               </div>
@@ -239,6 +289,7 @@ export const WineDetailPage = () => {
               </div>
             </Card>
           )}
+
           {!isLoadingValues && (
             <Card className="card">
               <div className="cardHeader">
@@ -261,6 +312,45 @@ export const WineDetailPage = () => {
                 />
                 <AttributesSection name="Vôňa" attributes={attributesVona} />
                 <AttributesSection name="Chuť" attributes={attributesChut} />
+              </div>
+            </Card>
+          )}
+
+          {(!isLoadingValues || loggedUser.current?.prava !== "3") && (
+            <Card className="card">
+              <div className="cardHeader">
+                <h1 className="cardTitle">Potvrdenie hodnotenia vzorky</h1>
+              </div>
+
+              <div
+                className="cardContent"
+                style={{
+                  padding: "20px 0",
+                  display: "flex",
+                  justifyContent: "space-evenly",
+                  flexWrap: "wrap",
+                }}
+              >
+                <div>
+                  Potvrdit hodnotenie pre celu komisiu
+                  <Switch
+                    defaultChecked={activeVzorka.potvrdene}
+                    onChange={(val) =>
+                      handlePotvrdenieKomisie(val.target.checked)
+                    }
+                  />
+                </div>
+
+                <div>
+                  Potvrdit hodnotenie pre daneho pouzivatela
+                  <Switch
+                    disabled={String(getScore(defaultValues)) === "NaN"}
+                    defaultChecked={defaultValues?.potvrdene}
+                    onChange={(val) =>
+                      handlePotvrdenieHodnotenia(val.target.checked)
+                    }
+                  />
+                </div>
               </div>
             </Card>
           )}

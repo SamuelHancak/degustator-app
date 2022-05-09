@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
 // styles
@@ -53,9 +53,7 @@ export const SideMenu = () => {
             <SideMenuItem title="Konfigurácia" url="/configuration" />
           )}
 
-          {loggedUser?.prava === "0" && (
-            <SideMenuItem revertedColors title="Nastavenia" url="/settings" />
-          )}
+          <SideMenuItem revertedColors title="Nastavenia" url="/settings" />
         </div>
 
         <div>

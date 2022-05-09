@@ -11,6 +11,7 @@ const wineDetailTemplate = new mongoose.Schema({
   },
   potvrdene: {
     type: Boolean,
+    default: false,
   },
   cirost: {
     type: String,

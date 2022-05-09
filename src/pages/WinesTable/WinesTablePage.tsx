@@ -11,7 +11,6 @@ import { useHistory } from "react-router-dom";
 import "./WinesTablePage.css";
 import { Tabs } from "../../components/Tabs/Tabs";
 import { Button } from "@mui/material";
-import { LoggedInUserContext } from "../../App";
 import axios from "axios";
 
 export const BOTTOM_PADDING = 60; // value computed by sum of paddingTop and paddingBottom of `Layout`
@@ -94,19 +93,48 @@ export const WinesTablePage = () => {
       .then((response) => {
         loggedUser.current = response.data;
       })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:4000/wines/wines/all")
-      .then((response) => {
-        setRows(
-          response.data.map((i: any) => ({ ...i, id: i._id, hodnotenie: 100 }))
-        );
-      })
       .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        loggedUser.current?.prava === "0" || loggedUser.current?.prava === "1"
+          ? axios
+              .get("http://localhost:4000/wines/wines/all")
+              .then((response) => {
+                setRows(
+                  response.data.map((i: any) => ({
+                    ...i,
+                    id: i._id,
+                    hodnotenie: 100,
+                    komisia: i.komisia.meno,
+                    vystavovatel:
+                      i.vystavovatel?.meno && i.vystavovatel?.priezvisko
+                        ? `${i.vystavovatel.meno} ${i.vystavovatel.priezvisko}`
+                        : i.vystavovatel.email,
+                  }))
+                );
+              })
+              .catch((err) => console.log(err))
+              .finally(() => setIsLoading(false))
+          : axios
+              .get(
+                `http://localhost:4000/wines/wines/komisiaWines/${loggedUser.current?.komisia}`
+              )
+              .then((response) => {
+                setRows(
+                  response.data.map((i: any) => ({
+                    ...i,
+                    id: i._id,
+                    hodnotenie: 100,
+                    komisia: i.komisia.meno,
+                    vystavovatel:
+                      i.vystavovatel?.meno && i.vystavovatel?.priezvisko
+                        ? `${i.vystavovatel.meno} ${i.vystavovatel.priezvisko}`
+                        : i.vystavovatel.email,
+                  }))
+                );
+              })
+              .catch((err) => console.log(err))
+              .finally(() => setIsLoading(false));
+      });
   }, []);
 
   const history = useHistory();
@@ -130,7 +158,7 @@ export const WinesTablePage = () => {
       field: "confirmed",
       headerName: "Potvrdene",
       sortable: false,
-      renderCell: () => (
+      renderCell: (params) => (
         <div
           style={{
             display: "flex",
@@ -145,15 +173,12 @@ export const WinesTablePage = () => {
               width: "8px",
               height: "8px",
               borderRadius: "100%",
-              backgroundColor: !!Math.floor((Math.random() * 1000) % 2)
-                ? "lime"
-                : "red",
+              backgroundColor: params.row.potvrdene ? "lime" : "red",
             }}
           ></span>
         </div>
       ),
     },
-
     {
       field: "detail",
       headerName: "",

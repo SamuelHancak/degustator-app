@@ -1,4 +1,4 @@
-GET  http://localhost:4000/wines/wines/rating/623dda011817ff0587389be0/626ef411a26d24c2a56f8310
+POST  http://localhost:4000/wines/wines/userPassword/heslo/test@test.com
 Content-Type: application/json
 
 # {

@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcrypt");
+
 const wineCreateTemplate = require("../models/WineModel");
 const wineDetailTemplate = require("../models/WineDetailModel");
 const configuration = require("../models/ConfigurationModel");
@@ -43,6 +45,22 @@ router.get("/wines/all", (_, response) => {
   const getVzorka = wineCreateTemplate.find({});
 
   getVzorka
+    .populate("vystavovatel", "meno priezvisko email")
+    .populate("komisia", "meno")
+    .then((data) => {
+      response.json(data);
+    })
+    .catch((err) => response.json(err));
+});
+
+router.get("/wines/komisiaWines/:komisia", (request, response) => {
+  const getVzorka = wineCreateTemplate.find({
+    komisia: request.params.komisia,
+  });
+
+  getVzorka
+    .populate("vystavovatel", "meno priezvisko email")
+    .populate("komisia", "meno")
     .then((data) => {
       response.json(data);
     })
@@ -53,6 +71,23 @@ router.get("/wines/one/:id", (request, response) => {
   const getVzorka = wineCreateTemplate.findOne({ _id: request.params.id });
 
   getVzorka
+    .then((data) => {
+      response.json(data);
+    })
+    .catch((err) => response.json(err));
+});
+
+router.post("/wines/one/:id", (request, response) => {
+  const updateVzorka = wineCreateTemplate.updateOne(
+    { _id: request.params.id },
+    {
+      $set: {
+        potvrdene: request.body.potvrdenie,
+      },
+    }
+  );
+
+  updateVzorka
     .then((data) => {
       response.json(data);
     })
@@ -150,6 +185,7 @@ router.post("/wines/rating/update/:id/:hodnotitel_id", (request, response) => {
         cistotaChutNotes: request.body.cistotaChutNotes,
         harmoniaChutNotes: request.body.harmoniaChutNotes,
         perzistenciaNotes: request.body.perzistenciaNotes,
+        potvrdene: request.body.potvrdene,
       },
     }
   );
@@ -162,7 +198,7 @@ router.post("/wines/rating/update/:id/:hodnotitel_id", (request, response) => {
 });
 
 router.post("/wines/rating/delete/:id", (request, response) => {
-  const deleteRating = wineDetailTemplate.deleteOne({
+  const deleteRating = wineDetailTemplate.deleteMany({
     vzorka_id: request.params.id,
   });
 
@@ -174,7 +210,7 @@ router.post("/wines/rating/delete/:id", (request, response) => {
 });
 
 router.get("/wines/rating/:id", (request, response) => {
-  const getRating = wineDetailTemplate.findOne({
+  const getRating = wineDetailTemplate.find({
     vzorka_id: request.params.id,
   });
 
@@ -577,19 +613,80 @@ router.get("/wines/prava/all", (_, response) => {
     .catch((err) => response.json(err));
 });
 
+router.get("/wines/prava/lowest", (_, response) => {
+  const getPrava = configurationPrava.find({});
+
+  getPrava
+    .then((data) => {
+      data.sort((a, b) => {
+        return a.kod - b.kod;
+      });
+
+      response.json(data[data.length - 1]);
+    })
+    .catch((err) => response.json(err));
+});
+
+router.get("/wines/prava/:kod", (request, response) => {
+  const getPrava = configurationPrava.findOne({ kod: request.params.kod });
+
+  getPrava
+    .then((data) => {
+      response.json(data);
+    })
+    .catch((err) => response.json(err));
+});
+
 router.post("/wines/user", (request, response) => {
   const createUser = new userTemplate({
     email: request.body.email,
-    heslo: request.body.heslo,
+    heslo: bcrypt.hashSync(request.body.heslo, bcrypt.genSaltSync()),
     meno: request.body.meno,
     priezvisko: request.body.priezvisko,
-    prava: "3",
+    prava: request.body.prava,
+    pravaId: request.body.pravaId,
+    komisia: request.body.komisia,
   });
 
   createUser
     .save()
     .then((data) => {
       response.json(data);
+    })
+    .catch((err) => response.json(err));
+});
+
+router.post("/wines/user/:id", (request, response) => {
+  const updateUser = userTemplate.updateOne(
+    { _id: request.params.id },
+    {
+      $set: {
+        email: request.body.email,
+        heslo: request.body.heslo,
+        meno: request.body.meno,
+        priezvisko: request.body.priezvisko,
+        prava: request.body.prava,
+        pravaId: request.body.pravaId,
+        komisia: request.body.komisia,
+      },
+    }
+  );
+
+  updateUser
+    .then((data) => {
+      response.json(data);
+    })
+    .catch((err) => response.json(err));
+});
+
+router.get("/wines/userPassword/:password/:email", (request, response) => {
+  const user = userTemplate.findOne({ email: request.params.email });
+
+  user
+    .then((data) => {
+      response.json(
+        bcrypt.compareSync(request.params.password, data?.heslo || "")
+      );
     })
     .catch((err) => response.json(err));
 });
@@ -636,6 +733,16 @@ router.get("/wines/users/:prava", (request, response) => {
       response.json(
         data.filter((val) => Number(val.prava) >= Number(request.params.prava))
       );
+    })
+    .catch((err) => response.json(err));
+});
+
+router.get("/wines/users/exact/:prava", (request, response) => {
+  const getUser = userTemplate.find({ prava: request.params.prava });
+
+  getUser
+    .then((data) => {
+      response.json(data);
     })
     .catch((err) => response.json(err));
 });

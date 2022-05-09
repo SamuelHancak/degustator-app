@@ -82,8 +82,8 @@ export const WineRatePage = () => {
   const handleSubmit = (values: any) => {
     isRated
       ? axios.post(
-          `http://localhost:4000/wines/wines/rating/update/${defaultValues._id}`,
-          { ...values, hodnotitel_id: params.userId }
+          `http://localhost:4000/wines/wines/rating/update/${defaultValues._id}/${params.userId}`,
+          values
         )
       : axios.post("http://localhost:4000/wines/wines/rating/create", {
           ...values,
@@ -98,7 +98,6 @@ export const WineRatePage = () => {
         `http://localhost:4000/wines/wines/rating/${params.wineId}/${params.userId}`
       )
       .then((response) => {
-        console.log(response.data);
         if (!!response.data) {
           setDefaultValues(response.data);
           setIsRated(true);
@@ -173,31 +172,28 @@ export const WineRatePage = () => {
                       >
                         <MenuItem
                           key={"vynikajuce"}
-                          value={ratingValues.vzhladCirostVynikajuce}
+                          value={"vzhladCirostVynikajuce"}
                         >
                           {`Vynikajúce (${ratingValues.vzhladCirostVynikajuce})`}
                         </MenuItem>
                         <MenuItem
                           key={"velmi-dobre"}
-                          value={ratingValues.vzhladCirostVelmiDobre}
+                          value={"vzhladCirostVelmiDobre"}
                         >
                           {`Veľmi dobré (${ratingValues.vzhladCirostVelmiDobre})`}
                         </MenuItem>
-                        <MenuItem
-                          key={"dobre"}
-                          value={ratingValues.vzhladCirostDobre}
-                        >
+                        <MenuItem key={"dobre"} value={"vzhladCirostDobre"}>
                           {`Dobré (${ratingValues.vzhladCirostDobre})`}
                         </MenuItem>
                         <MenuItem
                           key={"uspokojive"}
-                          value={ratingValues.vzhladCirostUspokojive}
+                          value={"vzhladCirostUspokojive"}
                         >
                           {`Uspokojivé (${ratingValues.vzhladCirostUspokojive})`}
                         </MenuItem>
                         <MenuItem
                           key={"nedostatocne"}
-                          value={ratingValues.vzhladCirostNedostatocne}
+                          value={"vzhladCirostNedostatocne"}
                         >
                           {`Nedostatočné (${ratingValues.vzhladCirostNedostatocne})`}
                         </MenuItem>
@@ -230,31 +226,28 @@ export const WineRatePage = () => {
                       >
                         <MenuItem
                           key={"vynikajuce"}
-                          value={ratingValues.vzhladFarbaVynikajuce}
+                          value={"vzhladFarbaVynikajuce"}
                         >
                           {`Vynikajúce (${ratingValues.vzhladFarbaVynikajuce})`}
                         </MenuItem>
                         <MenuItem
                           key={"velmi-dobre"}
-                          value={ratingValues.vzhladFarbaVelmiDobre}
+                          value={"vzhladFarbaVelmiDobre"}
                         >
                           {`Veľmi dobré (${ratingValues.vzhladFarbaVelmiDobre})`}
                         </MenuItem>
-                        <MenuItem
-                          key={"dobre"}
-                          value={ratingValues.vzhladFarbaDobre}
-                        >
+                        <MenuItem key={"dobre"} value={"vzhladFarbaDobre"}>
                           {`Dobré (${ratingValues.vzhladFarbaDobre})`}
                         </MenuItem>
                         <MenuItem
                           key={"uspokojive"}
-                          value={ratingValues.vzhladFarbaUspokojive}
+                          value={"vzhladFarbaUspokojive"}
                         >
                           {`Uspokojivé (${ratingValues.vzhladFarbaUspokojive})`}
                         </MenuItem>
                         <MenuItem
                           key={"nedostatocne"}
-                          value={ratingValues.vzhladFarbaNedostatocne}
+                          value={"vzhladFarbaNedostatocne"}
                         >
                           {`Nedostatočné (${ratingValues.vzhladFarbaNedostatocne})`}
                         </MenuItem>
@@ -297,31 +290,28 @@ export const WineRatePage = () => {
                       >
                         <MenuItem
                           key={"vynikajuce"}
-                          value={ratingValues.vonaIntenzitaVynikajuce}
+                          value={"vonaIntenzitaVynikajuce"}
                         >
                           {`Vynikajúce (${ratingValues.vonaIntenzitaVynikajuce})`}
                         </MenuItem>
                         <MenuItem
                           key={"velmi-dobre"}
-                          value={ratingValues.vonaIntenzitaVelmiDobre}
+                          value={"vonaIntenzitaVelmiDobre"}
                         >
                           {`Veľmi dobré (${ratingValues.vonaIntenzitaVelmiDobre})`}
                         </MenuItem>
-                        <MenuItem
-                          key={"dobre"}
-                          value={ratingValues.vonaIntenzitaDobre}
-                        >
+                        <MenuItem key={"dobre"} value={"vonaIntenzitaDobre"}>
                           {`Dobré (${ratingValues.vonaIntenzitaDobre})`}
                         </MenuItem>
                         <MenuItem
                           key={"uspokojive"}
-                          value={ratingValues.vonaIntenzitaUspokojive}
+                          value={"vonaIntenzitaUspokojive"}
                         >
                           {`Uspokojivé (${ratingValues.vonaIntenzitaUspokojive})`}
                         </MenuItem>
                         <MenuItem
                           key={"nedostatocne"}
-                          value={ratingValues.vonaIntenzitaNedostatocne}
+                          value={"vonaIntenzitaNedostatocne"}
                         >
                           {` Nedostatočné (${ratingValues.vonaIntenzitaNedostatocne})`}
                         </MenuItem>
@@ -354,31 +344,28 @@ export const WineRatePage = () => {
                       >
                         <MenuItem
                           key={"vynikajuce"}
-                          value={ratingValues.vonaCistotaVynikajuce}
+                          value={"vonaCistotaVynikajuce"}
                         >
                           {`Vynikajúce (${ratingValues.vonaCistotaVynikajuce})`}
                         </MenuItem>
                         <MenuItem
                           key={"velmi-dobre"}
-                          value={ratingValues.vonaCistotaVelmiDobre}
+                          value={"vonaCistotaVelmiDobre"}
                         >
                           {`Veľmi dobré (${ratingValues.vonaCistotaVelmiDobre})`}
                         </MenuItem>
-                        <MenuItem
-                          key={"dobre"}
-                          value={ratingValues.vonaCistotaDobre}
-                        >
+                        <MenuItem key={"dobre"} value={"vonaCistotaDobre"}>
                           {`Dobré (${ratingValues.vonaCistotaDobre})`}
                         </MenuItem>
                         <MenuItem
                           key={"uspokojive"}
-                          value={ratingValues.vonaCistotaUspokojive}
+                          value={"vonaCistotaUspokojive"}
                         >
                           {`Uspokojivé (${ratingValues.vonaCistotaUspokojive})`}
                         </MenuItem>
                         <MenuItem
                           key={"nedostatocne"}
-                          value={ratingValues.vonaCistotaNedostatocne}
+                          value={"vonaCistotaNedostatocne"}
                         >
                           {`Nedostatočné (${ratingValues.vonaCistotaNedostatocne})`}
                         </MenuItem>
@@ -411,31 +398,28 @@ export const WineRatePage = () => {
                       >
                         <MenuItem
                           key={"vynikajuce"}
-                          value={ratingValues.vonaHarmoniaVynikajuce}
+                          value={"vonaHarmoniaVynikajuce"}
                         >
                           {`Vynikajúce (${ratingValues.vonaHarmoniaVynikajuce})`}
                         </MenuItem>
                         <MenuItem
                           key={"velmi-dobre"}
-                          value={ratingValues.vonaHarmoniaVelmiDobre}
+                          value={"vonaHarmoniaVelmiDobre"}
                         >
                           {`Veľmi dobré (${ratingValues.vonaHarmoniaVelmiDobre})`}
                         </MenuItem>
-                        <MenuItem
-                          key={"dobre"}
-                          value={ratingValues.vonaHarmoniaDobre}
-                        >
+                        <MenuItem key={"dobre"} value={"vonaHarmoniaDobre"}>
                           {`Dobré (${ratingValues.vonaHarmoniaDobre})`}
                         </MenuItem>
                         <MenuItem
                           key={"uspokojive"}
-                          value={ratingValues.vonaHarmoniaUspokojive}
+                          value={"vonaHarmoniaUspokojive"}
                         >
                           {`Uspokojivé (${ratingValues.vonaHarmoniaUspokojive})`}
                         </MenuItem>
                         <MenuItem
                           key={"nedostatocne"}
-                          value={ratingValues.vonaHarmoniaNedostatocne}
+                          value={"vonaHarmoniaNedostatocne"}
                         >
                           {`Nedostatočné (${ratingValues.vonaHarmoniaNedostatocne})`}
                         </MenuItem>
@@ -480,31 +464,28 @@ export const WineRatePage = () => {
                       >
                         <MenuItem
                           key={"vynikajuce"}
-                          value={ratingValues.chutIntenzitaVynikajuce}
+                          value={"chutIntenzitaVynikajuce"}
                         >
                           {`Vynikajúce (${ratingValues.chutIntenzitaVynikajuce})`}
                         </MenuItem>
                         <MenuItem
                           key={"velmi-dobre"}
-                          value={ratingValues.chutIntenzitaVelmiDobre}
+                          value={"chutIntenzitaVelmiDobre"}
                         >
                           {`Veľmi dobré (${ratingValues.chutIntenzitaVelmiDobre})`}
                         </MenuItem>
-                        <MenuItem
-                          key={"dobre"}
-                          value={ratingValues.chutIntenzitaDobre}
-                        >
+                        <MenuItem key={"dobre"} value={"chutIntenzitaDobre"}>
                           {`Dobré (${ratingValues.chutIntenzitaDobre})`}
                         </MenuItem>
                         <MenuItem
                           key={"uspokojive"}
-                          value={ratingValues.chutIntenzitaUspokojive}
+                          value={"chutIntenzitaUspokojive"}
                         >
                           {`Uspokojivé (${ratingValues.chutIntenzitaUspokojive})`}
                         </MenuItem>
                         <MenuItem
                           key={"nedostatocne"}
-                          value={ratingValues.chutIntenzitaNedostatocne}
+                          value={"chutIntenzitaNedostatocne"}
                         >
                           {`Nedostatočné (${ratingValues.chutIntenzitaNedostatocne})`}
                         </MenuItem>
@@ -539,31 +520,28 @@ export const WineRatePage = () => {
                       >
                         <MenuItem
                           key={"vynikajuce"}
-                          value={ratingValues.chutCistotaVynikajuce}
+                          value={"chutCistotaVynikajuce"}
                         >
                           {`Vynikajúce (${ratingValues.chutCistotaVynikajuce})`}
                         </MenuItem>
                         <MenuItem
                           key={"velmi-dobre"}
-                          value={ratingValues.chutCistotaVelmiDobre}
+                          value={"chutCistotaVelmiDobre"}
                         >
                           {`Veľmi dobré (${ratingValues.chutCistotaVelmiDobre})`}
                         </MenuItem>
-                        <MenuItem
-                          key={"dobre"}
-                          value={ratingValues.chutCistotaDobre}
-                        >
+                        <MenuItem key={"dobre"} value={"chutCistotaDobre"}>
                           {`Dobré (${ratingValues.chutCistotaDobre})`}
                         </MenuItem>
                         <MenuItem
                           key={"uspokojive"}
-                          value={ratingValues.chutCistotaUspokojive}
+                          value={"chutCistotaUspokojive"}
                         >
                           {`Uspokojivé (${ratingValues.chutCistotaUspokojive})`}
                         </MenuItem>
                         <MenuItem
                           key={"nedostatocne"}
-                          value={ratingValues.chutCistotaNedostatocne}
+                          value={"chutCistotaNedostatocne"}
                         >
                           {`Nedostatočné (${ratingValues.chutCistotaNedostatocne})`}
                         </MenuItem>
@@ -596,31 +574,28 @@ export const WineRatePage = () => {
                       >
                         <MenuItem
                           key={"vynikajuce"}
-                          value={ratingValues.chutHarmoniaVynikajuce}
+                          value={"chutHarmoniaVynikajuce"}
                         >
                           {`Vynikajúce (${ratingValues.chutHarmoniaVynikajuce})`}
                         </MenuItem>
                         <MenuItem
                           key={"velmi-dobre"}
-                          value={ratingValues.chutHarmoniaVelmiDobre}
+                          value={"chutHarmoniaVelmiDobre"}
                         >
                           {`Veľmi dobré (${ratingValues.chutHarmoniaVelmiDobre})`}
                         </MenuItem>
-                        <MenuItem
-                          key={"dobre"}
-                          value={ratingValues.chutHarmoniaDobre}
-                        >
+                        <MenuItem key={"dobre"} value={"chutHarmoniaDobre"}>
                           {`Dobré (${ratingValues.chutHarmoniaDobre})`}
                         </MenuItem>
                         <MenuItem
                           key={"uspokojive"}
-                          value={ratingValues.chutHarmoniaUspokojive}
+                          value={"chutHarmoniaUspokojive"}
                         >
                           {`Uspokojivé (${ratingValues.chutHarmoniaUspokojive})`}
                         </MenuItem>
                         <MenuItem
                           key={"nedostatocne"}
-                          value={ratingValues.chutHarmoniaNedostatocne}
+                          value={"chutHarmoniaNedostatocne"}
                         >
                           {`Nedostatočné (${ratingValues.chutHarmoniaNedostatocne})`}
                         </MenuItem>
@@ -655,31 +630,28 @@ export const WineRatePage = () => {
                       >
                         <MenuItem
                           key={"vynikajuce"}
-                          value={ratingValues.chutPerzistenciaVynikajuce}
+                          value={"chutPerzistenciaVynikajuce"}
                         >
                           {`Vynikajúce (${ratingValues.chutPerzistenciaVynikajuce})`}
                         </MenuItem>
                         <MenuItem
                           key={"velmi-dobre"}
-                          value={ratingValues.chutPerzistenciaVelmiDobre}
+                          value={"chutPerzistenciaVelmiDobre"}
                         >
                           {`Veľmi dobré (${ratingValues.chutPerzistenciaVelmiDobre})`}
                         </MenuItem>
-                        <MenuItem
-                          key={"dobre"}
-                          value={ratingValues.chutPerzistenciaDobre}
-                        >
+                        <MenuItem key={"dobre"} value={"chutPerzistenciaDobre"}>
                           {`Dobré (${ratingValues.chutPerzistenciaDobre})`}
                         </MenuItem>
                         <MenuItem
                           key={"uspokojive"}
-                          value={ratingValues.chutPerzistenciaUspokojive}
+                          value={"chutPerzistenciaUspokojive"}
                         >
                           {`Uspokojivé (${ratingValues.chutPerzistenciaUspokojive})`}
                         </MenuItem>
                         <MenuItem
                           key={"nedostatocne"}
-                          value={ratingValues.chutPerzistenciaNedostatocne}
+                          value={"chutPerzistenciaNedostatocne"}
                         >
                           {`Nedostatočné (${ratingValues.chutPerzistenciaNedostatocne})`}
                         </MenuItem>

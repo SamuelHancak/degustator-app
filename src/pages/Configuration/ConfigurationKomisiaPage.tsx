@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, MenuItem, TextField } from "@mui/material";
 import { Card } from "../../components/Card/Card";
 import { Formik, Form } from "formik";
@@ -15,7 +15,7 @@ export const ConfigurationKomisiaPage = () => {
   const [isLoadingValues, setIsLoadingValues] = useState<boolean>(true);
   const [hodnotenia, setHodnotenia] = useState<any[]>([]);
   const [komisie, setKomisie] = useState<any[]>([]);
-  const [initialValues, setInitialValues] = useState<any>({});
+  const initialValues = useRef<any>({});
   const [createForm, setCreateForm] = useState<boolean>(false);
 
   useEffect(() => {
@@ -44,10 +44,9 @@ export const ConfigurationKomisiaPage = () => {
   });
 
   const handleKomisiaSelect = (id: string) => {
-    console.log(id);
     if (id === "create") {
       setIsLoadingValues(true);
-      setInitialValues({});
+      initialValues.current = {};
       setCreateForm(true);
       setTimeout(() => setIsLoadingValues(false), 1);
     } else {
@@ -58,10 +57,7 @@ export const ConfigurationKomisiaPage = () => {
           handleHodnotenieSelect(response.data.hodnotenie);
         })
         .catch((err) => console.log(err))
-        .finally(() => {
-          setIsLoadingValues(false);
-          setCreateForm(false);
-        });
+        .finally(() => setCreateForm(false));
     }
   };
 
@@ -69,29 +65,31 @@ export const ConfigurationKomisiaPage = () => {
     axios
       .get(`http://localhost:4000/wines/wines/hodnotenie/${id}`)
       .then((response) => {
-        setInitialValues({ ...response.data, hodnotenie: response.data._id });
+        initialValues.current = {
+          ...response.data,
+          hodnotenie: response.data?._id,
+        };
       })
       .catch((err) => console.log(err))
       .finally(() => setIsLoadingValues(false));
   };
 
   const handleKomisialUpdate = (values: any) => {
-    console.log(values);
     if (createForm) {
       handleKomisiaCreate(values);
     } else {
       axios
         .post(
-          `http://localhost:4000/wines/wines/komisia/${initialValues._id}`,
+          `http://localhost:4000/wines/wines/komisia/${initialValues.current._id}`,
           values
         )
         .then((response) => {
-          setInitialValues(response.data);
+          initialValues.current = response.data;
         })
         .catch((err) => console.log(err))
         .finally(() => {
           setIsLoadingValues(false);
-          handleKomisiaSelect(initialValues._id);
+          handleKomisiaSelect(initialValues.current._id);
         });
     }
   };
@@ -100,7 +98,7 @@ export const ConfigurationKomisiaPage = () => {
     axios
       .post(`http://localhost:4000/wines/wines/komisia`, values)
       .then((response) => {
-        setInitialValues(response.data);
+        initialValues.current = response.data;
         handleKomisiaSelect(response.data._id);
       })
       .catch((err) => console.log(err))
@@ -167,7 +165,7 @@ export const ConfigurationKomisiaPage = () => {
                 enableReinitialize
                 validateOnChange
                 validationSchema={validationSchema}
-                initialValues={initialValues}
+                initialValues={initialValues.current}
                 onSubmit={(values, actions) => {
                   handleKomisialUpdate(values);
                   actions.setSubmitting(false);

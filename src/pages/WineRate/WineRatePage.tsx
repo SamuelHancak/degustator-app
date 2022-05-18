@@ -9,6 +9,12 @@ import "./WineRatePage.css";
 import { Tabs } from "../../components/Tabs/Tabs";
 import { useHistory, useParams } from "react-router-dom";
 import axios from "axios";
+import {
+  getScore,
+  getScoreCustom,
+  getScoreCustomUnited,
+  getScoreUnited,
+} from "../../functions";
 
 export const WineRatePage = () => {
   const history = useHistory();
@@ -17,8 +23,8 @@ export const WineRatePage = () => {
   const [isRated, setIsRated] = useState<boolean>(false);
   const [ratingValues, setRatingValues] = useState<any>([]);
   const [activeVzorka, setActiveVzorka] = useState<any>();
-
   const loggedUser = useRef<any>();
+  const celkoveValues = useRef<number[]>([]);
 
   useEffect(() => {
     axios
@@ -79,19 +85,6 @@ export const WineRatePage = () => {
     perzistencia: Yup.string().required("Pole musí byť vyplnené!"),
   });
 
-  const handleSubmit = (values: any) => {
-    isRated
-      ? axios.post(
-          `http://localhost:4000/wines/wines/rating/update/${defaultValues._id}/${params.userId}`,
-          values
-        )
-      : axios.post("http://localhost:4000/wines/wines/rating/create", {
-          ...values,
-          hodnotitel_id: params.userId,
-        });
-    history.push(`/wines/detail/${params.wineId}`);
-  };
-
   useEffect(() => {
     axios
       .get(
@@ -117,6 +110,51 @@ export const WineRatePage = () => {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  const handleSubmit = (values: any) => {
+    isRated
+      ? axios.post(
+          `http://localhost:4000/wines/wines/rating/update/${defaultValues._id}/${params.userId}`,
+          {
+            ...values,
+            hodnotenie_celkove: getScore(values, ratingValues),
+            hodnotenie_priemerne: getScoreCustom(values, ratingValues),
+          }
+        )
+      : axios.post("http://localhost:4000/wines/wines/rating/create", {
+          ...values,
+          hodnotitel_id: params.userId,
+          hodnotenie_celkove: getScore(values, ratingValues),
+          hodnotenie_priemerne: getScoreCustom(values, ratingValues),
+        });
+
+    history.push(`/wines/detail/${params.wineId}`);
+    updateWineRatings();
+  };
+
+  const updateWineRatings = () => {
+    axios
+      .get(`http://localhost:4000/wines/wines/rating/counting/${params.wineId}`)
+      .then((response) => {
+        response.data.map((val: any) =>
+          celkoveValues.current.push(val?.hodnotenie_celkove)
+        );
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        handleNewWineRating(
+          getScoreUnited(celkoveValues.current),
+          getScoreCustomUnited(celkoveValues.current)
+        );
+      });
+  };
+
+  const handleNewWineRating = (celkove: number, priemerne: number) => {
+    axios.post(`http://localhost:4000/wines/wines/one/${params.wineId}`, {
+      hodnotenie_celkove: celkove,
+      hodnotenie_priemerne: priemerne,
+    });
+  };
 
   const tabs = [{ label: "Zoznam vín", onClick: () => history.push("/") }];
 

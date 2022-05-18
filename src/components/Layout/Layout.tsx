@@ -5,6 +5,7 @@ import "./Layout.css";
 interface ILayoutProps {
   children: any;
 }
+
 export const Layout = ({ children }: ILayoutProps) => {
   return (
     <div className="layout">

@@ -53,6 +53,16 @@ router.get("/wines/all", (_, response) => {
     .catch((err) => response.json(err));
 });
 
+router.get("/wines/allId", (_, response) => {
+  const getVzorka = wineCreateTemplate.find({});
+
+  getVzorka
+    .then((data) => {
+      response.json(data.map(({ _id }) => _id));
+    })
+    .catch((err) => response.json(err));
+});
+
 router.get("/wines/komisiaWines/:komisia", (request, response) => {
   const getVzorka = wineCreateTemplate.find({
     komisia: request.params.komisia,
@@ -82,6 +92,8 @@ router.post("/wines/one/:id", (request, response) => {
     { _id: request.params.id },
     {
       $set: {
+        hodnotenie_celkove: request.body.hodnotenie_celkove,
+        hodnotenie_priemerne: request.body.hodnotenie_priemerne,
         potvrdene: request.body.potvrdenie,
       },
     }
@@ -117,6 +129,8 @@ router.post("/wines/rating/create", (request, response) => {
     cistotaChutNotes: request.body.cistotaChutNotes,
     harmoniaChutNotes: request.body.harmoniaChutNotes,
     perzistenciaNotes: request.body.perzistenciaNotes,
+    hodnotenie_celkove: request.body.hodnotenie_celkove,
+    hodnotenie_priemerne: request.body.hodnotenie_priemerne,
   });
 
   createRating
@@ -151,6 +165,8 @@ router.post("/wines/rating/update/:id", (request, response) => {
         cistotaChutNotes: request.body.cistotaChutNotes,
         harmoniaChutNotes: request.body.harmoniaChutNotes,
         perzistenciaNotes: request.body.perzistenciaNotes,
+        hodnotenie_celkove: request.body.hodnotenie_celkove,
+        hodnotenie_priemerne: request.body.hodnotenie_priemerne,
       },
     }
   );
@@ -186,6 +202,8 @@ router.post("/wines/rating/update/:id/:hodnotitel_id", (request, response) => {
         harmoniaChutNotes: request.body.harmoniaChutNotes,
         perzistenciaNotes: request.body.perzistenciaNotes,
         potvrdene: request.body.potvrdene,
+        hodnotenie_celkove: request.body.hodnotenie_celkove,
+        hodnotenie_priemerne: request.body.hodnotenie_priemerne,
       },
     }
   );
@@ -213,6 +231,33 @@ router.get("/wines/rating/:id", (request, response) => {
   const getRating = wineDetailTemplate.find({
     vzorka_id: request.params.id,
   });
+
+  getRating
+    .then((data) => {
+      response.json(data);
+    })
+    .catch((err) => response.json(err));
+});
+
+router.get("/wines/rating/counting/:id", (request, response) => {
+  const getRating = wineDetailTemplate.find({
+    vzorka_id: request.params.id,
+  });
+
+  getRating
+    .then((data) => {
+      response.json(
+        data.map(({ hodnotenie_celkove, hodnotenie_priemerne }) => ({
+          hodnotenie_celkove,
+          hodnotenie_priemerne,
+        }))
+      );
+    })
+    .catch((err) => response.json(err));
+});
+
+router.get("/wines/ratingsAll", (_, response) => {
+  const getRating = wineDetailTemplate.find({});
 
   getRating
     .then((data) => {
@@ -500,19 +545,6 @@ router.post("/configuration/hodnotitel/:id", (request, response) => {
     .catch((err) => response.json(err));
 });
 
-// router.post("/wines/hodnotenie", (request, response) => {
-//   const createHodnotenie = new configurationHodnotenia({
-//     nazov: request.body.nazov,
-//   });
-
-//   createHodnotenie
-//     .save()
-//     .then((data) => {
-//       response.json(data);
-//     })
-//     .catch((err) => response.json(err));
-// });
-
 router.get("/wines/hodnotenie/all", (_, response) => {
   const getHodnotenia = configurationHodnotenia.find({});
 
@@ -577,12 +609,25 @@ router.get("/wines/komisia/all", (_, response) => {
     .catch((err) => response.json(err));
 });
 
+router.get("/wines/komisia/notPopulated/:id", (request, response) => {
+  const getKomisia = configurationKomisia.findOne({
+    _id: request.params.id,
+  });
+
+  getKomisia
+    .then((data) => {
+      response.json(data);
+    })
+    .catch((err) => response.json(err));
+});
+
 router.get("/wines/komisia/:id", (request, response) => {
   const getKomisia = configurationKomisia.findOne({
     _id: request.params.id,
   });
 
   getKomisia
+    .populate("hodnotenie")
     .then((data) => {
       response.json(data);
     })

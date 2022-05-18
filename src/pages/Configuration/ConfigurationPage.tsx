@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { Card } from "../../components/Card/Card";
 import { Formik, Form } from "formik";
@@ -8,11 +8,19 @@ import "./ConfigurationPage.css";
 import { Tabs } from "../../components/Tabs/Tabs";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import {
+  getScore,
+  getScoreCustom,
+  getScoreCustomUnited,
+  getScoreUnited,
+} from "../../functions";
 
 export const ConfigurationPage = () => {
   const history = useHistory();
   const [initialValues, setInitialValues] = useState<any>({});
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const allWinesIds = useRef<string[]>([]);
+  const celkoveValues = useRef<number[]>([]);
 
   useEffect(() => {
     axios
@@ -23,6 +31,75 @@ export const ConfigurationPage = () => {
       .catch((err) => console.log(err))
       .finally(() => setIsLoading(false));
   }, []);
+
+  const getAllWinesIds = (ratingValues: any[]) => {
+    axios
+      .get("http://localhost:4000/wines/wines/allId")
+      .then((response) => {
+        allWinesIds.current = response.data;
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        updateAllRatings(allWinesIds.current, ratingValues).finally(() =>
+          updateWineRatings()
+        );
+      });
+  };
+
+  const updateAllRatings = async (ids: string[], ratingValues: any[]) => {
+    ids.forEach((val) =>
+      axios
+        .get(`http://localhost:4000/wines/wines/rating/${val}`)
+        .then((response) => {
+          response.data.map((val: any) => {
+            axios
+              .post(
+                `http://localhost:4000/wines/wines/rating/update/${val?._id}`,
+                {
+                  hodnotenie_celkove: getScore(val, ratingValues),
+                  hodnotenie_priemerne: getScoreCustom(val, ratingValues),
+                }
+              )
+              .catch((err) => console.log(err));
+          });
+        })
+        .catch((err) => console.log(err))
+    );
+
+    return Promise.resolve();
+  };
+
+  const updateWineRatings = () => {
+    allWinesIds.current.forEach((val) => {
+      axios
+        .get(`http://localhost:4000/wines/wines/rating/counting/${val}`)
+        .then((response) => {
+          response.data.map((val: any) =>
+            celkoveValues.current.push(val?.hodnotenie_celkove)
+          );
+        })
+        .catch((err) => console.log(err))
+        .finally(() => {
+          handleNewWineRating(
+            getScoreUnited(celkoveValues.current),
+            getScoreCustomUnited(celkoveValues.current),
+            val
+          );
+          celkoveValues.current = [];
+        });
+    });
+  };
+
+  const handleNewWineRating = (
+    celkove: number,
+    priemerne: number,
+    wineId: string
+  ) => {
+    axios.post(`http://localhost:4000/wines/wines/one/${wineId}`, {
+      hodnotenie_celkove: celkove,
+      hodnotenie_priemerne: priemerne,
+    });
+  };
 
   const validationSchema = Yup.object({
     //Vzhlad values
@@ -92,6 +169,8 @@ export const ConfigurationPage = () => {
   });
 
   const handleSubmit = (values: any) => {
+    getAllWinesIds(values);
+
     axios.post("http://localhost:4000/wines/configuration/update", values);
   };
 

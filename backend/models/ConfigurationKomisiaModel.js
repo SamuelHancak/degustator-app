@@ -8,6 +8,7 @@ const komisiaGetTemplate = new mongoose.Schema({
   hodnotenie: {
     type: String,
     required: true,
+    ref: "hodnotenia",
   },
 });
 

@@ -7,6 +7,7 @@ import { Tabs } from "../../components/Tabs/Tabs";
 import { TextField, MenuItem } from "@mui/material";
 import axios from "axios";
 import Switch from "@mui/material/Switch";
+import { getScore, getScoreCustom } from "../../functions";
 
 export const WineDetailPage = () => {
   const history = useHistory();
@@ -20,6 +21,7 @@ export const WineDetailPage = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [activeRow, setActiveRow] = useState<string>();
   const [ratingValues, setRatingValues] = useState<any>([]);
+  const [hodnotenie, setHodnotenie] = useState<string>("Celkové");
 
   useEffect(() => {
     axios
@@ -29,6 +31,19 @@ export const WineDetailPage = () => {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  useEffect(() => {
+    if (!!loggedUser.current?.komisia) {
+      axios
+        .get(
+          `http://localhost:4000/wines/wines/komisia/${loggedUser.current?.komisia}`
+        )
+        .then((response) => {
+          setHodnotenie(response.data?.hodnotenie?.nazov);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [loggedUser.current]);
 
   useEffect(() => {
     axios
@@ -51,7 +66,6 @@ export const WineDetailPage = () => {
               const usersKomisia = response.data.filter(
                 (user: any) => user.komisia === loggedUser.current.komisia
               );
-
               setUsers(usersKomisia);
               setActiveRow(usersKomisia[0]._id);
             } else {
@@ -62,7 +76,7 @@ export const WineDetailPage = () => {
           .catch((err) => console.log(err))
           .finally(() => setIsLoadingUsers(false))
       );
-  }, [loggedUser.current]);
+  }, []);
 
   useEffect(() => {
     setIsLoadingValues(true);
@@ -117,42 +131,6 @@ export const WineDetailPage = () => {
     axios
       .post(`http://localhost:4000/wines/wines/rating/delete/${params.wineId}`)
       .catch((err) => console.log(err));
-  };
-
-  const getScore = (data: any) => {
-    const sum =
-      Number(ratingValues[data?.cirost]) +
-      Number(ratingValues[data?.farba]) +
-      Number(ratingValues[data?.intenzita]) +
-      Number(ratingValues[data?.cistota]) +
-      Number(ratingValues[data?.harmonia]) +
-      Number(ratingValues[data?.intenzitaChut]) +
-      Number(ratingValues[data?.cistotaChut]) +
-      Number(ratingValues[data?.harmoniaChut]) +
-      Number(ratingValues[data?.perzistencia]);
-
-    return Math.floor(sum / 9);
-  };
-
-  const getScoreCustom = (data: any) => {
-    const values = [
-      Number(ratingValues[data?.cirost]),
-      Number(ratingValues[data?.farba]),
-      Number(ratingValues[data?.intenzita]),
-      Number(ratingValues[data?.cistota]),
-      Number(ratingValues[data?.harmonia]),
-      Number(ratingValues[data?.intenzitaChut]),
-      Number(ratingValues[data?.cistotaChut]),
-      Number(ratingValues[data?.harmoniaChut]),
-      Number(ratingValues[data?.perzistencia]),
-    ];
-
-    values.sort((a, b) => a - b).pop();
-    values.shift();
-
-    return Math.floor(
-      values.reduce((prev, curr) => prev + curr, 0) / values.length
-    );
   };
 
   const attributesVzhlad = useMemo(
@@ -296,11 +274,15 @@ export const WineDetailPage = () => {
                 <h1 className="cardTitle">{activeVzorka?.vzorka}</h1>
 
                 <div className="cardTitleRatingWrapper">
-                  <p className="cardTitleRating">celkové hodnotenie</p>
+                  <p className="cardTitleRating">{`${hodnotenie} hodnotenie`}</p>
 
                   <h1 className="cardTitleRating">
-                    {String(getScore(defaultValues)) !== "NaN"
-                      ? getScore(defaultValues)
+                    {String(
+                      hodnotenie !== "Celkové"
+                        ? getScoreCustom(defaultValues, ratingValues)
+                        : getScore(defaultValues, ratingValues)
+                    ) !== "NaN"
+                      ? getScore(defaultValues, ratingValues)
                       : "N/A"}
                   </h1>
                 </div>
@@ -334,7 +316,7 @@ export const WineDetailPage = () => {
                 <div>
                   Potvrdit hodnotenie pre celu komisiu
                   <Switch
-                    defaultChecked={activeVzorka.potvrdene}
+                    defaultChecked={activeVzorka?.potvrdene}
                     onChange={(val) =>
                       handlePotvrdenieKomisie(val.target.checked)
                     }
@@ -344,7 +326,9 @@ export const WineDetailPage = () => {
                 <div>
                   Potvrdit hodnotenie pre daneho pouzivatela
                   <Switch
-                    disabled={String(getScore(defaultValues)) === "NaN"}
+                    disabled={
+                      String(getScore(defaultValues, ratingValues)) === "NaN"
+                    }
                     defaultChecked={defaultValues?.potvrdene}
                     onChange={(val) =>
                       handlePotvrdenieHodnotenia(val.target.checked)

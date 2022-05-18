@@ -76,6 +76,14 @@ const wineDetailTemplate = new mongoose.Schema({
   perzistenciaNotes: {
     type: String,
   },
+  hodnotenie_celkove: {
+    type: Number,
+    default: 0,
+  },
+  hodnotenie_priemerne: {
+    type: Number,
+    default: 0,
+  },
   created_at: {
     type: Date,
     default: Date.now,

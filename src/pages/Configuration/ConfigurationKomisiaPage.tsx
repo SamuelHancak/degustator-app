@@ -52,21 +52,21 @@ export const ConfigurationKomisiaPage = () => {
     } else {
       setIsLoadingValues(true);
       axios
-        .get(`http://localhost:4000/wines/wines/komisia/${id}`)
+        .get(`http://localhost:4000/wines/wines/komisia/notPopulated/${id}`)
         .then((response) => {
-          handleHodnotenieSelect(response.data.hodnotenie);
+          handleHodnotenieSelect(response.data.hodnotenie, id);
         })
         .catch((err) => console.log(err))
         .finally(() => setCreateForm(false));
     }
   };
 
-  const handleHodnotenieSelect = (id: string) => {
+  const handleHodnotenieSelect = (id: string, komisiaId: string) => {
     axios
       .get(`http://localhost:4000/wines/wines/hodnotenie/${id}`)
       .then((response) => {
         initialValues.current = {
-          ...response.data,
+          _id: komisiaId,
           hodnotenie: response.data?._id,
         };
       })
@@ -80,16 +80,13 @@ export const ConfigurationKomisiaPage = () => {
     } else {
       axios
         .post(
-          `http://localhost:4000/wines/wines/komisia/${initialValues.current._id}`,
+          `http://localhost:4000/wines/wines/komisia/${initialValues.current?._id}`,
           values
         )
-        .then((response) => {
-          initialValues.current = response.data;
-        })
         .catch((err) => console.log(err))
         .finally(() => {
           setIsLoadingValues(false);
-          handleKomisiaSelect(initialValues.current._id);
+          handleKomisiaSelect(initialValues.current.hodnotenie);
         });
     }
   };
@@ -171,7 +168,13 @@ export const ConfigurationKomisiaPage = () => {
                   actions.setSubmitting(false);
                 }}
               >
-                {({ errors, values, handleChange, handleReset }) => (
+                {({
+                  errors,
+                  values,
+                  handleChange,
+                  handleReset,
+                  handleSubmit,
+                }) => (
                   <Form>
                     <>
                       <div className="inputWrapper">
@@ -217,6 +220,10 @@ export const ConfigurationKomisiaPage = () => {
                       color="success"
                       type="submit"
                       variant="contained"
+                      onClick={() => {
+                        handleSubmit(values);
+                        handleKomisialUpdate(values);
+                      }}
                     >
                       Uložiť
                     </Button>

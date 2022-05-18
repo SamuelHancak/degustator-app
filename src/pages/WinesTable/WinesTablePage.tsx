@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import { useHistory } from "react-router-dom";
 //styles
@@ -82,6 +76,7 @@ export const WinesTablePage = () => {
   const [rows, setRows] = useState<GridRowsProp>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const loggedUser = useRef<any>();
+  const hodnotenie = useRef<string>("Celkové");
 
   useEffect(() => {
     axios
@@ -95,47 +90,67 @@ export const WinesTablePage = () => {
       })
       .catch((err) => console.log(err))
       .finally(() => {
-        loggedUser.current?.prava === "0" || loggedUser.current?.prava === "1"
-          ? axios
-              .get("http://localhost:4000/wines/wines/all")
-              .then((response) => {
-                setRows(
-                  response.data.map((i: any) => ({
-                    ...i,
-                    id: i._id,
-                    hodnotenie: 100,
-                    komisia: i.komisia.meno,
-                    vystavovatel:
-                      i.vystavovatel?.meno && i.vystavovatel?.priezvisko
-                        ? `${i.vystavovatel.meno} ${i.vystavovatel.priezvisko}`
-                        : i.vystavovatel.email,
-                  }))
-                );
-              })
-              .catch((err) => console.log(err))
-              .finally(() => setIsLoading(false))
-          : axios
-              .get(
-                `http://localhost:4000/wines/wines/komisiaWines/${loggedUser.current?.komisia}`
-              )
-              .then((response) => {
-                setRows(
-                  response.data.map((i: any) => ({
-                    ...i,
-                    id: i._id,
-                    hodnotenie: 100,
-                    komisia: i.komisia.meno,
-                    vystavovatel:
-                      i.vystavovatel?.meno && i.vystavovatel?.priezvisko
-                        ? `${i.vystavovatel.meno} ${i.vystavovatel.priezvisko}`
-                        : i.vystavovatel.email,
-                  }))
-                );
-              })
-              .catch((err) => console.log(err))
-              .finally(() => setIsLoading(false));
+        if (!!loggedUser.current?.komisia) {
+          axios
+            .get(
+              `http://localhost:4000/wines/wines/komisia/${loggedUser.current?.komisia}`
+            )
+            .then((response) => {
+              hodnotenie.current = response.data?.hodnotenie?.nazov;
+            })
+            .catch((err) => console.log(err))
+            .finally(() => getData());
+        }
       });
   }, []);
+
+  const getData = () => {
+    loggedUser.current?.prava === "0" || loggedUser.current?.prava === "1"
+      ? axios
+          .get("http://localhost:4000/wines/wines/all")
+          .then((response) => {
+            setRows(
+              response.data.map((i: any) => ({
+                ...i,
+                id: i._id,
+                hodnotenie:
+                  hodnotenie.current !== "Celkové"
+                    ? i.hodnotenie_priemerne
+                    : i.hodnotenie_celkove,
+                komisia: i.komisia.meno,
+                vystavovatel:
+                  i.vystavovatel?.meno && i.vystavovatel?.priezvisko
+                    ? `${i.vystavovatel.meno} ${i.vystavovatel.priezvisko}`
+                    : i.vystavovatel.email,
+              }))
+            );
+          })
+          .catch((err) => console.log(err))
+          .finally(() => setIsLoading(false))
+      : axios
+          .get(
+            `http://localhost:4000/wines/wines/komisiaWines/${loggedUser.current?.komisia}`
+          )
+          .then((response) => {
+            setRows(
+              response.data.map((i: any) => ({
+                ...i,
+                id: i._id,
+                hodnotenie:
+                  hodnotenie.current !== "Celkové"
+                    ? i.hodnotenie_priemerne
+                    : i.hodnotenie_celkove,
+                komisia: i.komisia.meno,
+                vystavovatel:
+                  i.vystavovatel?.meno && i.vystavovatel?.priezvisko
+                    ? `${i.vystavovatel.meno} ${i.vystavovatel.priezvisko}`
+                    : i.vystavovatel.email,
+              }))
+            );
+          })
+          .catch((err) => console.log(err))
+          .finally(() => setIsLoading(false));
+  };
 
   const history = useHistory();
   const screenHeight = window.innerHeight - BOTTOM_PADDING;

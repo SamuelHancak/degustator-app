@@ -12,7 +12,7 @@ import axios from "axios";
 
 export const LogInPage = () => {
   const history = useHistory();
-  const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
+  const { setLoggedInUserId } = useContext(LoggedInUserContext);
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const [wrongPassword, setWrongPassword] = useState<boolean>(false);
   const [userNotFound, setUserNotFound] = useState<boolean>(false);
@@ -20,10 +20,10 @@ export const LogInPage = () => {
   const [lowestPrava, setLowestPrava] = useState<any>(null);
 
   useEffect(() => {
-    if (!!localStorage.getItem("loggedUserId")?.length) {
+    if (!!localStorage.getItem("loggedUserId")) {
       history.push("/");
     }
-  }, [loggedInUser]);
+  }, []);
 
   const validationSchemaLogin = Yup.object({
     email: Yup.string()
@@ -101,7 +101,7 @@ export const LogInPage = () => {
         setWrongPassword(!response.data);
 
         if (response.data) {
-          setLoggedInUser(userData);
+          setLoggedInUserId(userData._id);
           localStorage.setItem("loggedUserId", userData._id);
           history.push("/wines");
         }

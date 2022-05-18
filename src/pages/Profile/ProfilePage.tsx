@@ -41,7 +41,6 @@ export const ProfilePage = () => {
   });
 
   const handleUpdate = (values: any) => {
-    console.log(values);
     setIsLoading(true);
 
     axios
@@ -56,8 +55,6 @@ export const ProfilePage = () => {
   };
 
   const handleUpdatePassword = (values: any) => {
-    console.log(values);
-
     axios
       .post(
         `http://localhost:4000/wines/wines/user/${localStorage.getItem(
@@ -88,7 +85,6 @@ export const ProfilePage = () => {
               validationSchema={validationSchema}
               initialValues={initialValues}
               onSubmit={(values, actions) => {
-                console.log(values);
                 handleUpdate(values);
                 actions.setSubmitting(false);
               }}

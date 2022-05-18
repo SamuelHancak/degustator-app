@@ -1,26 +1,28 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
 // styles
 import "./SideMenu.css";
 import axios from "axios";
+import { LoggedInUserContext } from "../../App";
 
 export const SideMenu = () => {
+  const { loggedInUserId } = useContext(LoggedInUserContext);
   const [loggedUser, setLoggedUser] = useState<any>();
   const history = useHistory();
 
   useEffect(() => {
     axios
       .get(
-        `http://localhost:4000/wines/wines/userId/${localStorage.getItem(
-          "loggedUserId"
-        )}`
+        `http://localhost:4000/wines/wines/userId/${
+          localStorage.getItem("loggedUserId") ?? loggedInUserId
+        }`
       )
       .then((response) => {
         setLoggedUser(response.data);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [loggedInUserId]);
 
   return (
     <div className="sideMenu">

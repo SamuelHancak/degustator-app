@@ -1,4 +1,4 @@
-POST  http://localhost:4000/wines/wines/userPassword/heslo/test@test.com
+GET  http://localhost:4000/wines/wines/ratingsAll
 Content-Type: application/json
 
 # {
@@ -12,8 +12,7 @@ Content-Type: application/json
 # }
 
 # {
-#     "meno": "Komisia X",
-#     "hodnotenie": "6261cb77b34eb51792d144b8"
+#     "hodnotenie": "6261cb70b34eb51792d144b6"
 # }
 
 # {

@@ -100,8 +100,20 @@ router.post("/wines/one/:id", (request, response) => {
   );
 
   updateVzorka
-    .then((data) => {
-      response.json(data);
+    .then(() => {
+      const getRating = wineDetailTemplate.find({
+        vzorka_id: request.params.id,
+      });
+
+      getRating
+        .then((data) => {
+          response.json(
+            data.map(({ hodnotenie_celkove }) => ({
+              hodnotenie_celkove,
+            }))
+          );
+        })
+        .catch((err) => response.json(err));
     })
     .catch((err) => response.json(err));
 });
@@ -130,18 +142,25 @@ router.post("/wines/rating/create", (request, response) => {
     harmoniaChutNotes: request.body.harmoniaChutNotes,
     perzistenciaNotes: request.body.perzistenciaNotes,
     hodnotenie_celkove: request.body.hodnotenie_celkove,
-    hodnotenie_priemerne: request.body.hodnotenie_priemerne,
   });
 
   createRating
     .save()
-    .then((data) => {
-      response.json(data);
+    .then(() => {
+      const getRating = wineDetailTemplate.find({
+        vzorka_id: request.body.vzorka_id,
+      });
+
+      getRating
+        .then((data) => {
+          response.json(data);
+        })
+        .catch((err) => response.json(err));
     })
     .catch((err) => response.json(err));
 });
 
-router.post("/wines/rating/update/:id", (request, response) => {
+router.post("/wines/rating/update/:id/:wine_id", (request, response) => {
   const updateRating = wineDetailTemplate.updateOne(
     { _id: request.params.id },
     {
@@ -166,54 +185,73 @@ router.post("/wines/rating/update/:id", (request, response) => {
         harmoniaChutNotes: request.body.harmoniaChutNotes,
         perzistenciaNotes: request.body.perzistenciaNotes,
         hodnotenie_celkove: request.body.hodnotenie_celkove,
-        hodnotenie_priemerne: request.body.hodnotenie_priemerne,
       },
     }
   );
 
   updateRating
-    .then((data) => {
-      response.json(data);
+    .then(() => {
+      const getRating = wineDetailTemplate.find({
+        vzorka_id: request.params.wine_id,
+      });
+
+      getRating
+        .then((data) => {
+          response.json(
+            data.map(({ hodnotenie_celkove }) => hodnotenie_celkove)
+          );
+        })
+        .catch((err) => response.json(err));
     })
     .catch((err) => response.json(err));
 });
 
-router.post("/wines/rating/update/:id/:hodnotitel_id", (request, response) => {
-  const updateRating = wineDetailTemplate.updateOne(
-    { _id: request.params.id, hodnotitel_id: request.params.hodnotitel_id },
-    {
-      $set: {
-        cirost: request.body.cirost,
-        farba: request.body.farba,
-        intenzita: request.body.intenzita,
-        cistota: request.body.cistota,
-        harmonia: request.body.harmonia,
-        intenzitaChut: request.body.intenzitaChut,
-        cistotaChut: request.body.cistotaChut,
-        harmoniaChut: request.body.harmoniaChut,
-        perzistencia: request.body.perzistencia,
-        cirostNotes: request.body.cirostNotes,
-        farbaNotes: request.body.farbaNotes,
-        intenzitaNotes: request.body.intenzitaNotes,
-        cistotaNotes: request.body.cistotaNotes,
-        harmoniaNotes: request.body.harmoniaNotes,
-        intenzitaChutNotes: request.body.intenzitaChutNotes,
-        cistotaChutNotes: request.body.cistotaChutNotes,
-        harmoniaChutNotes: request.body.harmoniaChutNotes,
-        perzistenciaNotes: request.body.perzistenciaNotes,
-        potvrdene: request.body.potvrdene,
-        hodnotenie_celkove: request.body.hodnotenie_celkove,
-        hodnotenie_priemerne: request.body.hodnotenie_priemerne,
-      },
-    }
-  );
+router.post(
+  "/wines/rating/update/:id/:hodnotitel_id/:wine_id",
+  (request, response) => {
+    const updateRating = wineDetailTemplate.updateOne(
+      { _id: request.params.id, hodnotitel_id: request.params.hodnotitel_id },
+      {
+        $set: {
+          cirost: request.body.cirost,
+          farba: request.body.farba,
+          intenzita: request.body.intenzita,
+          cistota: request.body.cistota,
+          harmonia: request.body.harmonia,
+          intenzitaChut: request.body.intenzitaChut,
+          cistotaChut: request.body.cistotaChut,
+          harmoniaChut: request.body.harmoniaChut,
+          perzistencia: request.body.perzistencia,
+          cirostNotes: request.body.cirostNotes,
+          farbaNotes: request.body.farbaNotes,
+          intenzitaNotes: request.body.intenzitaNotes,
+          cistotaNotes: request.body.cistotaNotes,
+          harmoniaNotes: request.body.harmoniaNotes,
+          intenzitaChutNotes: request.body.intenzitaChutNotes,
+          cistotaChutNotes: request.body.cistotaChutNotes,
+          harmoniaChutNotes: request.body.harmoniaChutNotes,
+          perzistenciaNotes: request.body.perzistenciaNotes,
+          potvrdene: request.body.potvrdene,
+          hodnotenie_celkove: request.body.hodnotenie_celkove,
+        },
+      }
+    );
 
-  updateRating
-    .then((data) => {
-      response.json(data);
-    })
-    .catch((err) => response.json(err));
-});
+    updateRating
+      .then(() => {
+        const getRating = wineDetailTemplate.find({
+          vzorka_id: request.params.wine_id,
+        });
+
+        getRating
+          .then((data) => {
+            response.json(data);
+          })
+          .catch((err) => response.json(err));
+      })
+      .catch((err) => response.json(err));
+  }
+);
 
 router.post("/wines/rating/delete/:id", (request, response) => {
   const deleteRating = wineDetailTemplate.deleteMany({
@@ -247,9 +285,8 @@ router.get("/wines/rating/counting/:id", (request, response) => {
   getRating
     .then((data) => {
       response.json(
-        data.map(({ hodnotenie_celkove, hodnotenie_priemerne }) => ({
+        data.map(({ hodnotenie_celkove }) => ({
           hodnotenie_celkove,
-          hodnotenie_priemerne,
         }))
       );
     })

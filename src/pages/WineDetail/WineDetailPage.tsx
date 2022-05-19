@@ -7,7 +7,7 @@ import { Tabs } from "../../components/Tabs/Tabs";
 import { TextField, MenuItem } from "@mui/material";
 import axios from "axios";
 import Switch from "@mui/material/Switch";
-import { getScore, getScoreCustom } from "../../functions";
+import { getScore } from "../../functions";
 
 export const WineDetailPage = () => {
   const history = useHistory();
@@ -21,7 +21,6 @@ export const WineDetailPage = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [activeRow, setActiveRow] = useState<string>();
   const [ratingValues, setRatingValues] = useState<any>([]);
-  const [hodnotenie, setHodnotenie] = useState<string>("Celkové");
 
   useEffect(() => {
     axios
@@ -31,19 +30,6 @@ export const WineDetailPage = () => {
       })
       .catch((err) => console.log(err));
   }, []);
-
-  useEffect(() => {
-    if (!!loggedUser.current?.komisia) {
-      axios
-        .get(
-          `http://localhost:4000/wines/wines/komisia/${loggedUser.current?.komisia}`
-        )
-        .then((response) => {
-          setHodnotenie(response.data?.hodnotenie?.nazov);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [loggedUser.current]);
 
   useEffect(() => {
     axios
@@ -274,14 +260,10 @@ export const WineDetailPage = () => {
                 <h1 className="cardTitle">{activeVzorka?.vzorka}</h1>
 
                 <div className="cardTitleRatingWrapper">
-                  <p className="cardTitleRating">{`${hodnotenie} hodnotenie`}</p>
+                  <p className="cardTitleRating">Hodnotenie vzorky</p>
 
                   <h1 className="cardTitleRating">
-                    {String(
-                      hodnotenie !== "Celkové"
-                        ? getScoreCustom(defaultValues, ratingValues)
-                        : getScore(defaultValues, ratingValues)
-                    ) !== "NaN"
+                    {String(getScore(defaultValues, ratingValues)) !== "NaN"
                       ? getScore(defaultValues, ratingValues)
                       : "N/A"}
                   </h1>

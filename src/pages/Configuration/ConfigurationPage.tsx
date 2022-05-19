@@ -10,7 +10,6 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import {
   getScore,
-  getScoreCustom,
   getScoreCustomUnited,
   getScoreUnited,
 } from "../../functions";
@@ -40,53 +39,50 @@ export const ConfigurationPage = () => {
       })
       .catch((err) => console.log(err))
       .finally(() => {
-        updateAllRatings(allWinesIds.current, ratingValues).finally(() =>
-          updateWineRatings()
-        );
+        updateAllRatings(allWinesIds.current, ratingValues);
       });
   };
 
   const updateAllRatings = async (ids: string[], ratingValues: any[]) => {
-    ids.forEach((val) =>
-      axios
-        .get(`http://localhost:4000/wines/wines/rating/${val}`)
-        .then((response) => {
-          response.data.map((val: any) => {
-            axios
-              .post(
-                `http://localhost:4000/wines/wines/rating/update/${val?._id}`,
-                {
-                  hodnotenie_celkove: getScore(val, ratingValues),
-                  hodnotenie_priemerne: getScoreCustom(val, ratingValues),
-                }
-              )
-              .catch((err) => console.log(err));
-          });
-        })
-        .catch((err) => console.log(err))
-    );
-
-    return Promise.resolve();
+    Promise.all(
+      ids.map((id) =>
+        axios
+          .get(`http://localhost:4000/wines/wines/rating/${id}`)
+          .then((response) => {
+            return Promise.all(
+              response.data.map((val: any) => {
+                return axios
+                  .post(
+                    `http://localhost:4000/wines/wines/rating/update/${val?._id}/${id}`,
+                    {
+                      hodnotenie_celkove: getScore(val, ratingValues),
+                    }
+                  )
+                  .catch((err) => console.log(err));
+              })
+            );
+          })
+          .catch((err) => console.log(err))
+      )
+    ).then((result) => {
+      if (result.length > 0) {
+        updateWineRatings(
+          ((result[result.length - 1] as any)[result.length - 1] as any).data
+        );
+      }
+    });
   };
 
-  const updateWineRatings = () => {
-    allWinesIds.current.forEach((val) => {
-      axios
-        .get(`http://localhost:4000/wines/wines/rating/counting/${val}`)
-        .then((response) => {
-          response.data.map((val: any) =>
-            celkoveValues.current.push(val?.hodnotenie_celkove)
-          );
-        })
-        .catch((err) => console.log(err))
-        .finally(() => {
-          handleNewWineRating(
-            getScoreUnited(celkoveValues.current),
-            getScoreCustomUnited(celkoveValues.current),
-            val
-          );
-          celkoveValues.current = [];
-        });
+  const updateWineRatings = (data: any[]) => {
+    allWinesIds.current.forEach((id) => {
+      data.map((val: any) => celkoveValues.current.push(val));
+
+      handleNewWineRating(
+        getScoreUnited(celkoveValues.current),
+        getScoreCustomUnited(celkoveValues.current),
+        id
+      );
+      celkoveValues.current = [];
     });
   };
 
@@ -170,7 +166,6 @@ export const ConfigurationPage = () => {
 
   const handleSubmit = (values: any) => {
     getAllWinesIds(values);
-
     axios.post("http://localhost:4000/wines/configuration/update", values);
   };
 

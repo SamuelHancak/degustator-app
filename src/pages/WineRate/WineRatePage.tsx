@@ -11,7 +11,6 @@ import { useHistory, useParams } from "react-router-dom";
 import axios from "axios";
 import {
   getScore,
-  getScoreCustom,
   getScoreCustomUnited,
   getScoreUnited,
 } from "../../functions";
@@ -113,40 +112,33 @@ export const WineRatePage = () => {
 
   const handleSubmit = (values: any) => {
     isRated
-      ? axios.post(
-          `http://localhost:4000/wines/wines/rating/update/${defaultValues._id}/${params.userId}`,
-          {
+      ? axios
+          .post(
+            `http://localhost:4000/wines/wines/rating/update/${defaultValues._id}/${params.userId}/${params.wineId}`,
+            {
+              ...values,
+              hodnotenie_celkove: getScore(values, ratingValues),
+            }
+          )
+          .then((result) => updateWineRatings(result.data))
+      : axios
+          .post("http://localhost:4000/wines/wines/rating/create", {
             ...values,
+            hodnotitel_id: params.userId,
             hodnotenie_celkove: getScore(values, ratingValues),
-            hodnotenie_priemerne: getScoreCustom(values, ratingValues),
-          }
-        )
-      : axios.post("http://localhost:4000/wines/wines/rating/create", {
-          ...values,
-          hodnotitel_id: params.userId,
-          hodnotenie_celkove: getScore(values, ratingValues),
-          hodnotenie_priemerne: getScoreCustom(values, ratingValues),
-        });
+          })
+          .then((result) => updateWineRatings(result.data));
 
     history.push(`/wines/detail/${params.wineId}`);
-    updateWineRatings();
   };
 
-  const updateWineRatings = () => {
-    axios
-      .get(`http://localhost:4000/wines/wines/rating/counting/${params.wineId}`)
-      .then((response) => {
-        response.data.map((val: any) =>
-          celkoveValues.current.push(val?.hodnotenie_celkove)
-        );
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        handleNewWineRating(
-          getScoreUnited(celkoveValues.current),
-          getScoreCustomUnited(celkoveValues.current)
-        );
-      });
+  const updateWineRatings = (data: any[]) => {
+    data.map((val: any) => celkoveValues.current.push(val?.hodnotenie_celkove));
+
+    handleNewWineRating(
+      getScoreUnited(celkoveValues.current),
+      getScoreCustomUnited(celkoveValues.current)
+    );
   };
 
   const handleNewWineRating = (celkove: number, priemerne: number) => {

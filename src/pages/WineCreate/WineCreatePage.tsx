@@ -174,28 +174,37 @@ export const WineCreatePage = () => {
                         onChange={handleChange}
                         error={Boolean(errors.kategoria?.length)}
                       >
-                        <MenuItem key={"kategoria-1"} value={"kategoria-1"}>
+                        <MenuItem key={"kategoria-1"} value={"Biele suché"}>
                           Biele suché
                         </MenuItem>
-                        <MenuItem key={"kategoria-2"} value={"kategoria-2"}>
+                        <MenuItem key={"kategoria-2"} value={"Biele polosuché"}>
                           Biele polosuché
                         </MenuItem>
-                        <MenuItem key={"kategoria-3"} value={"kategoria-3"}>
+                        <MenuItem
+                          key={"kategoria-3"}
+                          value={"Biele polosladké"}
+                        >
                           Biele polosladké
                         </MenuItem>
-                        <MenuItem key={"kategoria-4"} value={"kategoria-4"}>
+                        <MenuItem key={"kategoria-4"} value={"Ružové suché"}>
                           Ružové suché
                         </MenuItem>
-                        <MenuItem key={"kategoria-5"} value={"kategoria-5"}>
+                        <MenuItem
+                          key={"kategoria-5"}
+                          value={"Ružové polosuché"}
+                        >
                           Ružové polosuché
                         </MenuItem>
-                        <MenuItem key={"kategoria-6"} value={"kategoria-6"}>
+                        <MenuItem key={"kategoria-6"} value={"Červené"}>
                           Červené
                         </MenuItem>
-                        <MenuItem key={"kategoria-7"} value={"kategoria-7"}>
+                        <MenuItem key={"kategoria-7"} value={"Šumivé"}>
                           Šumivé
                         </MenuItem>
-                        <MenuItem key={"kategoria-8"} value={"kategoria-8"}>
+                        <MenuItem
+                          key={"kategoria-8"}
+                          value={"Sladké (ľadový zber, slamové)"}
+                        >
                           Sladké (ľadový zber, slamové)
                         </MenuItem>
                       </TextField>

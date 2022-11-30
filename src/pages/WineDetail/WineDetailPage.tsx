@@ -1,192 +1,208 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Card } from "../../components/Card/Card";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 // styles
 import "./WineDetailPage.css";
 import { Tabs } from "../../components/Tabs/Tabs";
-import { LoggedInUserContext } from "../../App";
 import { TextField, MenuItem } from "@mui/material";
-
-// testing data
-const attributesVzhlad: IAttributeProps[] = [
-  {
-    name: "Čírosť",
-    value: 5,
-    notes:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-  },
-  {
-    name: "Farba",
-    value: 1,
-    notes:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-  },
-];
-
-const attributesVona: IAttributeProps[] = [
-  {
-    name: "Intenzita",
-    value: 5,
-  },
-  {
-    name: "Čistota",
-    value: 1,
-    notes:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.",
-  },
-  {
-    name: "Harmónia",
-    value: 1,
-  },
-];
-
-const attributesChut: IAttributeProps[] = [
-  {
-    name: "Čistota",
-    value: 1,
-  },
-  {
-    name: "Harmónia",
-    value: 1,
-    notes:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-  },
-  {
-    name: "Perzistencia",
-    value: 5,
-  },
-];
-
-// let rows: GridRowsProp = [
-//   {
-//     id: 1,
-//     name: "User Admin",
-//     prava: "Admin",
-//     komisia: "-",
-//   },
-//   {
-//     id: 2,
-//     name: "User Prezident",
-//     prava: "Prezident výstavy",
-//     komisia: "Komisia 2",
-//   },
-//   {
-//     id: 3,
-//     name: "User Predseda",
-//     prava: "Prezident výstavy",
-//     komisia: "Komisia 3",
-//   },
-//   {
-//     id: 4,
-//     name: "User Hodnotiteľ 1",
-//     prava: "Hodnotiteľ",
-//     komisia: "Komisia 3",
-//   },
-//   {
-//     id: 5,
-//     name: "User Hodnotiteľ 2",
-//     prava: "Hodnotiteľ",
-//     komisia: "Komisia 3",
-//   },
-//   {
-//     id: 6,
-//     name: "User Hodnotiteľ 3",
-//     prava: "Hodnotiteľ",
-//     komisia: "Komisia 3",
-//   },
-//   {
-//     id: 7,
-//     name: "User Hodnotiteľ 4",
-//     prava: "Hodnotiteľ",
-//     komisia: "Komisia 3",
-//   },
-// ];
-
-// // Test data
-// const columns: GridColDef[] = [
-//   {
-//     field: "id",
-//     headerName: "ID",
-//     hide: true,
-//     flex: 0.5,
-//     align: "center",
-//     headerAlign: "center",
-//     minWidth: 50,
-//   },
-//   { field: "name", headerName: "Name", flex: 2.5, minWidth: 250 },
-//   {
-//     field: "prava",
-//     headerName: "Práva",
-//     flex: 1.5,
-//     minWidth: 150,
-//   },
-//   {
-//     field: "komisia",
-//     headerName: "Komisia",
-//     flex: 1.5,
-//     align: "center",
-//     minWidth: 150,
-//   },
-// ];
+import axios from "axios";
+import Switch from "@mui/material/Switch";
+import { getScore } from "../../functions";
 
 export const WineDetailPage = () => {
-  const loggedUser = useContext(LoggedInUserContext);
   const history = useHistory();
-  // const params = useParams<{ wineId: string }>();
-  // const screenHeight = window.innerHeight - BOTTOM_PADDING;
-  // const [hodnotenieVal, setHodnotenieVal] = useState<any>("celkove");
-
-  // const rowsFiltered = useMemo(() => {
-  //   switch (loggedUser.loggedInUser?.email) {
-  //     case "hodnotitel@mail.com":
-  //       return rows.filter((i) => i.name === "User Hodnotiteľ 1");
-  //     case "prezident@mail.com":
-  //       return rows.filter((i) => i.name !== "User Admin");
-  //     case "predseda@mail.com":
-  //       return rows.filter((i) => i.komisia === "Komisia 3");
-  //     default:
-  //       return rows;
-  //   }
-  // }, [loggedUser.loggedInUser?.email]);
-
-  const [activeRow, setActiveRow] = useState<string>("hodnotitel-1");
+  const params = useParams<{ wineId: string }>();
+  const [defaultValues, setDefaultValues] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoadingValues, setIsLoadingValues] = useState<boolean>(true);
+  const [isLoadingUsers, setIsLoadingUsers] = useState<boolean>(true);
+  const [activeVzorka, setActiveVzorka] = useState<any>();
+  const loggedUser = useRef<any>();
+  const [users, setUsers] = useState<any[]>([]);
+  const [activeRow, setActiveRow] = useState<string>();
+  const [ratingValues, setRatingValues] = useState<any>([]);
 
   useEffect(() => {
-    if (loggedUser.loggedInUser?.email === "admin@mail.com") {
-      setActiveRow("10");
-    } else if (loggedUser.loggedInUser?.email === "prezident@mail.com") {
-      setActiveRow("12");
-    } else if (loggedUser.loggedInUser?.email === "predseda@mail.com") {
-      setActiveRow("8");
-    } else {
-      setActiveRow("11");
-    }
-  }, [loggedUser.loggedInUser?.email]);
+    axios
+      .get("http://localhost:4000/wines/configuration/all")
+      .then((response) => {
+        setRatingValues(response.data[0]);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
-  // const rowCount = rowsFiltered.reduce((val) => {
-  //   return val + 1;
-  // }, 0);
+  useEffect(() => {
+    axios
+      .get(
+        `http://localhost:4000/wines/wines/userId/${localStorage.getItem(
+          "loggedUserId"
+        )}`
+      )
+      .then((response) => {
+        loggedUser.current = response.data;
+      })
+      .catch((err) => console.log(err))
+      .finally(() =>
+        axios
+          .get(
+            `http://localhost:4000/wines/wines/users/${loggedUser.current?.prava}`
+          )
+          .then((response) => {
+            if (loggedUser.current.prava === "2") {
+              const usersKomisia = response.data.filter(
+                (user: any) => user.komisia === loggedUser.current.komisia
+              );
+              setUsers(usersKomisia);
+              setActiveRow(usersKomisia[0]._id);
+            } else {
+              setUsers(response.data);
+              setActiveRow(response.data[0]._id);
+            }
+          })
+          .catch((err) => console.log(err))
+          .finally(() => setIsLoadingUsers(false))
+      );
+  }, []);
 
-  // const tableHeight =
-  //   (rowCount + 1.5) * ROW_HEIGHT > screenHeight
-  //     ? screenHeight - 30
-  //     : (rowCount + 1.5) * ROW_HEIGHT;
+  useEffect(() => {
+    setIsLoadingValues(true);
 
-  const tabs = [{ label: "Zoznam vín", onClick: () => history.push("/") }];
+    axios
+      .get(
+        `http://localhost:4000/wines/wines/rating/${params.wineId}/${activeRow}`
+      )
+      .then((response) => {
+        setDefaultValues(response.data);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setIsLoading(false);
+        setIsLoadingValues(false);
+      });
+  }, [activeRow]);
 
-  if (loggedUser.loggedInUser?.email !== "hodnotitel@mail.com") {
+  useEffect(() => {
+    axios
+      .get(`http://localhost:4000/wines/wines/one/${params.wineId}`)
+      .then((response) => {
+        if (!!response.data) {
+          setActiveVzorka(response.data);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const handlePotvrdenieKomisie = (value: boolean) => {
+    axios
+      .post(`http://localhost:4000/wines/wines/one/${params.wineId}`, {
+        potvrdenie: value,
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handlePotvrdenieHodnotenia = (value: boolean) => {
+    axios.post(
+      `http://localhost:4000/wines/wines/rating/update/${defaultValues._id}/${activeRow}`,
+      { potvrdene: value }
+    );
+  };
+
+  const handleDeleteDetail = () => {
+    axios
+      .post(`http://localhost:4000/wines/wines/delete/${params.wineId}`)
+      .catch((err) => console.log(err));
+  };
+
+  const handleDeleteRating = () => {
+    axios
+      .post(`http://localhost:4000/wines/wines/rating/delete/${params.wineId}`)
+      .catch((err) => console.log(err));
+  };
+
+  const attributesVzhlad = useMemo(
+    () => [
+      {
+        name: "Čírosť",
+        value: ratingValues[defaultValues?.cirost] ?? "N/A",
+        notes: defaultValues?.cirostNotes ?? "N/A",
+      },
+      {
+        name: "Farba",
+        value: ratingValues[defaultValues?.farba] ?? "N/A",
+        notes: defaultValues?.farbaNotes ?? "N/A",
+      },
+    ],
+    [defaultValues]
+  );
+
+  const attributesVona = useMemo(
+    () => [
+      {
+        name: "Intenzita",
+        value: ratingValues[defaultValues?.intenzita] ?? "N/A",
+        notes: defaultValues?.intenzitaNotes ?? "N/A",
+      },
+      {
+        name: "Čistota",
+        value: ratingValues[defaultValues?.cistota] ?? "N/A",
+        notes: defaultValues?.cistotaNotes ?? "N/A",
+      },
+      {
+        name: "Harmónia",
+        value: ratingValues[defaultValues?.harmonia] ?? "N/A",
+        notes: defaultValues?.harmoniaNotes ?? "N/A",
+      },
+    ],
+    [defaultValues]
+  );
+
+  const attributesChut = useMemo(
+    () => [
+      {
+        name: "Intenzita",
+        value: ratingValues[defaultValues?.intenzitaChut] ?? "N/A",
+        notes: defaultValues?.intenzitaChutNotes ?? "N/A",
+      },
+      {
+        name: "Čistota",
+        value: ratingValues[defaultValues?.cistotaChut] ?? "N/A",
+        notes: defaultValues?.cistotaChutNotes ?? "N/A",
+      },
+      {
+        name: "Harmónia",
+        value: ratingValues[defaultValues?.harmoniaChut] ?? "N/A",
+        notes: defaultValues?.harmoniaChutNotes ?? "N/A",
+      },
+      {
+        name: "Perzistencia",
+        value: ratingValues[defaultValues?.perzistencia] ?? "N/A",
+        notes: defaultValues?.perzistenciaNotes ?? "N/A",
+      },
+    ],
+    [defaultValues]
+  );
+
+  const tabs = [
+    { label: "Zoznam vín", onClick: () => history.push("/") },
+    {
+      label: "Upraviť hodnotenie",
+      onClick: () => history.push(`/wines/rate/${params.wineId}/${activeRow}`),
+    },
+  ];
+
+  if (loggedUser.current?.prava !== "3") {
     tabs.push(
       {
         label: "Pridať vzorku",
         onClick: () => history.push("/wines/create"),
       },
       {
-        label: "Upraviť hodnotenie",
-        onClick: () => history.push(`/wines/rate/${activeRow}`), //TODO
-      },
-      {
-        label: "Odstránť vzorku",
-        onClick: () => history.push("/"), //TODO
+        label: "Odstrániť vzorku",
+        onClick: () => {
+          handleDeleteRating();
+          handleDeleteDetail();
+          history.push("/");
+        },
       }
     );
   }
@@ -195,106 +211,117 @@ export const WineDetailPage = () => {
     <>
       <Tabs activeTab={false} tabs={tabs} />
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          columnGap: "20px",
-        }}
-      >
-        {/* <Card className="card firstColumn" style={{ maxHeight: tableHeight }}>
-          <div className="cardHeader">
-            <h1 className="cardTitle">Zoznam hodnotitelov</h1>
-          </div>
+      {!isLoading && !isLoadingUsers && (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+            flex: "1 1 auto",
+          }}
+        >
+          {loggedUser.current?.prava !== "3" && (
+            <Card className="card">
+              <div className="cardHeader">
+                <h1 className="cardTitle">Vyberte hodnotiteľa</h1>
+              </div>
 
-          <div style={{ height: tableHeight - 25, width: "100%" }}>
-            <DataGrid
-              // disableVirtualization //TODO: check with larger data
-              className="tableGrid firstColTable"
-              style={{ boxShadow: "none" }}
-              hideFooter
-              headerHeight={0}
-              rows={rowsFiltered}
-              columns={columns}
-              onCellClick={undefined}
-              onRowClick={({ id }) => {
-                setActiveRow(id);
-                history.push(`/wines/detail/${id}`);
-              }}
-              selectionModel={activeRow}
-            />
-          </div>
-        </Card> */}
+              <div className="cardContent">
+                <div
+                  className="inputWrapper"
+                  style={{ width: "100%", display: "unset" }}
+                >
+                  <TextField
+                    select
+                    required
+                    className="inputInfo"
+                    id="hodnotitel"
+                    label="Hodnotiteľ"
+                    name="hodnotitel"
+                    defaultValue={users[0]?._id}
+                    onChange={(e) => setActiveRow(e.target.value)}
+                  >
+                    {users.map((user) => (
+                      <MenuItem key={user._id} value={user._id}>
+                        {user?.meno && user?.priezvisko
+                          ? `${user?.meno} ${user?.priezvisko}`
+                          : user?.email}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </div>
+              </div>
+            </Card>
+          )}
 
-        <Card className="card" style={{ marginBottom: "15px" }}>
-          <div className="cardHeader">
-            <h1 className="cardTitle">Vyberte hodnotiteľa</h1>
-          </div>
+          {!isLoadingValues && (
+            <Card className="card">
+              <div className="cardHeader">
+                <h1 className="cardTitle">{activeVzorka?.vzorka}</h1>
 
-          <div className="cardContent">
-            <div
-              className="inputWrapper"
-              style={{ width: "100%", display: "unset" }}
-            >
-              <TextField
-                select
-                required
-                className="inputInfo"
-                id="hodnotitel"
-                label="Hodnotiteľ"
-                name="hodnotitel"
-                defaultValue="10"
-                onChange={(e) => setActiveRow(e.target.value)}
+                <div className="cardTitleRatingWrapper">
+                  <p className="cardTitleRating">Hodnotenie vzorky</p>
+
+                  <h1 className="cardTitleRating">
+                    {String(getScore(defaultValues, ratingValues)) !== "NaN"
+                      ? getScore(defaultValues, ratingValues)
+                      : "N/A"}
+                  </h1>
+                </div>
+              </div>
+              <div className="cardContent">
+                <AttributesSection
+                  name="Vzhľad"
+                  attributes={attributesVzhlad}
+                />
+                <AttributesSection name="Vôňa" attributes={attributesVona} />
+                <AttributesSection name="Chuť" attributes={attributesChut} />
+              </div>
+            </Card>
+          )}
+
+          {(!isLoadingValues || loggedUser.current?.prava !== "3") && (
+            <Card className="card">
+              <div className="cardHeader">
+                <h1 className="cardTitle">Potvrdenie hodnotenia vzorky</h1>
+              </div>
+
+              <div
+                className="cardContent"
+                style={{
+                  padding: "20px 0",
+                  display: "flex",
+                  justifyContent: "space-evenly",
+                  flexWrap: "wrap",
+                }}
               >
-                {loggedUser.loggedInUser?.email === "admin@mail.com" && (
-                  <MenuItem key={"admin"} value={"10"}>
-                    Admin
-                  </MenuItem>
-                )}
-                {loggedUser.loggedInUser?.email !== "predseda@mail.com" && (
-                  <MenuItem key={"prezident"} value={"12"}>
-                    Prezident výstavy
-                  </MenuItem>
-                )}
-                {loggedUser.loggedInUser?.email !== "hodnotitel@mail.com" && (
-                  <MenuItem key={"predseda"} value={"8"}>
-                    Predseda komisie
-                  </MenuItem>
-                )}
-                <MenuItem key={"hodnotitel-1"} value={"11"}>
-                  Hodnotiteľ 1
-                </MenuItem>
-                <MenuItem key={"hodnotitel-2"} value={"13"}>
-                  Hodnotiteľ 2
-                </MenuItem>
-                <MenuItem key={"hodnotitel-3"} value={"14"}>
-                  Hodnotiteľ 3
-                </MenuItem>
-                <MenuItem key={"hodnotitel-4"} value={"7"}>
-                  Hodnotiteľ 4
-                </MenuItem>
-              </TextField>
-            </div>
-          </div>
-        </Card>
+                <div>
+                  Potvrdit hodnotenie pre celu komisiu
+                  <Switch
+                    defaultChecked={activeVzorka?.potvrdene}
+                    onChange={(val) =>
+                      handlePotvrdenieKomisie(val.target.checked)
+                    }
+                  />
+                </div>
 
-        <Card className="card">
-          <div className="cardHeader">
-            <h1 className="cardTitle">Name of the wine</h1>
-
-            <div className="cardTitleRatingWrapper">
-              <p className="cardTitleRating">celkové hodnotenie</p>
-
-              <h1 className="cardTitleRating">{activeRow}</h1>
-            </div>
-          </div>
-          <div className="cardContent">
-            <AttributesSection name="Vzhľad" attributes={attributesVzhlad} />
-            <AttributesSection name="Vôňa" attributes={attributesVona} />
-            <AttributesSection name="Chuť" attributes={attributesChut} />
-          </div>
-        </Card>
-      </div>
+                <div>
+                  Potvrdit hodnotenie pre daneho pouzivatela
+                  <Switch
+                    disabled={
+                      String(getScore(defaultValues, ratingValues)) === "NaN"
+                    }
+                    defaultChecked={defaultValues?.potvrdene}
+                    onChange={(val) =>
+                      handlePotvrdenieHodnotenia(val.target.checked)
+                    }
+                  />
+                </div>
+              </div>
+            </Card>
+          )}
+        </div>
+      )}
     </>
   );
 };

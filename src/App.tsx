@@ -1,7 +1,13 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import "./App.css";
 import { Layout } from "./components/Layout/Layout";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, useHistory } from "react-router-dom";
 // pages
 import { ConfigurationPage } from "./pages/Configuration/ConfigurationPage";
 import { ConfigurationHodnotitelPage } from "./pages/Configuration/ConfigurationHodnotitelPage";
@@ -13,6 +19,7 @@ import { WineCreatePage } from "./pages/WineCreate/WineCreatePage";
 import { WineDetailPage } from "./pages/WineDetail/WineDetailPage";
 import { WineRatePage } from "./pages/WineRate/WineRatePage";
 import { WinesTablePage } from "./pages/WinesTable/WinesTablePage";
+
 // firebase
 import { auth } from "./firebase";
 
@@ -31,58 +38,28 @@ export type LoggedInUserType = {
 };
 
 export const LoggedInUserContext = createContext<{
-  loggedInUser: LoggedInUserType | null | undefined;
-  setLoggedInUser: (data: LoggedInUserType | null) => void;
-  signUp: (data: LoggedInUserType) => void;
-  logIn: (data: LoggedInUserType) => void;
-  logOut: () => void;
+  loggedInUserId: string | undefined;
+  setLoggedInUserId: (userId: string) => void;
 }>({
-  loggedInUser: null,
-  setLoggedInUser: () => {
-    // do nothing
-  },
-  signUp: () => {
-    // do nothing
-  },
-  logIn: () => {
-    // do nothing
-  },
-  logOut: () => {
+  loggedInUserId: undefined,
+  setLoggedInUserId: () => {
     // do nothing
   },
 });
 
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState<any>(null);
-
-  const signUp = ({ email, password }: LoggedInUserType) => {
-    return auth.createUserWithEmailAndPassword(email, password);
-  };
-
-  const logIn = ({ email, password }: LoggedInUserType) => {
-    return auth.signInWithEmailAndPassword(email, password);
-  };
-
-  const logOut = () => {
-    return auth.signOut();
-  };
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setLoggedInUser(user);
-    });
-
-    return unsubscribe;
-  }, []);
+  const [loggedInUserId, setLoggedInUserId] = useState<any>(null);
 
   return (
     <LoggedInUserContext.Provider
-      value={{ loggedInUser, setLoggedInUser, signUp, logIn, logOut }}
+      value={{
+        loggedInUserId,
+        setLoggedInUserId,
+      }}
     >
       <Route exact path="/log-in">
         <LogInPage />
       </Route>
-
       <Layout>
         <Route exact path="/">
           <Redirect to="/wines" />
@@ -100,11 +77,15 @@ function App() {
           <WineDetailPage />
         </Route>
 
+        <Route exact path="/wines/detail/:wineId/:userId">
+          <WineDetailPage />
+        </Route>
+
         <Route exact path="/wines/create">
           <WineCreatePage />
         </Route>
 
-        <Route exact path="/wines/rate/:wineId">
+        <Route exact path="/wines/rate/:wineId/:userId">
           <WineRatePage />
         </Route>
 
@@ -124,6 +105,7 @@ function App() {
           <ConfigurationVystavovatelPage />
         </Route>
       </Layout>
+      )
     </LoggedInUserContext.Provider>
   );
 }

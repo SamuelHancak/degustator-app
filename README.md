@@ -44,3 +44,10 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## START APP
+
+1. Connect to DB throught '.env. file by link from mongoDB
+2. In terminal switch to backend folder and run `npm run start`
+3. Open second terminal a in root folder run `npm start`
+4. Application runs in http://localhost:3000/

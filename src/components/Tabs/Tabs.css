@@ -13,6 +13,10 @@
   z-index: 10;
 }
 
+.tabs > div {
+  overflow: auto !important;
+}
+
 @media (max-width: 600px) {
   .tabs {
     top: 50px;

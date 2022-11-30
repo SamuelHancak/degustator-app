@@ -1,0 +1,123 @@
+GET  http://localhost:4000/wines/wines/ratingsAll
+Content-Type: application/json
+
+# {
+#     "meno": "Meno1",
+#     "priezvisko": "Surname 2"
+# }
+
+# {
+#     "nazov": "Hodnotiteľ",
+#     "kod": "3"
+# }
+
+# {
+#     "hodnotenie": "6261cb70b34eb51792d144b6"
+# }
+
+# {
+#     "nazov": "Celkové"
+# }
+
+# {
+#     "meno": "Hodnotitel 4",
+#     "priezvisko": "Priezvisko 4",
+#     "komisia": "4",
+#     "telefon": "0900000004",
+#     "email": "hodnotitel4@mail.com",
+#     "prava": "4"
+# }
+
+# {
+#     "meno": "Vystavovatel Y",
+#     "priezvisko": "Priezvisko Y",
+#     "adresa": "Adresa Y, 0000 00",
+#     "telefon": "090000000Y",
+#     "email": "vystavovatelY@mail.com"
+# }
+
+# {
+#     "vzhladCirostVynikajuce": "7",
+#     "vzhladCirostVelmiDobre": "4",
+#     "vzhladCirostDobre": "3",
+#     "vzhladCirostUspokojive": "2",
+#     "vzhladCirostNedostatocne": "1",
+
+#     "vzhladFarbaVynikajuce": "5",
+#     "vzhladFarbaVelmiDobre": "4",
+#     "vzhladFarbaDobre": "3",
+#     "vzhladFarbaUspokojive": "2",
+#     "vzhladFarbaNedostatocne": "1",
+
+#     "vonaIntenzitaVynikajuce": "5",
+#     "vonaIntenzitaVelmiDobre": "4",
+#     "vonaIntenzitaDobre": "3",
+#     "vonaIntenzitaUspokojive": "2",
+#     "vonaIntenzitaNedostatocne": "1",
+
+#     "vonaCistotaVynikajuce": "5",
+#     "vonaCistotaVelmiDobre": "4",
+#     "vonaCistotaDobre": "3",
+#     "vonaCistotaUspokojive": "2",
+#     "vonaCistotaNedostatocne": "1",
+
+#     "vonaHarmoniaVynikajuce": "5",
+#     "vonaHarmoniaVelmiDobre": "4",
+#     "vonaHarmoniaDobre": "3",
+#     "vonaHarmoniaUspokojive": "2",
+#     "vonaHarmoniaNedostatocne": "1",
+
+#     "chutIntenzitaVynikajuce": "5",
+#     "chutIntenzitaVelmiDobre": "4",
+#     "chutIntenzitaDobre": "3",
+#     "chutIntenzitaUspokojive": "2",
+#     "chutIntenzitaNedostatocne": "1",
+
+#     "chutCistotaVynikajuce": "5",
+#     "chutCistotaVelmiDobre": "4",
+#     "chutCistotaDobre": "3",
+#     "chutCistotaUspokojive": "2",
+#     "chutCistotaNedostatocne": "1",
+
+#     "chutHarmoniaVynikajuce": "5",
+#     "chutHarmoniaVelmiDobre": "4",
+#     "chutHarmoniaDobre": "3",
+#     "chutHarmoniaUspokojive": "2",
+#     "chutHarmoniaNedostatocne": "1",
+
+#     "chutPerzistenciaVynikajuce": "5",
+#     "chutPerzistenciaVelmiDobre": "4",
+#     "chutPerzistenciaDobre": "3",
+#     "chutPerzistenciaUspokojive": "2",
+#     "chutPerzistenciaNedostatocne": "1"
+# }
+
+# {
+#     "vzorka_id": "620d062219ae238bc93223e0",
+#     "cirost": "kokotina",
+#     "farba": "farba",
+#     "intenzita": "intenzita",
+#     "cistota": "cistota",
+#     "harmonia": "harmonia",
+#     "intenzitaChut": "intenzitaChut",
+#     "cistotaChut": "cistotaChut",
+#     "harmoniaChut": "harmoniaChut",
+#     "perzistencia": "perzistencia",
+#     "cirostNotes": "cirostNotes",
+#     "farbaNotes": "farbaNotes",
+#     "intenzitaNotes": "intenzitaNotes",
+#     "cistotaNotes": "cistotaNotes",
+#     "harmoniaNotes": "harmoniaNotes",
+#     "intenzitaChutNotes": "intenzitaChutNotes",
+#     "cistotaChutNotes": "cistotaChutNotes",
+#     "harmoniaChutNotes": "harmoniaChutNotes",
+#     "perzistenciaNotes": "perzistenciaNotes"
+# }
+
+# {
+#     "komisia": "Komisia_Post",
+#     "vzorka": "Vzorka1",
+#     "rocnik": 10,
+#     "kategoria": "Kategoria_Post",
+#     "vystavovatel": "Vystavovatel_Post"
+# }

@@ -592,6 +592,19 @@ router.get("/wines/hodnotenie/all", (_, response) => {
     .catch((err) => response.json(err));
 });
 
+router.post("/wines/hodnotenie", (request, response) => {
+  const createHodnotenie = new configurationHodnotenia({
+    nazov: request.body.nazov,
+  });
+
+  createHodnotenie
+    .save()
+    .then((data) => {
+      response.json(data);
+    })
+    .catch((err) => response.json(err));
+});
+
 router.get("/wines/hodnotenie/:id", (request, response) => {
   const getHodnotenie = configurationHodnotenia.findOne({
     _id: request.params.id,

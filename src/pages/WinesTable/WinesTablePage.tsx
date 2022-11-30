@@ -100,6 +100,8 @@ export const WinesTablePage = () => {
             })
             .catch((err) => console.log(err))
             .finally(() => getData());
+        } else {
+          getData();
         }
       });
   }, []);

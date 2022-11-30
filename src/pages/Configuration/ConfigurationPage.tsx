@@ -229,7 +229,7 @@ export const ConfigurationPage = () => {
                             ? errors.vzhladCirostVynikajuce
                             : " "
                         }
-                        value={values.vzhladCirostVynikajuce}
+                        value={values?.vzhladCirostVynikajuce}
                         onChange={handleChange}
                         error={Boolean(errors.vzhladCirostVynikajuce?.length)}
                         type="number"
@@ -247,7 +247,7 @@ export const ConfigurationPage = () => {
                             ? errors.vzhladCirostVelmiDobre
                             : " "
                         }
-                        value={values.vzhladCirostVelmiDobre}
+                        value={values?.vzhladCirostVelmiDobre}
                         onChange={handleChange}
                         error={Boolean(errors.vzhladCirostVelmiDobre?.length)}
                         type="number"
@@ -265,7 +265,7 @@ export const ConfigurationPage = () => {
                             ? errors.vzhladCirostDobre
                             : " "
                         }
-                        value={values.vzhladCirostDobre}
+                        value={values?.vzhladCirostDobre}
                         onChange={handleChange}
                         error={Boolean(errors.vzhladCirostDobre?.length)}
                         type="number"
@@ -283,7 +283,7 @@ export const ConfigurationPage = () => {
                             ? errors.vzhladCirostUspokojive
                             : " "
                         }
-                        value={values.vzhladCirostUspokojive}
+                        value={values?.vzhladCirostUspokojive}
                         onChange={handleChange}
                         error={Boolean(errors.vzhladCirostUspokojive?.length)}
                         type="number"
@@ -301,7 +301,7 @@ export const ConfigurationPage = () => {
                             ? errors.vzhladCirostNedostatocne
                             : " "
                         }
-                        value={values.vzhladCirostNedostatocne}
+                        value={values?.vzhladCirostNedostatocne}
                         onChange={handleChange}
                         error={Boolean(errors.vzhladCirostNedostatocne?.length)}
                       />
@@ -322,7 +322,7 @@ export const ConfigurationPage = () => {
                             ? errors.vzhladFarbaVynikajuce
                             : " "
                         }
-                        value={values.vzhladFarbaVynikajuce}
+                        value={values?.vzhladFarbaVynikajuce}
                         onChange={handleChange}
                         error={Boolean(errors.vzhladFarbaVynikajuce?.length)}
                         type="number"
@@ -340,7 +340,7 @@ export const ConfigurationPage = () => {
                             ? errors.vzhladFarbaVelmiDobre
                             : " "
                         }
-                        value={values.vzhladFarbaVelmiDobre}
+                        value={values?.vzhladFarbaVelmiDobre}
                         onChange={handleChange}
                         error={Boolean(errors.vzhladFarbaVelmiDobre?.length)}
                         type="number"
@@ -358,7 +358,7 @@ export const ConfigurationPage = () => {
                             ? errors.vzhladFarbaDobre
                             : " "
                         }
-                        value={values.vzhladFarbaDobre}
+                        value={values?.vzhladFarbaDobre}
                         onChange={handleChange}
                         error={Boolean(errors.vzhladFarbaDobre?.length)}
                         type="number"
@@ -376,7 +376,7 @@ export const ConfigurationPage = () => {
                             ? errors.vzhladFarbaUspokojive
                             : " "
                         }
-                        value={values.vzhladFarbaUspokojive}
+                        value={values?.vzhladFarbaUspokojive}
                         onChange={handleChange}
                         error={Boolean(errors.vzhladFarbaUspokojive?.length)}
                         type="number"
@@ -394,7 +394,7 @@ export const ConfigurationPage = () => {
                             ? errors.vzhladFarbaNedostatocne
                             : " "
                         }
-                        value={values.vzhladFarbaNedostatocne}
+                        value={values?.vzhladFarbaNedostatocne}
                         onChange={handleChange}
                         error={Boolean(errors.vzhladFarbaNedostatocne?.length)}
                       />
@@ -417,7 +417,7 @@ export const ConfigurationPage = () => {
                             ? errors.vonaIntenzitaVynikajuce
                             : " "
                         }
-                        value={values.vonaIntenzitaVynikajuce}
+                        value={values?.vonaIntenzitaVynikajuce}
                         onChange={handleChange}
                         error={Boolean(errors.vonaIntenzitaVynikajuce?.length)}
                         type="number"
@@ -435,7 +435,7 @@ export const ConfigurationPage = () => {
                             ? errors.vonaIntenzitaVelmiDobre
                             : " "
                         }
-                        value={values.vonaIntenzitaVelmiDobre}
+                        value={values?.vonaIntenzitaVelmiDobre}
                         onChange={handleChange}
                         error={Boolean(errors.vonaIntenzitaVelmiDobre?.length)}
                         type="number"
@@ -453,7 +453,7 @@ export const ConfigurationPage = () => {
                             ? errors.vonaIntenzitaDobre
                             : " "
                         }
-                        value={values.vonaIntenzitaDobre}
+                        value={values?.vonaIntenzitaDobre}
                         onChange={handleChange}
                         error={Boolean(errors.vonaIntenzitaDobre?.length)}
                         type="number"
@@ -471,7 +471,7 @@ export const ConfigurationPage = () => {
                             ? errors.vonaIntenzitaUspokojive
                             : " "
                         }
-                        value={values.vonaIntenzitaUspokojive}
+                        value={values?.vonaIntenzitaUspokojive}
                         onChange={handleChange}
                         error={Boolean(errors.vonaIntenzitaUspokojive?.length)}
                         type="number"
@@ -489,7 +489,7 @@ export const ConfigurationPage = () => {
                             ? errors.vonaIntenzitaNedostatocne
                             : " "
                         }
-                        value={values.vonaIntenzitaNedostatocne}
+                        value={values?.vonaIntenzitaNedostatocne}
                         onChange={handleChange}
                         error={Boolean(
                           errors.vonaIntenzitaNedostatocne?.length
@@ -512,7 +512,7 @@ export const ConfigurationPage = () => {
                             ? errors.vonaCistotaVynikajuce
                             : " "
                         }
-                        value={values.vonaCistotaVynikajuce}
+                        value={values?.vonaCistotaVynikajuce}
                         onChange={handleChange}
                         error={Boolean(errors.vonaCistotaVynikajuce?.length)}
                         type="number"
@@ -530,7 +530,7 @@ export const ConfigurationPage = () => {
                             ? errors.vonaCistotaVelmiDobre
                             : " "
                         }
-                        value={values.vonaCistotaVelmiDobre}
+                        value={values?.vonaCistotaVelmiDobre}
                         onChange={handleChange}
                         error={Boolean(errors.vonaCistotaVelmiDobre?.length)}
                         type="number"
@@ -548,7 +548,7 @@ export const ConfigurationPage = () => {
                             ? errors.vonaCistotaDobre
                             : " "
                         }
-                        value={values.vonaCistotaDobre}
+                        value={values?.vonaCistotaDobre}
                         onChange={handleChange}
                         error={Boolean(errors.vonaCistotaDobre?.length)}
                         type="number"
@@ -566,7 +566,7 @@ export const ConfigurationPage = () => {
                             ? errors.vonaCistotaUspokojive
                             : " "
                         }
-                        value={values.vonaCistotaUspokojive}
+                        value={values?.vonaCistotaUspokojive}
                         onChange={handleChange}
                         error={Boolean(errors.vonaCistotaUspokojive?.length)}
                         type="number"
@@ -584,7 +584,7 @@ export const ConfigurationPage = () => {
                             ? errors.vonaCistotaNedostatocne
                             : " "
                         }
-                        value={values.vonaCistotaNedostatocne}
+                        value={values?.vonaCistotaNedostatocne}
                         onChange={handleChange}
                         error={Boolean(errors.vonaCistotaNedostatocne?.length)}
                       />
@@ -605,7 +605,7 @@ export const ConfigurationPage = () => {
                             ? errors.vonaHarmoniaVynikajuce
                             : " "
                         }
-                        value={values.vonaHarmoniaVynikajuce}
+                        value={values?.vonaHarmoniaVynikajuce}
                         onChange={handleChange}
                         error={Boolean(errors.vonaHarmoniaVynikajuce?.length)}
                         type="number"
@@ -623,7 +623,7 @@ export const ConfigurationPage = () => {
                             ? errors.vonaHarmoniaVelmiDobre
                             : " "
                         }
-                        value={values.vonaHarmoniaVelmiDobre}
+                        value={values?.vonaHarmoniaVelmiDobre}
                         onChange={handleChange}
                         error={Boolean(errors.vonaHarmoniaVelmiDobre?.length)}
                         type="number"
@@ -641,7 +641,7 @@ export const ConfigurationPage = () => {
                             ? errors.vonaHarmoniaDobre
                             : " "
                         }
-                        value={values.vonaHarmoniaDobre}
+                        value={values?.vonaHarmoniaDobre}
                         onChange={handleChange}
                         error={Boolean(errors.vonaHarmoniaDobre?.length)}
                         type="number"
@@ -659,7 +659,7 @@ export const ConfigurationPage = () => {
                             ? errors.vonaHarmoniaUspokojive
                             : " "
                         }
-                        value={values.vonaHarmoniaUspokojive}
+                        value={values?.vonaHarmoniaUspokojive}
                         onChange={handleChange}
                         error={Boolean(errors.vonaHarmoniaUspokojive?.length)}
                         type="number"
@@ -677,7 +677,7 @@ export const ConfigurationPage = () => {
                             ? errors.vonaHarmoniaNedostatocne
                             : " "
                         }
-                        value={values.vonaHarmoniaNedostatocne}
+                        value={values?.vonaHarmoniaNedostatocne}
                         onChange={handleChange}
                         error={Boolean(errors.vonaHarmoniaNedostatocne?.length)}
                       />
@@ -700,7 +700,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutIntenzitaVynikajuce
                             : " "
                         }
-                        value={values.chutIntenzitaVynikajuce}
+                        value={values?.chutIntenzitaVynikajuce}
                         onChange={handleChange}
                         error={Boolean(errors.chutIntenzitaVynikajuce?.length)}
                         type="number"
@@ -718,7 +718,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutIntenzitaVelmiDobre
                             : " "
                         }
-                        value={values.chutIntenzitaVelmiDobre}
+                        value={values?.chutIntenzitaVelmiDobre}
                         onChange={handleChange}
                         error={Boolean(errors.chutIntenzitaVelmiDobre?.length)}
                         type="number"
@@ -736,7 +736,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutIntenzitaDobre
                             : " "
                         }
-                        value={values.chutIntenzitaDobre}
+                        value={values?.chutIntenzitaDobre}
                         onChange={handleChange}
                         error={Boolean(errors.chutIntenzitaDobre?.length)}
                         type="number"
@@ -754,7 +754,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutIntenzitaUspokojive
                             : " "
                         }
-                        value={values.chutIntenzitaUspokojive}
+                        value={values?.chutIntenzitaUspokojive}
                         onChange={handleChange}
                         error={Boolean(errors.chutIntenzitaUspokojive?.length)}
                         type="number"
@@ -772,7 +772,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutIntenzitaNedostatocne
                             : " "
                         }
-                        value={values.chutIntenzitaNedostatocne}
+                        value={values?.chutIntenzitaNedostatocne}
                         onChange={handleChange}
                         error={Boolean(
                           errors.chutIntenzitaNedostatocne?.length
@@ -795,7 +795,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutCistotaVynikajuce
                             : " "
                         }
-                        value={values.chutCistotaVynikajuce}
+                        value={values?.chutCistotaVynikajuce}
                         onChange={handleChange}
                         error={Boolean(errors.chutCistotaVynikajuce?.length)}
                         type="number"
@@ -813,7 +813,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutCistotaVelmiDobre
                             : " "
                         }
-                        value={values.chutCistotaVelmiDobre}
+                        value={values?.chutCistotaVelmiDobre}
                         onChange={handleChange}
                         error={Boolean(errors.chutCistotaVelmiDobre?.length)}
                         type="number"
@@ -831,7 +831,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutCistotaDobre
                             : " "
                         }
-                        value={values.chutCistotaDobre}
+                        value={values?.chutCistotaDobre}
                         onChange={handleChange}
                         error={Boolean(errors.chutCistotaDobre?.length)}
                         type="number"
@@ -849,7 +849,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutCistotaUspokojive
                             : " "
                         }
-                        value={values.chutCistotaUspokojive}
+                        value={values?.chutCistotaUspokojive}
                         onChange={handleChange}
                         error={Boolean(errors.chutCistotaUspokojive?.length)}
                         type="number"
@@ -867,7 +867,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutCistotaNedostatocne
                             : " "
                         }
-                        value={values.chutCistotaNedostatocne}
+                        value={values?.chutCistotaNedostatocne}
                         onChange={handleChange}
                         error={Boolean(errors.chutCistotaNedostatocne?.length)}
                       />
@@ -888,7 +888,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutHarmoniaVynikajuce
                             : " "
                         }
-                        value={values.chutHarmoniaVynikajuce}
+                        value={values?.chutHarmoniaVynikajuce}
                         onChange={handleChange}
                         error={Boolean(errors.chutHarmoniaVynikajuce?.length)}
                         type="number"
@@ -906,7 +906,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutHarmoniaVelmiDobre
                             : " "
                         }
-                        value={values.chutHarmoniaVelmiDobre}
+                        value={values?.chutHarmoniaVelmiDobre}
                         onChange={handleChange}
                         error={Boolean(errors.chutHarmoniaVelmiDobre?.length)}
                         type="number"
@@ -924,7 +924,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutHarmoniaDobre
                             : " "
                         }
-                        value={values.chutHarmoniaDobre}
+                        value={values?.chutHarmoniaDobre}
                         onChange={handleChange}
                         error={Boolean(errors.chutHarmoniaDobre?.length)}
                         type="number"
@@ -942,7 +942,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutHarmoniaUspokojive
                             : " "
                         }
-                        value={values.chutHarmoniaUspokojive}
+                        value={values?.chutHarmoniaUspokojive}
                         onChange={handleChange}
                         error={Boolean(errors.chutHarmoniaUspokojive?.length)}
                         type="number"
@@ -960,7 +960,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutHarmoniaNedostatocne
                             : " "
                         }
-                        value={values.chutHarmoniaNedostatocne}
+                        value={values?.chutHarmoniaNedostatocne}
                         onChange={handleChange}
                         error={Boolean(errors.chutHarmoniaNedostatocne?.length)}
                       />
@@ -981,7 +981,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutPerzistenciaVynikajuce
                             : " "
                         }
-                        value={values.chutPerzistenciaVynikajuce}
+                        value={values?.chutPerzistenciaVynikajuce}
                         onChange={handleChange}
                         error={Boolean(
                           errors.chutPerzistenciaVynikajuce?.length
@@ -1001,7 +1001,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutPerzistenciaVelmiDobre
                             : " "
                         }
-                        value={values.chutPerzistenciaVelmiDobre}
+                        value={values?.chutPerzistenciaVelmiDobre}
                         onChange={handleChange}
                         error={Boolean(
                           errors.chutPerzistenciaVelmiDobre?.length
@@ -1021,7 +1021,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutPerzistenciaDobre
                             : " "
                         }
-                        value={values.chutPerzistenciaDobre}
+                        value={values?.chutPerzistenciaDobre}
                         onChange={handleChange}
                         error={Boolean(errors.chutPerzistenciaDobre?.length)}
                         type="number"
@@ -1039,7 +1039,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutPerzistenciaUspokojive
                             : " "
                         }
-                        value={values.chutPerzistenciaUspokojive}
+                        value={values?.chutPerzistenciaUspokojive}
                         onChange={handleChange}
                         error={Boolean(
                           errors.chutPerzistenciaUspokojive?.length
@@ -1059,7 +1059,7 @@ export const ConfigurationPage = () => {
                             ? errors.chutPerzistenciaNedostatocne
                             : " "
                         }
-                        value={values.chutPerzistenciaNedostatocne}
+                        value={values?.chutPerzistenciaNedostatocne}
                         onChange={handleChange}
                         error={Boolean(
                           errors.chutPerzistenciaNedostatocne?.length
